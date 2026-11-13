@@ -2,7 +2,7 @@
 # Build distributables from skills/readme-review:
 #   prompts/readme-review-prompt.md  single-file prompt for chat tools without skill support
 #   dist/readme-review.zip           skill bundle for claude.ai / Claude Code upload
-#   feedback/questions.md            question table, from feedback/survey-spec.json
+#   feedback/questions.md            from feedback/survey-spec.json (also done by survey-questions.yml)
 # Usage: scripts/build.sh            (run from repo root)
 set -euo pipefail
 

@@ -4,7 +4,7 @@ Users rate the README review skill in a Qualtrics survey. A scheduled GitHub Act
 
 ## Where things live
 
-- This repo (public): skill, survey spec (`survey-spec.json`, rendered in [questions.md](questions.md)) and the script that creates the survey (`scripts/create_survey.py`), survey definition (`survey.qsf`, see [below](#survey-definition-qsf)), field map (`qualtrics-map.json`), script (`scripts/qualtrics_to_prs.py`).
+- This repo (public): skill, survey spec (`survey-spec.json`, rendered in [questions.md](questions.md), which is auto-generated: edit the spec; the "Generate survey questions" workflow regenerates and commits it, and overwrites manual edits) and the script that creates the survey (`scripts/create_survey.py`), survey definition (`survey.qsf`, see [below](#survey-definition-qsf)), field map (`qualtrics-map.json`), script (`scripts/qualtrics_to_prs.py`).
 - `readme-bot-feedback` (private): the two workflows, the response PRs, and the included responses (`responses/`).
 
 The private repo's workflow checks out this repo to get the script and field map, so code is reviewed in public and data stays private.

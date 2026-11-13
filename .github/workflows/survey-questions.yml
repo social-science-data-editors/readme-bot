@@ -1,0 +1,40 @@
+name: Generate survey questions
+
+# feedback/questions.md is generated from feedback/survey-spec.json.
+# When the spec, the generator, or questions.md itself (edited by mistake)
+# changes, regenerate it and commit the result to the same branch.
+on:
+  push:
+    branches: ['**']
+    paths:
+      - feedback/survey-spec.json
+      - feedback/questions.md
+      - scripts/create_survey.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: survey-questions-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Regenerate questions.md
+        run: python3 scripts/create_survey.py --markdown
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- feedback/questions.md; then
+            echo "questions.md is up to date."
+            exit 0
+          fi
+          git diff --stat -- feedback/questions.md
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add feedback/questions.md
+          git commit -m "Regenerate feedback/questions.md from survey-spec.json"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
