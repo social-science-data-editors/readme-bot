@@ -3,6 +3,7 @@
 #   prompts/readme-review-prompt.md  single-file prompt for chat tools without skill support
 #   dist/readme-review.zip           skill bundle for claude.ai / Claude Code upload
 #   feedback/questions.md            from feedback/survey-spec.json (also done by survey-questions.yml)
+#   docs/index.html                  version and feedback link stamped into the website
 # Usage: scripts/build.sh            (run from repo root)
 set -euo pipefail
 
@@ -46,6 +47,16 @@ mkdir -p "$root/prompts" "$root/dist"
 } > "$out"
 
 python3 "$root/scripts/create_survey.py" --markdown >/dev/null
+
+# Website (GitHub Pages, docs/index.html): stamp version and feedback link
+site="$root/docs/index.html"
+if [ -f "$site" ]; then
+  sed -i.bak -E \
+    -e "s|(data-stamp=\"version\">Skill v)[^<]*|\1$version|" \
+    -e "s|(data-stamp=\"feedback\" href=\")[^\"]*|\1${feedback:-https://github.com/social-science-data-editors/readme-bot/issues}|" \
+    "$site"
+  rm -f "$site.bak"
+fi
 
 rm -f "$root/dist/readme-review.zip"
 (cd "$root/skills" && zip -qr "$root/dist/readme-review.zip" readme-review)

@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>readme-bot</title>
+<meta name="description" content="An AI skill that reviews replication package READMEs against the Social Science Data Editors Template README. How it works, security, how to use it, and how to give feedback.">
+<style>
+:root {
+  --bg: #f7f6f2;
+  --surface: #ffffff;
+  --surface-2: #efede6;
+  --ink: #1d2327;
+  --ink-2: #4a545b;
+  --line: #d9d6cc;
+  --accent: #1f6f78;
+  --accent-ink: #ffffff;
+  --accent-soft: #dcecec;
+  --warn: #8a5a00;
+  --warn-soft: #fbf0d9;
+  --high: #a2332b;
+  --med: #8a5a00;
+  --low: #3d6b2f;
+  --code-bg: #f0eee8;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.04);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14181b;
+    --surface: #1b2125;
+    --surface-2: #232b30;
+    --ink: #e7eaec;
+    --ink-2: #a9b3b9;
+    --line: #333d43;
+    --accent: #5fb3bb;
+    --accent-ink: #0d1416;
+    --accent-soft: #1d3538;
+    --warn: #e5b45a;
+    --warn-soft: #33290f;
+    --high: #f08a80;
+    --med: #e5b45a;
+    --low: #9ccc87;
+    --code-bg: #20272b;
+    --shadow: none;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14181b;
+  --surface: #1b2125;
+  --surface-2: #232b30;
+  --ink: #e7eaec;
+  --ink-2: #a9b3b9;
+  --line: #333d43;
+  --accent: #5fb3bb;
+  --accent-ink: #0d1416;
+  --accent-soft: #1d3538;
+  --warn: #e5b45a;
+  --warn-soft: #33290f;
+  --high: #f08a80;
+  --med: #e5b45a;
+  --low: #9ccc87;
+  --code-bg: #20272b;
+  --shadow: none;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+a { color: var(--accent); }
+a:hover { text-decoration-thickness: 2px; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; }
+code { background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+pre { background: var(--code-bg); padding: 1rem; border-radius: var(--radius); overflow-x: auto; line-height: 1.45; border: 1px solid var(--line); }
+pre code { background: none; padding: 0; }
+
+.wrap { max-width: 1040px; margin: 0 auto; padding-inline: 20px; }
+
+header.site {
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+header.site .wrap { padding-block: 28px 22px; }
+.eyebrow { font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 6px; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.15; margin: 0 0 8px; letter-spacing: -.01em; }
+h1 .bot { color: var(--accent); }
+.tagline { margin: 0; color: var(--ink-2); max-width: 46rem; font-size: 1.05rem; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 14px; font-size: .88rem; color: var(--ink-2); }
+.pill { display: inline-block; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; font-size: .8rem; }
+
+/* Stepper tabs */
+nav.steps {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.tablist { display: flex; gap: 4px; overflow-x: auto; padding-block: 10px; scrollbar-width: none; }
+.tablist::-webkit-scrollbar { display: none; }
+.tab {
+  flex: 1 0 auto;
+  display: flex; align-items: center; gap: 10px;
+  border: 1px solid transparent; background: none; color: var(--ink-2);
+  font: inherit; font-size: .95rem; padding: 8px 14px 8px 8px; border-radius: 999px; cursor: pointer;
+  white-space: nowrap;
+}
+.tab:hover { background: var(--surface-2); color: var(--ink); }
+.tab .n {
+  display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%;
+  border: 1.5px solid var(--line); font-weight: 700; font-size: .85rem; background: var(--surface);
+}
+.tab[aria-selected="true"] { background: var(--surface); border-color: var(--line); color: var(--ink); font-weight: 600; box-shadow: var(--shadow); }
+.tab[aria-selected="true"] .n { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.tab.done .n { border-color: var(--accent); color: var(--accent); }
+.tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tab.feedback-tab .n { border-style: dashed; border-color: var(--accent); }
+
+main .wrap { padding-block: 28px 48px; }
+.panel h2 { font-size: 1.6rem; margin: 0 0 4px; letter-spacing: -.01em; }
+.panel h3 { font-size: 1.1rem; margin: 28px 0 8px; }
+.panel .lead { font-size: 1.08rem; color: var(--ink-2); margin: 0 0 20px; max-width: 48rem; }
+.panel p, .panel li { max-width: 48rem; }
+.panel ul, .panel ol { padding-left: 1.3rem; }
+.panel li { margin: 4px 0; }
+.js .panel[hidden] { display: none; }
+.no-js-label { display: none; }
+
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 16px 18px; box-shadow: var(--shadow);
+}
+.card h3, .card h4 { margin: 0 0 6px; font-size: 1.02rem; }
+.card p { margin: 0 0 8px; }
+.card p:last-child, .card ul:last-child { margin-bottom: 0; }
+.card ul { margin: 6px 0 0; }
+.card .tag { font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; display: block; }
+
+.qa { display: grid; gap: 12px; }
+.qa details { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 18px; box-shadow: var(--shadow); }
+.qa summary { cursor: pointer; padding: 14px 0; font-weight: 600; list-style: none; display: flex; gap: 10px; align-items: baseline; }
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary::before { content: "+"; color: var(--accent); font-weight: 700; width: 1em; flex: none; }
+.qa details[open] summary::before { content: "−"; }
+.qa .short { font-weight: 400; color: var(--ink-2); }
+.qa details > div { padding: 0 0 14px 1.6em; }
+.qa details > div p:first-child { margin-top: 0; }
+
+.callout { border-left: 4px solid var(--accent); background: var(--accent-soft); padding: 12px 16px; border-radius: 0 var(--radius) var(--radius) 0; margin: 18px 0; max-width: 48rem; }
+.callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+.callout p { margin: 0; }
+.callout p + p { margin-top: 6px; }
+
+.prio { font-weight: 700; }
+.prio.h { color: var(--high); } .prio.m { color: var(--med); } .prio.l { color: var(--low); }
+
+.cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 700;
+  padding: 12px 20px; border-radius: 999px; margin: 6px 0;
+}
+.cta:hover { filter: brightness(1.08); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.pager button {
+  font: inherit; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 999px;
+  padding: 8px 16px; cursor: pointer;
+}
+.pager button:hover { border-color: var(--accent); color: var(--accent); }
+.pager button.next { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.pager button.next:hover { color: var(--accent-ink); filter: brightness(1.08); }
+.pager .spacer { flex: 1; }
+.no-js .pager { display: none; }
+
+/* Infographic */
+figure.info { margin: 26px 0 8px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow); }
+.info-scroll { overflow-x: auto; }
+.info-scroll svg { display: block; width: 100%; min-width: 720px; height: auto; }
+figure.info figcaption { font-size: .85rem; color: var(--ink-2); margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 3px 9px; border-radius: 6px; border: 1px dashed var(--ink-2); color: var(--ink-2); }
+
+svg .lane { font: 700 11px system-ui, sans-serif; letter-spacing: .08em; fill: var(--ink-2); text-transform: uppercase; }
+svg .box-u { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+svg .box-m { fill: var(--surface-2); stroke: var(--line); stroke-width: 1.5; }
+svg .t1 { font: 700 15px system-ui, sans-serif; fill: var(--ink); }
+svg .t2 { font: 12.5px system-ui, sans-serif; fill: var(--ink-2); }
+svg .num { font: 700 12px system-ui, sans-serif; fill: var(--accent-ink); }
+svg .numc { fill: var(--accent); }
+svg .arrow { stroke: var(--ink-2); stroke-width: 1.6; fill: none; }
+svg .arrow-head { fill: var(--ink-2); }
+svg .loop { stroke: var(--accent); stroke-dasharray: 5 4; }
+svg .loop-head { fill: var(--accent); }
+svg .stamp { fill: none; stroke: var(--ink-2); stroke-dasharray: 4 3; stroke-width: 1.2; }
+svg .stamp-t { font: 700 11px system-ui, sans-serif; letter-spacing: .1em; fill: var(--ink-2); }
+svg .stamp-s { font: 11px system-ui, sans-serif; fill: var(--ink-2); }
+
+.sample-label { display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; background: var(--warn-soft); color: var(--warn); padding: 2px 8px; border-radius: 4px; margin: 0 0 6px; }
+
+footer.site { border-top: 1px solid var(--line); background: var(--surface); font-size: .88rem; color: var(--ink-2); }
+footer.site .wrap { padding-block: 20px 28px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+footer.site p { margin: 0; }
+
+@media (max-width: 640px) {
+  .tab .label { display: none; }
+  .tab[aria-selected="true"] .label { display: inline; }
+  .tab { flex: 0 0 auto; padding-right: 8px; }
+  .tab[aria-selected="true"] { padding-right: 14px; }
+  .qa summary { flex-wrap: wrap; }
+  .qa .short { flex-basis: 100%; padding-left: calc(1em + 10px); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .panel:not([hidden]) { animation: fade .18s ease-out; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+}
+</style>
+</head>
+<body class="no-js">
+<script>document.body.classList.replace('no-js','js');</script>
+
+<header class="site">
+  <div class="wrap">
+    <p class="eyebrow">Social Science Data Editors · test version</p>
+    <h1>readme-<span class="bot">bot</span></h1>
+    <p class="tagline">An AI skill that reviews the README of a replication package against the <a href="https://social-science-data-editors.github.io/template_README/template-README.html">Template README</a>, and tells you what a replicator would miss.</p>
+    <div class="meta">
+      <span class="pill" data-stamp="version">Skill v0.1.0</span>
+      <span>Works with Claude, ChatGPT, Gemini, Copilot, and others</span>
+      <span><a href="https://github.com/social-science-data-editors/readme-bot">Source on GitHub</a> · MIT license</span>
+    </div>
+  </div>
+</header>
+
+<nav class="steps" aria-label="Steps">
+  <div class="wrap">
+    <div class="tablist" role="tablist" aria-label="Guide">
+      <button class="tab" role="tab" id="tab-what" aria-controls="what" aria-selected="true"><span class="n">1</span><span class="label">What it is</span></button>
+      <button class="tab" role="tab" id="tab-security" aria-controls="security" aria-selected="false" tabindex="-1"><span class="n">2</span><span class="label">Security and privacy</span></button>
+      <button class="tab" role="tab" id="tab-use" aria-controls="use" aria-selected="false" tabindex="-1"><span class="n">3</span><span class="label">How to use it</span></button>
+      <button class="tab" role="tab" id="tab-expect" aria-controls="expect" aria-selected="false" tabindex="-1"><span class="n">4</span><span class="label">What to expect</span></button>
+      <button class="tab feedback-tab" role="tab" id="tab-feedback" aria-controls="feedback" aria-selected="false" tabindex="-1"><span class="n">5</span><span class="label">Give feedback</span></button>
+    </div>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+
+<!-- ============ 1. WHAT IT IS ============ -->
+<section class="panel" id="what" role="tabpanel" aria-labelledby="tab-what">
+  <h2>What it is</h2>
+  <p class="lead">readme-bot is a set of instructions for an AI assistant. You give the assistant your README, and optionally the replication package. It returns a list of differences from the Template README, ranked by how much they would slow a replicator down.</p>
+
+  <div class="grid">
+    <div class="card">
+      <span class="tag">A · Structure</span>
+      <p>Are the Template's sections there, in a sensible order, with the Template's instructions and example text removed?</p>
+    </div>
+    <div class="card">
+      <span class="tag">B · Content</span>
+      <p>Does each section say what a replicator needs: data access, file list, software versions, seed, runtime, run order, table and figure map, references?</p>
+    </div>
+    <div class="card">
+      <span class="tag">C · Style</span>
+      <p>Is it short and plain? Lists over prose, steps in the order you run them, no filler, no AI-speak.</p>
+    </div>
+  </div>
+
+  <figure class="info" aria-labelledby="info-cap">
+    <div class="info-scroll">
+    <svg viewBox="0 0 960 320" role="img" aria-labelledby="info-title info-desc">
+      <title id="info-title">How readme-bot works, and how your feedback changes it</title>
+      <desc id="info-desc">Top row, your side: 1 your README and optional package go to 2 an AI assistant with the readme-review skill, which writes 3 a report and an optional edited copy, which 4 you check. Bottom row, maintainers' side: 5 you answer a short feedback survey, 6 each response becomes a pull request in a private repository after automated vetting, 7 maintainers approve or reject it and write skill changes, which loop back into the skill at step 2.</desc>
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow-head" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="ahl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="loop-head" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+
+      <text class="lane" x="20" y="26">Your side</text>
+      <text class="lane" x="500" y="186">Maintainers' side</text>
+
+      <!-- Top row -->
+      <g>
+        <rect class="box-u" x="20" y="38" width="200" height="96" rx="10"/>
+        <circle class="numc" cx="42" cy="60" r="11"/><text class="num" x="42" y="64" text-anchor="middle">1</text>
+        <text class="t1" x="60" y="65">Your README</text>
+        <text class="t2" x="36" y="92">plus the package or a</text>
+        <text class="t2" x="36" y="110">file listing (optional)</text>
+      </g>
+      <g>
+        <rect class="box-u" x="260" y="38" width="200" height="96" rx="10"/>
+        <circle class="numc" cx="282" cy="60" r="11"/><text class="num" x="282" y="64" text-anchor="middle">2</text>
+        <text class="t1" x="300" y="65">Your AI assistant</text>
+        <text class="t2" x="276" y="92">runs the readme-review</text>
+        <text class="t2" x="276" y="110">skill or prompt file</text>
+      </g>
+      <g>
+        <rect class="box-u" x="500" y="38" width="200" height="96" rx="10"/>
+        <circle class="numc" cx="522" cy="60" r="11"/><text class="num" x="522" y="64" text-anchor="middle">3</text>
+        <text class="t1" x="540" y="65">Report</text>
+        <text class="t2" x="516" y="92">README-review.md</text>
+        <text class="t2" x="516" y="110">+ README-ai-edited.md</text>
+      </g>
+      <g>
+        <rect class="box-u" x="740" y="38" width="200" height="96" rx="10"/>
+        <circle class="numc" cx="762" cy="60" r="11"/><text class="num" x="762" y="64" text-anchor="middle">4</text>
+        <text class="t1" x="780" y="65">You check it</text>
+        <text class="t2" x="756" y="92">fix your README; verify</text>
+        <text class="t2" x="756" y="110">every AI edit yourself</text>
+      </g>
+
+      <!-- Bottom row -->
+      <g>
+        <rect class="box-u" x="740" y="198" width="200" height="96" rx="10"/>
+        <circle class="numc" cx="762" cy="220" r="11"/><text class="num" x="762" y="224" text-anchor="middle">5</text>
+        <text class="t1" x="780" y="225">Feedback survey</text>
+        <text class="t2" x="756" y="252">~2 minutes, anonymized;</text>
+        <text class="t2" x="756" y="270">answered by you, not AI</text>
+      </g>
+      <g>
+        <rect class="box-m" x="500" y="198" width="200" height="96" rx="10"/>
+        <circle class="numc" cx="522" cy="220" r="11"/><text class="num" x="522" y="224" text-anchor="middle">6</text>
+        <text class="t1" x="540" y="225">Private repository</text>
+        <text class="t2" x="516" y="252">one pull request per</text>
+        <text class="t2" x="516" y="270">response; free text vetted</text>
+      </g>
+      <g>
+        <rect class="box-m" x="260" y="198" width="200" height="96" rx="10"/>
+        <circle class="numc" cx="282" cy="220" r="11"/><text class="num" x="282" y="224" text-anchor="middle">7</text>
+        <text class="t1" x="300" y="225">Maintainers</text>
+        <text class="t2" x="276" y="252">approve or reject; write</text>
+        <text class="t2" x="276" y="270">the next skill version</text>
+      </g>
+
+      <!-- Stamp -->
+      <g>
+        <rect class="stamp" x="24" y="214" width="192" height="64" rx="8"/>
+        <text class="stamp-t" x="120" y="241" text-anchor="middle">CLAUDE-GENERATED</text>
+        <text class="stamp-s" x="120" y="261" text-anchor="middle">infographic · check the text</text>
+      </g>
+
+      <!-- Arrows -->
+      <path class="arrow" d="M222,86 L256,86" marker-end="url(#ah)"/>
+      <path class="arrow" d="M462,86 L496,86" marker-end="url(#ah)"/>
+      <path class="arrow" d="M702,86 L736,86" marker-end="url(#ah)"/>
+      <path class="arrow" d="M840,136 L840,194" marker-end="url(#ah)"/>
+      <path class="arrow" d="M738,246 L704,246" marker-end="url(#ah)"/>
+      <path class="arrow" d="M498,246 L464,246" marker-end="url(#ah)"/>
+      <path class="arrow loop" d="M360,196 L360,138" marker-end="url(#ahl)"/>
+      <text class="t2" x="368" y="171" style="fill:var(--accent);font-weight:600">new version</text>
+    </svg>
+    </div>
+    <figcaption id="info-cap"><span class="badge">Claude-generated</span> How a review works (top) and how your feedback changes the skill (bottom).</figcaption>
+  </figure>
+
+  <h3>Who it is for</h3>
+  <ul>
+    <li><strong>Authors</strong>, before submitting a replication package.</li>
+    <li><strong>Data editors and journal staff</strong>, as a first pass before a human review.</li>
+    <li><strong>Replicators</strong>, to see quickly what a README leaves out.</li>
+  </ul>
+
+  <h3>What it is not</h3>
+  <ul>
+    <li>Not a gate. The Template is a suggestion; the review says what differs and why it matters. It never says a README "fails".</li>
+    <li>Not a journal decision. Passing or failing a data editor's check is still up to the data editor.</li>
+    <li>Not a review of your research. It does not judge the paper, the methods, or the results, and it does not run your code.</li>
+  </ul>
+
+  <div class="pager"><span class="spacer"></span><button class="next" data-go="security">Next: Security and privacy →</button></div>
+</section>
+
+<!-- ============ 2. SECURITY ============ -->
+<section class="panel" id="security" role="tabpanel" aria-labelledby="tab-security" hidden>
+  <h2>Security and privacy</h2>
+  <p class="lead">readme-bot is text: instructions an AI assistant follows. It sends nothing anywhere by itself. The questions below are the ones we expect, with straight answers.</p>
+
+  <div class="qa">
+    <details open>
+      <summary>Where do my files go? <span class="short">To the AI provider you choose. Nowhere else.</span></summary>
+      <div>
+        <p>The skill has no code and makes no network calls. Whatever you give your AI assistant goes to that assistant's provider (Anthropic, OpenAI, Google, Microsoft, …) under your account's terms.</p>
+        <ul>
+          <li><strong>Review only:</strong> you share just the README.</li>
+          <li><strong>Review + edited copy:</strong> you also share the package, or only its file listing. A listing (for example the output of <code>find . -type f</code>) is enough for most checks and contains no data.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>My package has confidential or restricted data. <span class="short">Do not upload it.</span></summary>
+      <div>
+        <ul>
+          <li>Check your data use agreement and your institution's AI policy before giving any part of the package to an AI tool.</li>
+          <li>Safe default: give the README and a file listing, not the data.</li>
+          <li>If your institution has an enterprise or education AI account (often with no-training terms), use that rather than a personal account.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Will it run my code or change my files? <span class="short">It is told not to. Keep an eye on it anyway.</span></summary>
+      <div>
+        <ul>
+          <li>The skill tells the assistant not to run the replication code.</li>
+          <li>It never modifies your README. It writes two new files: <code>README-review.md</code> and, in edit mode, <code>README-ai-edited.md</code>.</li>
+          <li>Coding agents (Claude Code, Codex, Copilot agent mode, Cursor) can run commands on your machine. Keep their approval prompts on, and point them at a copy of the package.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>What exactly am I installing? <span class="short">Five Markdown files and two one-line text files.</span></summary>
+      <div>
+        <p>No scripts, no executables, no dependencies. Read them before you install:</p>
+        <ul>
+          <li><a href="https://github.com/social-science-data-editors/readme-bot/blob/main/skills/readme-review/SKILL.md"><code>SKILL.md</code></a>: the procedure.</li>
+          <li><a href="https://github.com/social-science-data-editors/readme-bot/tree/main/skills/readme-review/references"><code>references/</code></a>: Template checklist, style guide, package checks, report format.</li>
+          <li><code>VERSION</code> and <code>FEEDBACK_URL</code>: the version number and the survey link.</li>
+        </ul>
+        <p>The single-file prompt (<a href="https://github.com/social-science-data-editors/readme-bot/blob/main/prompts/readme-review-prompt.md"><code>readme-review-prompt.md</code></a>) is the same text, concatenated.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Can it make things up? <span class="short">AI can. The skill is built to make that visible.</span></summary>
+      <div>
+        <ul>
+          <li>The edited copy fills gaps only with facts found in the package (file names, seeds, package lists).</li>
+          <li>Anything it cannot verify appears as <code>[AUTHOR TO VERIFY: …]</code> or <code>[AUTHOR TO PROVIDE: …]</code>.</li>
+          <li>It is told never to invent data sources, versions, runtimes, URLs, DOIs, licenses, or hardware. It may still do so. Check every change before you use it.</li>
+          <li>If you find an invented fact, tell us in the survey. Our target is zero.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>What happens to my survey answers? <span class="short">Anonymized, reviewed, private by default.</span></summary>
+      <div>
+        <ul>
+          <li>The survey runs on Cornell's Qualtrics with anonymized responses (no IP address or location stored).</li>
+          <li>Email is optional, only for a reply, and never leaves Qualtrics.</li>
+          <li>Each response becomes one pull request in a <strong>private</strong> GitHub repository. A maintainer includes it or rejects it.</li>
+          <li>We quote you in public (anonymized) only if you say yes.</li>
+          <li>Before a maintainer reads it, free text is checked automatically for links, code, and instructions aimed at an AI. Nobody, human or AI, applies your text to the skill directly: a maintainer writes any change.</li>
+        </ul>
+        <p>Details: <a href="https://github.com/social-science-data-editors/readme-bot/blob/main/feedback/FEEDBACK_PLAN.md">feedback plan</a>.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="pager"><button data-go="what">← What it is</button><button class="next" data-go="use">Next: How to use it →</button></div>
+</section>
+
+<!-- ============ 3. HOW TO USE ============ -->
+<section class="panel" id="use" role="tabpanel" aria-labelledby="tab-use" hidden>
+  <h2>How to use it</h2>
+  <p class="lead">Pick the line that matches your tool. All three give the same review. Links always point to the current version.</p>
+
+  <div class="grid">
+    <div class="card">
+      <span class="tag">Coding agent</span>
+      <h3>Claude Code (or another agent that reads skills)</h3>
+      <ol>
+        <li>Copy the folder <a href="https://github.com/social-science-data-editors/readme-bot/tree/main/skills/readme-review"><code>skills/readme-review/</code></a> into <code>.claude/skills/</code> in the package, or into <code>~/.claude/skills/</code> for all projects.</li>
+        <li>Open the package folder.</li>
+        <li>Ask: <em>"Review the README in this package."</em></li>
+      </ol>
+    </div>
+    <div class="card">
+      <span class="tag">Chat with skills</span>
+      <h3>claude.ai</h3>
+      <ol>
+        <li>Download <a href="https://github.com/social-science-data-editors/readme-bot/releases/latest/download/readme-review.zip"><code>readme-review.zip</code></a> (latest release).</li>
+        <li>Settings → Capabilities → Skills → upload the zip.</li>
+        <li>In a new chat, attach the README (and the package zip or a file listing). Ask for a review.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <span class="tag">Any chatbot</span>
+      <h3>ChatGPT, Gemini, Copilot, others</h3>
+      <ol>
+        <li>Download <a href="https://github.com/social-science-data-editors/readme-bot/blob/main/prompts/readme-review-prompt.md"><code>readme-review-prompt.md</code></a>.</li>
+        <li>Paste it into the chat, or attach it.</li>
+        <li>Attach the README, and if you can, the package or its file listing.</li>
+      </ol>
+    </div>
+  </div>
+
+  <h3>Tips</h3>
+  <ul>
+    <li>Say <em>"review only"</em> if you do not want an edited copy.</li>
+    <li>Large package or restricted data? Give a file listing instead of the files: <code>find . -type f &gt; files.txt</code> (macOS, Linux) or <code>dir /s /b &gt; files.txt</code> (Windows).</li>
+    <li>READMEs in PDF, Word, LaTeX, or plain text work. The edited copy is always Markdown.</li>
+    <li>Non-English README? It is reviewed anyway; the edited copy is in English.</li>
+  </ul>
+
+  <div class="pager"><button data-go="security">← Security and privacy</button><button class="next" data-go="expect">Next: What to expect →</button></div>
+</section>
+
+<!-- ============ 4. WHAT TO EXPECT ============ -->
+<section class="panel" id="expect" role="tabpanel" aria-labelledby="tab-expect" hidden>
+  <h2>What to expect</h2>
+  <p class="lead">One report, always. An edited copy only when the assistant can see the package. A good README gets a short report.</p>
+
+  <div class="grid">
+    <div class="card">
+      <span class="tag">Always</span>
+      <h3><code>README-review.md</code></h3>
+      <ul>
+        <li>One-line verdict and counts by priority.</li>
+        <li>Findings by section: what is wrong, where, and the fix.</li>
+        <li>No praise, no padding.</li>
+        <li>Ends with the feedback link.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="tag">If the package is available</span>
+      <h3><code>README-ai-edited.md</code></h3>
+      <ul>
+        <li>Your README, restructured into Template sections.</li>
+        <li>Your wording kept where it works.</li>
+        <li>Gaps filled only from the package; the rest marked <code>AUTHOR TO</code>.</li>
+        <li>Your original file is untouched.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Priorities</h3>
+  <ul>
+    <li><span class="prio h">High</span>: a replicator cannot proceed or cannot reproduce a result (no data access, no entry point, unmapped tables, missing software).</li>
+    <li><span class="prio m">Medium</span>: a replicator can proceed but will lose time or guess (no versions, no runtime, unclear order).</li>
+    <li><span class="prio l">Low</span>: style or polish.</li>
+  </ul>
+
+  <h3>A report looks like this</h3>
+  <p class="sample-label">Illustrative excerpt, not a real review</p>
+  <pre><code># README review: README.pdf
+
+- Skill: readme-review v0.1.0 · Template v1.2 · 2026-11-13
+- Mode: edit (package available)
+- Verdict: Close to Template; data access details and table map incomplete.
+- Findings: 2 High · 3 Medium · 4 Low
+
+## B. Content
+
+### Data Availability and Provenance Statements
+- **High** — The survey data has no access instructions. Fix: give the
+  URL or contact, cost, and expected wait time.
+
+### List of tables and programs
+- **High** — Tables 4–6 are not mapped to a program. Fix: add rows for
+  them (code found in programs/03_robustness.do).
+
+## C. Style
+- **Low** — Overview: "In this comprehensive replication package, we are
+  delighted to provide…" → "This package contains the data and Stata
+  code to produce all tables and figures."</code></pre>
+
+  <div class="callout warn">
+    <p><strong>This is a test version (v0.1.0).</strong> Expect some findings that are not real problems, and some real problems it misses. Results also differ by AI tool and model. That is what step 5 is for.</p>
+  </div>
+
+  <div class="pager"><button data-go="use">← How to use it</button><button class="next" data-go="feedback">Next: Give feedback →</button></div>
+</section>
+
+<!-- ============ 5. FEEDBACK ============ -->
+<section class="panel" id="feedback" role="tabpanel" aria-labelledby="tab-feedback" hidden>
+  <h2>Give feedback. Please.</h2>
+  <p class="lead">We are asking for it explicitly: every change to the next version will come from what users report. Two minutes of your time decides what gets fixed.</p>
+
+  <div class="callout">
+    <p><strong>Use the link at the end of your report.</strong> It records which skill version you ran.</p>
+    <p>Lost it? Use this one:</p>
+    <div class="btn-row">
+      <a class="cta" data-stamp="feedback" href="https://cornell.yul1.qualtrics.com/jfe/form/SV_3UW3jQbuNPpLtSC?skill_version=0.1.0">Open the feedback survey →</a>
+    </div>
+  </div>
+
+  <h3>What we most want to know</h3>
+  <ol>
+    <li>Did the report flag something that is <strong>not</strong> a real problem? Which, and why?</li>
+    <li>Did it <strong>miss</strong> a problem you know about?</li>
+    <li>Did the edited copy contain <strong>invented facts</strong>: versions, URLs, data sources, runtimes?</li>
+    <li>Which AI tool and model did you use, and how (chat, coding agent, API)?</li>
+  </ol>
+
+  <h3>Rules for answering</h3>
+  <ul>
+    <li><strong>Answer yourself.</strong> Do not let an AI assistant fill in the survey.</li>
+    <li><strong>An assistant may help with one question.</strong> If a review went wrong, ask your assistant why, and to propose concrete changes to the skill files. Read its answer, then paste it as plain text into the "Proposed changes" question and say who wrote it.</li>
+    <li><strong>Leave out</strong> confidential data, unpublished results, and names.</li>
+  </ul>
+
+  <h3>What happens next</h3>
+  <ol>
+    <li>Your response becomes a pull request in a private repository, within a day.</li>
+    <li>A maintainer reads it, and includes or rejects it.</li>
+    <li>Included responses shape the next skill version. The <a href="https://github.com/social-science-data-editors/readme-bot/blob/main/CHANGELOG.md">changelog</a> cites them by ID.</li>
+  </ol>
+
+  <h3>Other ways to reach us</h3>
+  <ul>
+    <li>Bug in the skill or this page: <a href="https://github.com/social-science-data-editors/readme-bot/issues">open an issue</a>.</li>
+    <li>Disagree with the Template itself: <a href="https://github.com/social-science-data-editors/template_README/issues">template_README issues</a>.</li>
+  </ul>
+
+  <div class="pager"><button data-go="expect">← What to expect</button><span class="spacer"></span></div>
+</section>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p>readme-bot · <a href="https://github.com/social-science-data-editors/readme-bot">GitHub</a> · MIT license · Based on the <a href="https://social-science-data-editors.github.io/template_README/">Template README</a> v1.2.</p>
+    <p><span class="badge">Claude-generated</span> page and infographic.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  var ids = tabs.map(function (t) { return t.getAttribute('aria-controls'); });
+
+  function show(id, focus, push) {
+    if (ids.indexOf(id) < 0) id = ids[0];
+    var idx = ids.indexOf(id);
+    tabs.forEach(function (t, i) {
+      var on = i === idx;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      t.classList.toggle('done', i < idx);
+      document.getElementById(ids[i]).hidden = !on;
+    });
+    if (focus) tabs[idx].focus();
+    if (push && location.hash !== '#' + id) history.pushState(null, '', '#' + id);
+    var list = tabs[idx].parentNode, t = tabs[idx];
+    if (t.offsetLeft < list.scrollLeft || t.offsetLeft + t.offsetWidth > list.scrollLeft + list.clientWidth) list.scrollLeft = t.offsetLeft - 8;
+  }
+
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { show(ids[i], false, true); });
+    t.addEventListener('keydown', function (e) {
+      var j = null;
+      if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft') j = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') j = 0;
+      else if (e.key === 'End') j = tabs.length - 1;
+      if (j !== null) { e.preventDefault(); show(ids[j], true, true); }
+    });
+  });
+
+  document.querySelectorAll('[data-go]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      show(b.getAttribute('data-go'), false, true);
+      window.scrollTo({ top: 0 });
+    });
+  });
+
+  window.addEventListener('popstate', function () { show(location.hash.slice(1), false, false); });
+  show(location.hash.slice(1), false, false);
+  if (location.hash) window.addEventListener('load', function () { window.scrollTo(0, 0); });
+})();
+</script>
+</body>
+</html>
