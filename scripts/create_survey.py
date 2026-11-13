@@ -16,6 +16,7 @@ Usage:
   create_survey.py --placeholder-map  write qualtrics-map.json with simulated IDs
   create_survey.py --markdown         regenerate feedback/questions.md (whole file)
   create_survey.py                    create the survey (live)
+  create_survey.py --survey-id SV_x   fill an existing blank survey (live; add --dry-run to check)
 Standard library only.
 """
 
@@ -32,6 +33,7 @@ SPEC = ROOT / "feedback" / "survey-spec.json"
 MAP = ROOT / "feedback" / "qualtrics-map.json"
 QUESTIONS_MD = ROOT / "feedback" / "questions.md"
 FEEDBACK_URL = ROOT / "skills" / "readme-review" / "FEEDBACK_URL"
+PLACEHOLDER = "Click to write the question text"
 
 
 # ---------- API ----------
@@ -42,6 +44,8 @@ class Api:
         self.n = 0
         if not dry:
             self.base = os.environ["QUALTRICS_BASE_URL"].rstrip("/")
+            if not self.base.startswith("http"):
+                self.base = "https://" + self.base
             self.token = os.environ.get("QUALTRICS_API_TOKEN") or os.environ["QUALTRICS_API_KEY"]
 
     def __call__(self, method, path, body=None, fake=None):
@@ -73,7 +77,7 @@ def validation(q):
     s = {"ForceResponse": "ON" if q.get("required") else "OFF",
          "ForceResponseType": "ON" if q.get("required") else "OFF", "Type": "None"}
     if q.get("validate") == "email":
-        s.update(Type="ContentType", ContentType="ValidEmailAddress")
+        s.update(Type="ContentType", ContentType="ValidEmail")
     return {"Settings": s}
 
 
@@ -137,11 +141,37 @@ def check(spec):
             seen[q["id"]] = i
 
 
-def create(spec, api):
-    sid = api("POST", "/survey-definitions",
-              {"SurveyName": spec["name"], "Language": "EN", "ProjectCategory": "CORE"},
-              fake={"SurveyID": "SV_DRYRUN", "DefaultBlockID": "BL_1"})
-    survey, default_block = sid["SurveyID"], sid["DefaultBlockID"]
+def use_existing(survey, api, reset=False):
+    """Return the default block of an existing, empty survey.
+    reset=True first deletes all questions and non-default blocks (e.g. after a failed run)."""
+    d = api("GET", f"/survey-definitions/{survey}",
+            fake={"Questions": {}, "Blocks": {"BL_1": {"Type": "Default", "BlockElements": []}}})
+    questions = d.get("Questions", {})
+    real = [q for q, v in questions.items() if v.get("QuestionText") != PLACEHOLDER]
+    if real and not reset:
+        sys.exit(f"{survey} already has {len(real)} question(s): {', '.join(real)}; "
+                 "use a blank survey (or delete its questions) to avoid duplicates.")
+    for q in questions:  # stock placeholder, or everything with reset
+        api("DELETE", f"/survey-definitions/{survey}/questions/{q}")
+    blocks = d.get("Blocks", {})
+    if reset:
+        for b, v in blocks.items():
+            if v.get("Type") == "Standard":
+                api("DELETE", f"/survey-definitions/{survey}/blocks/{b}")
+    default = [b for b, v in blocks.items() if v.get("Type") == "Default"]
+    if not default:
+        sys.exit(f"{survey}: no default block found")
+    return default[0]
+
+
+def create(spec, api, survey=None, reset=False):
+    if survey:
+        default_block = use_existing(survey, api, reset)
+    else:
+        sid = api("POST", "/survey-definitions",
+                  {"SurveyName": spec["name"], "Language": "EN", "ProjectCategory": "CORE"},
+                  fake={"SurveyID": "SV_DRYRUN", "DefaultBlockID": "BL_1"})
+        survey, default_block = sid["SurveyID"], sid["DefaultBlockID"]
     blocks = [default_block]
     for i in range(1, len(spec["pages"])):
         b = api("POST", f"/survey-definitions/{survey}/blocks",
@@ -188,7 +218,9 @@ def write_map(spec, survey, qids):
                      "The email question is deliberately not mapped.",
          "survey_id": survey,
          "consent_yes": spec["consent_yes"],
-         "fields": {"skill_version": "skill_version"}}
+         "fields": {"skill_version": "skill_version",
+                    # Survey options -> Security: bot detection + include security fields
+                    "bot_score": "Q_RecaptchaScore"}}
     for q in all_questions(spec):
         if q.get("field"):
             m["fields"][q["field"]] = export_key(q, qids[q["id"]])
@@ -252,6 +284,9 @@ def main():
     g.add_argument("--dry-run", action="store_true")
     g.add_argument("--placeholder-map", action="store_true")
     g.add_argument("--markdown", action="store_true")
+    ap.add_argument("--survey-id", help="fill this existing, blank survey instead of creating one")
+    ap.add_argument("--reset", action="store_true",
+                    help="with --survey-id: first delete ALL its questions and extra blocks")
     a = ap.parse_args()
     spec = json.loads(SPEC.read_text())
     check(spec)
@@ -259,7 +294,9 @@ def main():
         return markdown(spec)
 
     api = Api(dry=a.dry_run or a.placeholder_map, quiet=a.placeholder_map)
-    survey, qids = create(spec, api)
+    if a.reset and not a.survey_id:
+        sys.exit("--reset needs --survey-id")
+    survey, qids = create(spec, api, a.survey_id, a.reset)
     if a.dry_run:
         print(json.dumps({"survey_id": survey, "qids": qids}, indent=1))
         return

@@ -20,7 +20,8 @@ Field mapping: feedback/qualtrics-map.json in readme-bot (override with --map)
 
 All free text is untrusted (the "proposed changes" field may be pasted from an
 AI assistant). vet() strips invisible characters and flags text that looks like
-instructions to an AI, code, links, or markup; flagged PRs get FLAG_LABEL.
+instructions to an AI, code, links, or markup; responses with a low bot score
+(Q_RecaptchaScore) are flagged too. Flagged PRs get FLAG_LABEL.
 Text is stored inside code fences so it renders inert.
 Standard library only.
 """
@@ -45,6 +46,7 @@ FLAG_LABEL = "feedback:security-flag"
 EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
 MAX_TEXT = 2000
 MAX_PROPOSAL = 10000
+BOT_THRESHOLD = 0.5  # reCAPTCHA v3 score below this: likely a bot (Qualtrics' own cut-off)
 TEXT_FIELDS = [("false_findings_text", "Findings that were wrong"),
                ("missed_issues_text", "Problems that were missed"),
                ("invented_facts_text", "Invented facts in the edited copy"),
@@ -76,6 +78,8 @@ CHECKS = [
 
 def api(method, path, body=None, raw=False):
     base = os.environ["QUALTRICS_BASE_URL"].rstrip("/")
+    if not base.startswith("http"):
+        base = "https://" + base
     req = urllib.request.Request(
         f"{base}/API/v3{path}",
         method=method,
@@ -146,7 +150,15 @@ def to_record(resp, m):
     rec["recorded"] = field(resp, "recordedDate")[:10]
     rec["finished"] = field(resp, "finished") in ("1", "True", "true")
     rec["flags"] = {k: f for k, _ in TEXT_FIELDS if (f := vet(rec.get(k, "")))}
+    try:
+        rec["likely_bot"] = float(rec.get("bot_score", "")) < BOT_THRESHOLD
+    except ValueError:
+        rec["likely_bot"] = False  # no score (bot detection off, or field not exported)
     return rec
+
+
+def flagged(rec):
+    return bool(rec["flags"]) or rec["likely_bot"]
 
 
 def eligible(rec):
@@ -159,10 +171,11 @@ def render(rec, m):
     lines = ["---"]
     for k in ["response_id", "recorded", "skill_version", "role", "tool", "mode",
               "usefulness", "false_findings", "missed_issues", "invented_facts",
-              "length", "proposal_author"]:
+              "length", "proposal_author", "bot_score"]:
         lines.append(f"{k}: {json.dumps(rec.get(k, ''))}")
     lines.append(f"public_quote_ok: {json.dumps(rec['public_quote'])}")
-    lines.append(f"security_flags: {json.dumps(sorted({f for v in rec['flags'].values() for f in v}))}")
+    sec = {f for v in rec["flags"].values() for f in v} | ({"likely bot"} if rec["likely_bot"] else set())
+    lines.append(f"security_flags: {json.dumps(sorted(sec))}")
     lines += ["status: included", "---", ""]
     for k, title in TEXT_FIELDS:
         t = clean(rec.get(k, ""), MAX_PROPOSAL if k == "proposal" else MAX_TEXT)
@@ -178,6 +191,8 @@ def pr_body(rec):
     flags = []
     if rec.get("invented_facts", "").lower().startswith("yes"):
         flags.append("**Reports invented facts in edited copy: prioritize.**")
+    if rec["likely_bot"]:
+        flags.append(f"**Likely bot**: reCAPTCHA score {rec['bot_score']} (below {BOT_THRESHOLD}). Close unless the text is clearly human.")
     for k, f in rec["flags"].items():
         title = dict(TEXT_FIELDS)[k].split(" (")[0]
         flags.append(f"**Security flag** ({title}): {', '.join(f)}.")
@@ -222,7 +237,7 @@ def open_pr(rec, path, content, base):
     run("git", "add", str(path))
     run("git", "commit", "-q", "-m", f"Add feedback response {rec['response_id']}")
     run("git", "push", "-q", "-f", "origin", branch)
-    labels = [LABEL] + ([FLAG_LABEL] if rec["flags"] else [])
+    labels = [LABEL] + ([FLAG_LABEL] if flagged(rec) else [])
     run("gh", "pr", "create", "--base", base, "--head", branch, "--label", ",".join(labels),
         "--title", f"Feedback: {rec['recorded']} v{rec.get('skill_version') or '?'} "
                    f"({rec.get('usefulness') or '?'}/5)",
@@ -276,7 +291,7 @@ def main():
         if path.exists():
             counts["exists"] += 1
             continue
-        counts["flagged"] += bool(rec["flags"])
+        counts["flagged"] += flagged(rec)
         if a.dry_run:
             print(f"--- would open PR for {path.relative_to(ROOT)}\n{content}\n{pr_body(rec)}\n")
             counts["opened"] += 1
