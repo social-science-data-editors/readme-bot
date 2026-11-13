@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Pull Qualtrics survey responses and open one pull request per new response.
 
-Each PR adds feedback/responses/<date>-<responseId>.md. A maintainer includes the
-response by approving the PR (see .github/workflows/feedback-merge.yml); rejecting
-means closing it.
+Runs inside a checkout of the PRIVATE feedback repository
+(social-science-data-editors/readme-bot-feedback); see feedback/FEEDBACK_PLAN.md.
+Each PR adds responses/<date>-<responseId>.md to that repository. A maintainer
+includes the response by approving the PR (the feedback repo's merge workflow
+merges it); rejecting means closing it.
 
 Environment (from GitHub secrets/variables):
   QUALTRICS_BASE_URL   e.g. https://cornell.ca1.qualtrics.com
@@ -12,10 +14,9 @@ Environment (from GitHub secrets/variables):
   GH_TOKEN             token gh can use to push branches and open PRs
 
 Usage:
-  scripts/qualtrics_to_prs.py                      fetch from Qualtrics, open PRs
-  scripts/qualtrics_to_prs.py --from-file x.json   use a saved JSON export
-  scripts/qualtrics_to_prs.py --dry-run            print what would be created
-Field mapping: feedback/qualtrics-map.json
+  qualtrics_to_prs.py --repo-dir <feedback checkout>     fetch, open PRs
+  qualtrics_to_prs.py --from-file x.json --dry-run       test on a saved export
+Field mapping: feedback/qualtrics-map.json in readme-bot (override with --map)
 Standard library only.
 """
 
@@ -31,9 +32,9 @@ import urllib.request
 import zipfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-MAP_FILE = ROOT / "feedback" / "qualtrics-map.json"
-OUT_DIR = ROOT / "feedback" / "responses"
+TOOL_ROOT = Path(__file__).resolve().parent.parent
+MAP_FILE = TOOL_ROOT / "feedback" / "qualtrics-map.json"
+ROOT = Path.cwd()  # target repo; set from --repo-dir
 LABEL = "feedback:response"
 EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
 MAX_TEXT = 2000
@@ -100,11 +101,9 @@ def to_record(resp, m):
     return rec
 
 
-def eligible(rec, m):
+def eligible(rec):
     if not rec["finished"] or not rec["response_id"]:
         return False, "unfinished"
-    if rec.get("consent", "") != m["consent_yes"]:
-        return False, "no consent to publish"
     return True, ""
 
 
@@ -114,6 +113,7 @@ def render(rec, m):
               "usefulness", "false_findings", "missed_issues", "invented_facts",
               "length"]:
         lines.append(f"{k}: {json.dumps(rec.get(k, ''))}")
+    lines.append(f"public_quote_ok: {json.dumps(rec['public_quote'])}")
     lines += ["status: included", "---", ""]
     for k, title in [("false_findings_text", "Findings that were wrong"),
                      ("missed_issues_text", "Problems that were missed"),
@@ -136,6 +136,7 @@ def pr_body(rec):
         "",
         "Review before deciding:",
         "- [ ] No confidential data, names, or unpublished results in the text.",
+        f"- Public quoting allowed by respondent: **{'yes' if rec.get('public_quote') else 'no'}**.",
         "- [ ] Feedback is about the skill (Template issues go to template_README).",
         "",
         "**Approve** to include this response (auto-merges). **Close** to reject.",
@@ -180,20 +181,27 @@ def main():
     ap.add_argument("--from-file")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--base", default=os.environ.get("BASE_BRANCH", "main"))
+    ap.add_argument("--repo-dir", default=".", help="checkout of the feedback repo")
+    ap.add_argument("--out-subdir", default="responses")
+    ap.add_argument("--map", default=str(MAP_FILE))
     a = ap.parse_args()
 
-    m = json.loads(MAP_FILE.read_text())
+    global ROOT
+    ROOT = Path(a.repo_dir).resolve()
+    out_dir = ROOT / a.out_subdir
+    m = json.loads(Path(a.map).read_text())
     data = json.loads(Path(a.from_file).read_text()) if a.from_file else export_responses()
 
     counts = {"opened": 0, "exists": 0, "skipped": 0}
     for resp in data.get("responses", []):
         rec = to_record(resp, m)
-        ok, why = eligible(rec, m)
+        rec["public_quote"] = rec.get("consent", "") == m["consent_yes"]
+        ok, why = eligible(rec)
         if not ok:
             counts["skipped"] += 1
             print(f"skip {rec['response_id'] or '?'}: {why}")
             continue
-        path = OUT_DIR / f"{rec['recorded']}-{rec['response_id']}.md"
+        path = out_dir / f"{rec['recorded']}-{rec['response_id']}.md"
         content = render(rec, m)
         if path.exists():
             counts["exists"] += 1

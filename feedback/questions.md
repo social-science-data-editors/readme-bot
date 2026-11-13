@@ -4,7 +4,7 @@ Keep the survey under 2 minutes. IDs Q1–Q11 are labels for this document; map 
 
 Opening text:
 
-> Thanks for testing the README review skill. If you agree (last question), your answers will be published in a public GitHub pull request on social-science-data-editors/readme-bot, where a maintainer decides whether to include them. Do not include confidential data, unpublished results, names, or README text.
+> Thanks for testing the README review skill. Your answers (without your email) are shared with the skill's maintainers in a private repository, where a maintainer decides whether to use them. Please do not include confidential data, unpublished results, or names.
 
 Embedded data: `skill_version`, filled from the link.
 
@@ -19,9 +19,9 @@ Embedded data: `skill_version`, filled from the link.
 | Q7 | Did the edited copy contain invented facts (versions, URLs, data sources, runtimes)? | Yes / no / did not check, with text entry on "yes" | Shown if Q3 = edited copy |
 | Q8 | Was the report the right length? | Too short / about right / too long | No |
 | Q9 | Any other suggestion? | Long text | No |
-| Q10 | May we publish your answers (without your email) in a public GitHub pull request? | Yes / No | Yes |
+| Q10 | May we quote your answers, anonymized, in public (e.g. in a change to the skill)? | Yes / No | Yes |
 | Q11 | Email, if you want a reply (never published) | Short text, email validation | No |
 
 - Q7 "yes" is flagged as priority in the PR.
-- Q10 "No": the response stays in Qualtrics; it is never turned into a PR.
+- Q10 is recorded as `public_quote_ok`. "No" still yields a (private) PR; the response is then used only in aggregate or in the maintainer's own words.
 - Q11 is not mapped in `qualtrics-map.json`, so it never leaves Qualtrics.

@@ -1,5 +1,5 @@
 {
-  "_comment": "Map record fields to Qualtrics export keys. Replace QIDs with those of the live survey (Survey > Tools > Auto-number questions, or inspect one JSON export). skill_version is the embedded-data field.",
+  "_comment": "Map record fields to Qualtrics export keys. Replace QIDs with those of the live survey (Survey > Tools > Auto-number questions, or inspect one JSON export). skill_version is the embedded-data field. consent (Q10) only sets public_quote_ok. The email question is deliberately not mapped.",
   "consent_yes": "Yes",
   "fields": {
     "skill_version": "skill_version",

@@ -4,4 +4,4 @@
 
 - First version of the `readme-review` skill: structure, content, and style checks against Template README v1.2; optional `README-ai-edited` copy when the package is available.
 - Generated single-file prompt.
-- Feedback pipeline: Qualtrics survey → daily workflow opens one PR per consenting response → maintainer approval merges it.
+- Feedback pipeline: Qualtrics survey → daily workflow in the private `readme-bot-feedback` repo opens one PR per response → maintainer approval merges it.
