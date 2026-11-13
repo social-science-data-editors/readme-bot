@@ -1,0 +1,20 @@
+{
+  "_comment": "Map record fields to Qualtrics export keys. Replace QIDs with those of the live survey (Survey > Tools > Auto-number questions, or inspect one JSON export). skill_version is the embedded-data field.",
+  "consent_yes": "Yes",
+  "fields": {
+    "skill_version": "skill_version",
+    "role": "QID1",
+    "tool": "QID2",
+    "mode": "QID3",
+    "usefulness": "QID4",
+    "false_findings": "QID5",
+    "false_findings_text": "QID5_TEXT",
+    "missed_issues": "QID6",
+    "missed_issues_text": "QID6_TEXT",
+    "invented_facts": "QID7",
+    "invented_facts_text": "QID7_TEXT",
+    "length": "QID8",
+    "suggestion": "QID9_TEXT",
+    "consent": "QID10"
+  }
+}

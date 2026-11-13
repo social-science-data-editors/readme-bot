@@ -1,118 +1,70 @@
 # Feedback plan
 
-How users report on the README review skill, how a person vets each response, and how vetted feedback becomes a change via pull request.
-
-## Principles
-
-- No response changes the skill without a person reading it, deciding, and writing the issue.
-- Raw responses stay in the survey platform. The public repo gets only anonymized, vetted summaries.
-- Every response is tied to a skill version, so feedback can be matched to the prompt that produced it.
+Users rate the README review skill in a Qualtrics survey. A scheduled GitHub Action pulls new responses and opens **one pull request per response**. A maintainer includes a response by **approving** its PR (it then merges automatically) or rejects it by **closing** the PR. Skill changes based on included responses arrive in separate PRs.
 
 ## Flow
 
-1. User runs the skill. The report ends with a feedback link carrying the skill version.
-2. User fills in the survey ([questions](questions.md)).
-3. Response lands in a private sheet or Qualtrics project with status `new`.
-4. Vetter triages on a fixed schedule (suggested: every two weeks).
-5. Accepted feedback → GitHub issue using the **Vetted feedback** template, anonymized.
-6. Maintainer (or contributor) opens a PR that fixes the issue, bumps `VERSION`, rebuilds, and updates `CHANGELOG.md`.
-7. Vetter records the issue/PR link against the response and, if the respondent left an email, replies.
+1. User runs the skill. The report ends with the survey link, carrying the skill version.
+2. User answers the survey ([questions](questions.md)), including consent to publish (Q10).
+3. Daily, `feedback-pull.yml` runs `scripts/qualtrics_to_prs.py`:
+   - exports all responses through the Qualtrics API;
+   - skips unfinished responses and responses without consent;
+   - skips responses that already have a PR (open, merged, or closed);
+   - drops the email question, replaces any email address in free text with `[email removed]`, truncates long text;
+   - opens a PR adding `feedback/responses/<date>-<responseId>.md`, labeled `feedback:response`. Responses reporting invented facts are flagged in the PR body.
+4. Maintainer reviews the PR:
+   - **include**: approve. `feedback-merge.yml` checks that the approver has write access and that the PR only touches `feedback/responses/`, then squash-merges and deletes the branch;
+   - **redact, then include**: edit the file on the branch, then approve;
+   - **reject**: close. The branch is deleted.
+5. Periodically (suggested: each release), a maintainer reads `feedback/responses/` and opens a PR changing the skill, citing the response files. That PR follows the normal process (below).
 
-## Option A: Google Forms
+## Privacy
 
-### Deploy
+This repository is public. **Everything in a feedback PR, including closed (rejected) PRs, stays publicly visible.** Therefore:
 
-1. Create the form from a shared/team Google account, not a personal one. Add at least two maintainers as editors.
-2. Add the questions from [questions.md](questions.md). Mark Q0 as short answer; add a description "Filled in automatically".
-3. Settings:
-   - Responses → "Collect email addresses": **off** (Q11 is optional instead).
-   - "Limit to 1 response": off (no sign-in required).
-4. Responses → "Link to Sheets" → create a new sheet. Restrict sharing to maintainers.
-5. In the sheet, add vetting columns to the right of the form columns: `status` (new / accepted / rejected / duplicate / needs-info), `vetter`, `vetted_on`, `summary` (anonymized paraphrase), `issue_url`. Add data validation on `status`.
-6. Get the prefilled link: ⋮ menu → "Get pre-filled link" → type `VERSION` in Q0 → "Get link". The link looks like `https://docs.google.com/forms/d/e/<id>/viewform?usp=pp_url&entry.<n>=VERSION`.
-7. Replace the trailing `VERSION` with `{VERSION}` and put the link into `skills/readme-review/FEEDBACK_URL` via PR (see "Wire the link" below).
-8. Optional: Tools → Notification rules on the sheet → email maintainers on new responses.
+- The survey says so up front, and only responses with Q10 = "Yes" are turned into PRs.
+- Responses without consent stay in Qualtrics only; count them in aggregate.
+- The automatic email scrub is a safety net, not a guarantee. If a response contains confidential details, close the PR and ask a GitHub admin to delete it via GitHub Support if needed.
+- If this exposure is not acceptable, point the workflow at a private repository (e.g. `readme-bot-feedback`) instead; nothing else changes.
 
-### Notes
+## Deploy (Qualtrics)
 
-- Free, fast to set up, easy to share.
-- Q0 cannot be truly hidden; the description tells users not to change it.
-- Check whether your institution allows research-adjacent data in Google Workspace.
+1. **Survey.** In the institutional Qualtrics account, create the survey from [questions.md](questions.md).
+   - Survey flow → Embedded Data at the top: field `skill_version` (filled from the URL parameter of the same name).
+   - Survey options → Security → Anonymize responses: on.
+   - Q7 display logic: show if Q3 = review + edited copy.
+   - Share the project with co-maintainers (Collaborate).
+2. **Link.** Distributions → Anonymous link. Write `https://<org>.qualtrics.com/jfe/form/SV_<id>?skill_version={VERSION}` into `skills/readme-review/FEEDBACK_URL`.
+3. **Field map.** Export one test response as JSON (or use Tools → Auto-number questions) and put the actual question IDs into `feedback/qualtrics-map.json`. Set `consent_yes` to the exact label of the "Yes" choice of Q10. Check with:
+   `scripts/qualtrics_to_prs.py --from-file <export.json> --dry-run`
+4. **API token.** Account settings → Qualtrics IDs → generate token. Use an account that owns or shares the survey. (API access must be enabled for the account; ask the Qualtrics brand admin if the button is missing.)
+5. **GitHub settings** (repository → Settings):
+   - Secrets and variables → Actions → **secret** `QUALTRICS_API_TOKEN`; **variables** `QUALTRICS_BASE_URL` (e.g. `https://cornell.ca1.qualtrics.com`, the data-center URL shown in Qualtrics IDs) and `QUALTRICS_SURVEY_ID`.
+   - Actions → General → Workflow permissions: "Read and write", and tick "Allow GitHub Actions to create and approve pull requests".
+6. **Test.** Actions → "Pull feedback from Qualtrics" → Run workflow. Submit a test response first; approve its PR; check it merged; delete the file afterwards.
 
-## Option B: Qualtrics
+The pull workflow does nothing until `QUALTRICS_BASE_URL` is set, so merging this before setup is safe.
 
-### Deploy
+## Notes on the automation
 
-1. Create a survey in the institutional Qualtrics account. Share the project with maintainers (Collaborate → edit + view results).
-2. Survey flow → add **Embedded Data** at the top: field `skill_version`. Qualtrics fills it from the URL parameter of the same name. This replaces Q0; it is truly hidden.
-3. Add Q1–Q11 from [questions.md](questions.md). Use display logic for Q7 (show if Q3 = edited copy).
-4. Survey options → Security → **Anonymize responses**: on (strips IP and location). Q11 remains if the user chooses to give it.
-5. Data & Analysis → add embedded-data fields for vetting: `status`, `vetter`, `vetted_on`, `summary`, `issue_url`. Vetters edit these in Data & Analysis (Edit Response) or keep them in an exported vetting sheet.
-6. Distributions → Anonymous link. The feedback URL is `https://<org>.qualtrics.com/jfe/form/SV_<id>?skill_version={VERSION}`.
-7. Put that into `skills/readme-review/FEEDBACK_URL` via PR.
-8. Optional: Actions → email task to maintainers on each new response.
+- PRs opened by the workflow token do not trigger other workflows (GitHub rule). `build.yml` therefore does not run on feedback PRs; it does not need to.
+- Approval by someone without write access is ignored (the merge job fails and says why).
+- If you want branch protection that requires an approval on `main`, the same approval satisfies it.
+- A response is only ever processed once: the dedup key is the PR branch `feedback/response-<responseId>`.
 
-### Notes
+## Changing the skill (all PRs that are not feedback PRs)
 
-- Usually covered by an institutional license and data agreement; better if feedback may ever be used in research (check IRB rules before publishing any analysis of responses).
-- Hidden version field, display logic, and anonymization are built in.
-- Slightly more setup; sharing with external co-maintainers may need guest accounts.
+1. Branch from `main`. Edit `skills/readme-review/` (and docs).
+2. Bump `skills/readme-review/VERSION`: patch = wording/style rules; minor = new or changed checks; major = changed report format or output file names.
+3. Run `scripts/build.sh`; commit the regenerated `prompts/readme-review-prompt.md` (CI fails if stale).
+4. Add a `CHANGELOG.md` entry citing the response files or issues that motivated it.
+5. Merge after review; tag `v<VERSION>`. The release gets `readme-review.zip`.
 
-## Recommendation
-
-- Use **Qualtrics** if an institutional license is available: responses may contain fragments of unpublished replication packages, and the institutional data agreement plus built-in anonymization is the safer home.
-- Use **Google Forms** for a quick pilot or if co-maintainers outside the institution need direct access.
-- The rest of the plan (vetting, issues, PRs) is identical.
-
-## Vetting
-
-Done by a maintainer, on a schedule. For each `new` response:
-
-1. **Safety first.** If Q7 = yes (invented facts in the edited copy), handle it now, not on schedule.
-2. **Screen.** Reject spam, off-topic, or unusable responses (`rejected`, note why).
-3. **Scrub.** If the response contains confidential details, names, or README text: do not copy them anywhere. Write the `summary` in your own words.
-4. **Classify.**
-   - Skill problem (false positive, missed issue, invented content, wrong tone, too long) → `accepted`.
-   - Disagreement with the Template itself → `accepted`, but the issue goes to `social-science-data-editors/template_README`, not here.
-   - Already reported → `duplicate`, link the existing issue.
-   - Cannot tell what went wrong → `needs-info` (reply if an email was given; otherwise `rejected` after one cycle).
-5. **Respect consent.** If Q10 = no, do not quote or paraphrase the response in an issue. Count it only in aggregate.
-6. **File.** For `accepted`: open an issue with the **Vetted feedback** template. Paste the `summary`, not the raw text. Record `issue_url`, `vetter`, `vetted_on`.
-
-Retention: delete raw responses 12 months after they are vetted; the sheet row (status, summary, issue link) may stay.
-
-## Integration via pull request
-
-1. Branch from the default branch. Edit only `skills/readme-review/` (and docs).
-2. Bump `skills/readme-review/VERSION` (semantic versioning):
-   - patch: wording, examples, style rules;
-   - minor: new or changed checks;
-   - major: changed report format or output file names.
-3. Run `scripts/build.sh` to regenerate `prompts/readme-review-prompt.md`. CI fails if it is stale.
-4. Add a `CHANGELOG.md` entry that cites the issue.
-5. Open the PR. Write `Closes #<issue>` in the body. The PR template asks the author to confirm the issue was vetted.
-6. Merge after review by a maintainer other than the PR author when possible.
-7. After merge: tag `v<VERSION>`; the release workflow attaches `readme-review.zip`.
-
-### Wire the link
-
-Once the survey exists, one small PR:
-
-- Put the URL (with `{VERSION}`) in `skills/readme-review/FEEDBACK_URL`.
-- Bump the patch version and run `scripts/build.sh`.
-
-### Optional automation (not required)
-
-Automation may help with bookkeeping but never replaces the vetter's decision.
-
-- Google Forms: an Apps Script on the sheet can open a GitHub issue when a vetter sets `status` = `accepted`, using only the `summary` column. Store a fine-grained token (Issues: write, this repo only) in Script Properties, never in the script.
-- Qualtrics: a Workflow with a Web Service task can do the same, triggered on the `status` field.
-- Either way, issues created this way are labeled `feedback:vetted` and contain only the vetter's summary.
+Template disagreements (as opposed to skill problems) go to `social-science-data-editors/template_README` as issues.
 
 ## Measures
 
-Review per skill version, every release:
+Per skill version, from `feedback/responses/` (included) and Qualtrics (all):
 
-- number of responses;
-- mean usefulness (Q4);
+- number of responses; mean usefulness (Q4);
 - share reporting false findings (Q5), missed issues (Q6), invented facts (Q7). Target for Q7: zero.
