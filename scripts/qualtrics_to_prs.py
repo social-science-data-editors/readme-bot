@@ -34,6 +34,7 @@ import re
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.request
 import zipfile
 from pathlib import Path
@@ -46,6 +47,8 @@ FLAG_LABEL = "feedback:security-flag"
 EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
 MAX_TEXT = 2000
 MAX_PROPOSAL = 10000
+MAX_SHORT = 100
+SHORT_TEXT = ["tool_other", "model"]  # free text kept in the front matter
 BOT_THRESHOLD = 0.5  # reCAPTCHA v3 score below this: likely a bot (Qualtrics' own cut-off)
 TEXT_FIELDS = [("false_findings_text", "Findings that were wrong"),
                ("missed_issues_text", "Problems that were missed"),
@@ -87,14 +90,17 @@ def api(method, path, body=None, raw=False):
         headers={"X-API-TOKEN": os.environ["QUALTRICS_API_TOKEN"],
                  "Content-Type": "application/json"},
     )
-    with urllib.request.urlopen(req, timeout=60) as r:
-        data = r.read()
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            data = r.read()
+    except urllib.error.HTTPError as e:
+        sys.exit(f"{method} {path} failed: {e.code} {e.read().decode(errors='replace')}")
     return data if raw else json.loads(data)
 
 
 def export_responses(sid):
     start = api("POST", f"/surveys/{sid}/export-responses",
-                {"format": "json", "compress": True, "useLabels": True})
+                {"format": "json", "compress": True})
     pid = start["result"]["progressId"]
     for _ in range(60):
         res = api("GET", f"/surveys/{sid}/export-responses/{pid}")["result"]
@@ -149,7 +155,10 @@ def to_record(resp, m):
     rec["response_id"] = resp.get("responseId", "")
     rec["recorded"] = field(resp, "recordedDate")[:10]
     rec["finished"] = field(resp, "finished") in ("1", "True", "true")
-    rec["flags"] = {k: f for k, _ in TEXT_FIELDS if (f := vet(rec.get(k, "")))}
+    rec["preview"] = (resp.get("values", {}).get("distributionChannel") == "preview"
+                      or resp.get("labels", {}).get("status") == "Survey Preview")
+    rec["flags"] = {k: f for k in [k for k, _ in TEXT_FIELDS] + SHORT_TEXT
+                    if (f := vet(rec.get(k, "")))}
     try:
         rec["likely_bot"] = float(rec.get("bot_score", "")) < BOT_THRESHOLD
     except ValueError:
@@ -161,18 +170,22 @@ def flagged(rec):
     return bool(rec["flags"]) or rec["likely_bot"]
 
 
-def eligible(rec):
+def eligible(rec, include_previews=False):
     if not rec["finished"] or not rec["response_id"]:
         return False, "unfinished"
+    if rec["preview"] and not include_previews:
+        return False, "survey preview (use --include-previews to test)"
     return True, ""
 
 
 def render(rec, m):
     lines = ["---"]
-    for k in ["response_id", "recorded", "skill_version", "role", "tool", "mode",
+    for k in ["response_id", "recorded", "skill_version", "role", "tool", "tool_other",
+              "interface", "instructions", "model", "mode",
               "usefulness", "false_findings", "missed_issues", "invented_facts",
-              "length", "proposal_author", "bot_score"]:
-        lines.append(f"{k}: {json.dumps(rec.get(k, ''))}")
+              "length", "proposal_author", "bot_score", "bot_status"]:
+        v = rec.get(k, "")
+        lines.append(f"{k}: {json.dumps(clean(v, MAX_SHORT) if k in SHORT_TEXT else v)}")
     lines.append(f"public_quote_ok: {json.dumps(rec['public_quote'])}")
     sec = {f for v in rec["flags"].values() for f in v} | ({"likely bot"} if rec["likely_bot"] else set())
     lines.append(f"security_flags: {json.dumps(sorted(sec))}")
@@ -194,7 +207,7 @@ def pr_body(rec):
     if rec["likely_bot"]:
         flags.append(f"**Likely bot**: reCAPTCHA score {rec['bot_score']} (below {BOT_THRESHOLD}). Close unless the text is clearly human.")
     for k, f in rec["flags"].items():
-        title = dict(TEXT_FIELDS)[k].split(" (")[0]
+        title = dict(TEXT_FIELDS).get(k, k).split(" (")[0]
         flags.append(f"**Security flag** ({title}): {', '.join(f)}.")
     if rec.get("proposal"):
         flags.append(f"Contains proposed skill changes (written by: {rec.get('proposal_author') or 'not stated'}).")
@@ -263,6 +276,8 @@ def main():
     ap.add_argument("--repo-dir", default=".", help="checkout of the feedback repo")
     ap.add_argument("--out-subdir", default="responses")
     ap.add_argument("--map", default=str(MAP_FILE))
+    ap.add_argument("--include-previews", action="store_true",
+                    help="also process Qualtrics survey-preview responses (testing)")
     a = ap.parse_args()
 
     global ROOT
@@ -281,7 +296,7 @@ def main():
     for resp in data.get("responses", []):
         rec = to_record(resp, m)
         rec["public_quote"] = rec.get("consent", "") == m["consent_yes"]
-        ok, why = eligible(rec)
+        ok, why = eligible(rec, a.include_previews)
         if not ok:
             counts["skipped"] += 1
             print(f"skip {rec['response_id'] or '?'}: {why}")

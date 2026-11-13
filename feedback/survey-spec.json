@@ -9,6 +9,7 @@
   "consent_yes": "Yes",
   "notes": [
     "Each page is one Qualtrics block; \"Shown if\" always refers to an earlier page. Follow-up text questions (Q5a–Q7a) are separate questions, not text boxes on a choice, so they export under a predictable key (`QIDn_TEXT`).",
+    "Q2–Q2d separate the vendor (Q2, Q2a), the kind of interface (Q2b: chat vs. coding agent), how the instructions were loaded (Q2c: skill vs. prompt file), and the model (Q2d). The skill is not Claude-only: the prompt file works in any chatbot.",
     "Q7 \"Yes\" is flagged as priority in the PR.",
     "Q10 is untrusted input. The pull script vets it (and all other free text) before it reaches a maintainer; see \"Security vetting\" in [FEEDBACK_PLAN.md](FEEDBACK_PLAN.md). It is never applied to the skill directly: a maintainer rewrites any change they accept.",
     "Q12 is recorded as `public_quote_ok`. \"No\" still yields a (private) PR; the response is then used only in aggregate or in the maintainer's own words.",
@@ -34,13 +35,46 @@
         "field": "tool",
         "type": "single",
         "required": true,
-        "text": "How did you run it?",
+        "text": "Which AI tool did you use?",
         "choices": [
-          "Claude Code",
-          "claude.ai (skill upload)",
-          "Other chatbot with the prompt file",
+          "Claude (Anthropic)",
+          "ChatGPT / Codex (OpenAI)",
+          "Gemini (Google)",
+          "Microsoft Copilot / GitHub Copilot",
           "Other"
         ]
+      },
+      {
+        "id": "Q2b",
+        "field": "interface",
+        "type": "single",
+        "required": true,
+        "text": "How did you use it?",
+        "choices": [
+          "Chat interface (web, desktop, or mobile app)",
+          "Coding agent or IDE assistant (e.g. Claude Code, Codex CLI, Cursor, Copilot in VS Code)",
+          "API or own script",
+          "Other"
+        ]
+      },
+      {
+        "id": "Q2c",
+        "field": "instructions",
+        "type": "single",
+        "required": true,
+        "text": "How did you give it the review instructions?",
+        "choices": [
+          "Installed the skill (readme-review.zip or skill folder)",
+          "Pasted or attached the prompt file",
+          "Other"
+        ]
+      },
+      {
+        "id": "Q2d",
+        "field": "model",
+        "type": "text_short",
+        "required": false,
+        "text": "Model, if you know it (e.g. the name shown in the model picker)"
       },
       {
         "id": "Q3",
@@ -55,6 +89,17 @@
       }
     ],
     [
+      {
+        "id": "Q2a",
+        "field": "tool_other",
+        "type": "text_short",
+        "required": false,
+        "text": "Which other AI tool did you use?",
+        "show_if": {
+          "question": "Q2",
+          "choice": "Other"
+        }
+      },
       {
         "id": "Q4",
         "field": "usefulness",

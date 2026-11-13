@@ -5,6 +5,7 @@
   "fields": {
     "skill_version": "skill_version",
     "bot_score": "Q_RecaptchaScore",
+    "bot_status": "Q_RecaptchaStatus",
     "role": "QID19",
     "tool": "QID20",
     "mode": "QID21",

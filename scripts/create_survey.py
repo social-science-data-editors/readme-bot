@@ -220,7 +220,8 @@ def write_map(spec, survey, qids):
          "consent_yes": spec["consent_yes"],
          "fields": {"skill_version": "skill_version",
                     # Survey options -> Security: bot detection + include security fields
-                    "bot_score": "Q_RecaptchaScore"}}
+                    "bot_score": "Q_RecaptchaScore",
+                    "bot_status": "Q_RecaptchaStatus"}}
     for q in all_questions(spec):
         if q.get("field"):
             m["fields"][q["field"]] = export_key(q, qids[q["id"]])
@@ -240,7 +241,7 @@ def markdown(spec):
         for q in page:
             t = TYPE_TEXT[q["type"]]
             if q.get("choices"):
-                t += ": " + " / ".join(q["choices"])
+                t += ": " + "; ".join(q["choices"])
             if q.get("validate"):
                 t += f", {q['validate']} validation"
             c = q.get("show_if")
