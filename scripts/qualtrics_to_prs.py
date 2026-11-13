@@ -160,7 +160,9 @@ def to_record(resp, m):
     rec["flags"] = {k: f for k in [k for k, _ in TEXT_FIELDS] + SHORT_TEXT
                     if (f := vet(rec.get(k, "")))}
     try:
-        rec["likely_bot"] = float(rec.get("bot_score", "")) < BOT_THRESHOLD
+        score = float(rec.get("bot_score", ""))
+        rec["bot_score"] = f"{score:.2f}"
+        rec["likely_bot"] = score < BOT_THRESHOLD
     except ValueError:
         rec["likely_bot"] = False  # no score (bot detection off, or field not exported)
     return rec

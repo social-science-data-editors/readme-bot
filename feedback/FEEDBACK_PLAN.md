@@ -85,9 +85,9 @@ Done on 2026-11-13 for survey `SV_blzbYfhetCOJ2GW` ("README Bot Feedback Form", 
    - share the project with co-maintainers (Collaborate) — *open*;
    - export the QSF to `feedback/survey.qsf` ([Survey definition](#survey-definition-qsf)). Check that its Survey Options show `AnonymizeResponse: Yes`, `RecaptchaV3: true`, `IncludeSecurityFields: true`.
 5. **Check the map**: submit a test response (a Qualtrics preview is enough), then run `scripts/qualtrics_to_prs.py --dry-run --include-previews --repo-dir /tmp/x` with the Qualtrics variables set (or `--from-file <export.json>`). Confirm the answers appear. Do not commit an export.
-   - Done 2026-11-13 with a preview response on the test survey: answers and labels map correctly. Repeat for `SV_blzbYfhetCOJ2GW` — *open*.
+   - Done 2026-11-13 with a preview response on `SV_blzbYfhetCOJ2GW`: every answer key is mapped; answers and labels come through.
    - Previews are skipped by default (`distributionChannel: preview`); `--include-previews` is for testing only.
-   - Previews do not run bot detection: they export `Q_RecaptchaStatus: error` and no `Q_RecaptchaScore`. Confirm `bot_score` with the first response through the real link — *open*.
+   - Bot detection: `Q_RecaptchaScore` (e.g. 0.8) and `Q_RecaptchaStatus: complete` confirmed. A preview can also fail the check (`Q_RecaptchaStatus: error`, no score); the response is then not flagged.
 6. **Commit** map, `FEEDBACK_URL`, and QSF; run `scripts/build.sh`; open a PR.
 7. **Private repo settings** (`readme-bot-feedback` → Settings):
    - Secrets and variables → Actions → `QUALTRICS_API_TOKEN` (secret; `QUALTRICS_API_KEY` also works; from an account that owns or shares the survey) and `QUALTRICS_BASE_URL` (secret or variable). Done: both set as secrets. The survey ID comes from `qualtrics-map.json` in this repo. Optional variables: `QUALTRICS_SURVEY_ID` (overrides the map), `README_BOT_REF` (default `main`, pins the script version).
