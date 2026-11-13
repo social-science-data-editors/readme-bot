@@ -4,40 +4,40 @@
 
 > **Auto-generated, do not edit.** Source: [survey-spec.json](survey-spec.json). Manual edits are overwritten by the "Generate survey questions" workflow.
 
-Survey name: readme-bot: README review feedback. `scripts/create_survey.py` builds the survey from the spec via the Qualtrics API and writes the real question IDs to `qualtrics-map.json`. IDs Q1–Q13 are labels (Qualtrics "data export tags"), not Qualtrics question IDs. Keep the survey under 2 minutes.
+Survey name: readme-bot: README review feedback. `scripts/create_survey.py` builds the survey from the spec via the Qualtrics API and writes the real question IDs to `qualtrics-map.json`. Q1–Q20 are numbered automatically in page order and used as Qualtrics "data export tags"; they are not Qualtrics question IDs (`QIDn`, in the map). Response files use the field names. Keep the survey under 2 minutes.
 
 Opening text (shown above Q1):
 
-> Thanks for testing the README review skill. Your answers (without your email) are shared with the skill's maintainers in a private repository, where a maintainer decides whether to use them. Please do not include confidential data, unpublished results, or names. Please answer yourself; do not let an AI assistant fill in the survey. An assistant may help you draft the text for Q10.
+> Thanks for testing the README review skill. Your answers (without your email) are shared with the skill's maintainers in a private repository, where a maintainer decides whether to use them. Please do not include confidential data, unpublished results, or names. Please answer yourself; do not let an AI assistant fill in the survey. An assistant may help you draft the text for Q17.
 
 Embedded data (filled from the link): `skill_version`.
 
-| # | Page | Question | Type | Required | Shown if |
-|---|---|---|---|---|---|
-| Q1 | 1 | Your role | Single choice: Author; Data editor or journal staff; Replicator; Other | Yes |  |
-| Q2 | 1 | Which AI tool did you use? | Single choice: Claude (Anthropic); ChatGPT / Codex (OpenAI); Gemini (Google); Microsoft Copilot / GitHub Copilot; Other | Yes |  |
-| Q2b | 1 | How did you use it? | Single choice: Chat interface (web, desktop, or mobile app); Coding agent or IDE assistant (e.g. Claude Code, Codex CLI, Cursor, Copilot in VS Code); API or own script; Other | Yes |  |
-| Q2c | 1 | How did you give it the review instructions? | Single choice: Installed the skill (readme-review.zip or skill folder); Pasted or attached the prompt file; Other | Yes |  |
-| Q2d | 1 | Model, if you know it (e.g. the name shown in the model picker) | Short text | No |  |
-| Q3 | 1 | Mode | Single choice: Review only; Review + edited copy | Yes |  |
-| Q2a | 2 | Which other AI tool did you use? | Short text | No | Q2 = Other |
-| Q4 | 2 | How useful was the report? (1 = not useful, 5 = very useful) | Scale: 1; 2; 3; 4; 5 | Yes |  |
-| Q5 | 2 | Did the report flag anything that was **not** a real problem? | Single choice: Yes; No | Yes |  |
-| Q6 | 2 | Did it **miss** a problem you know about? | Single choice: Yes; No | Yes |  |
-| Q7 | 2 | Did the edited copy contain invented facts (versions, URLs, data sources, runtimes)? | Single choice: Yes; No; Did not check | Yes | Q3 = Review + edited copy |
-| Q8 | 2 | Was the report the right length? | Single choice: Too short; About right; Too long | No |  |
-| Q5a | 3 | Which finding was not a real problem, and why? | Long text | No | Q5 = Yes |
-| Q6a | 3 | What was missed? | Long text | No | Q6 = Yes |
-| Q7a | 3 | Which facts were invented? | Long text | No | Q7 = Yes |
-| Q9 | 3 | Any other suggestion? | Long text | No |  |
-| Q10 | 3 | Proposed changes to the skill. If you (or your AI assistant) analyzed why the review went wrong, paste the analysis and concrete changes here, e.g. "In references/style-guide.md, add: ...". Plain text; no code to run. | Long text | No |  |
-| Q11 | 4 | Who wrote the Q10 text? | Single choice: I did; AI assistant, I reviewed it; AI assistant, not reviewed | No | Q10 not empty |
-| Q12 | 4 | May we quote your answers, anonymized, in public (e.g. in a change to the skill)? | Single choice: Yes; No | Yes |  |
-| Q13 | 4 | Email, if you want a reply (never published) | Short text, email validation | No |  |
+| # | Page | Question | Type | Required | Shown if | Field |
+|---|---|---|---|---|---|---|
+| Q1 | 1 | Your role | Single choice: Author; Data editor or journal staff; Replicator; Other | Yes |  | `role` |
+| Q2 | 1 | Which AI tool did you use? | Single choice: Claude (Anthropic); ChatGPT / Codex (OpenAI); Gemini (Google); Microsoft Copilot / GitHub Copilot; Other | Yes |  | `tool` |
+| Q3 | 1 | How did you use it? | Single choice: Chat interface (web, desktop, or mobile app); Coding agent or IDE assistant (e.g. Claude Code, Codex CLI, Cursor, Copilot in VS Code); API or own script; Other | Yes |  | `interface` |
+| Q4 | 1 | How did you give it the review instructions? | Single choice: Installed the skill (readme-review.zip or skill folder); Pasted or attached the prompt file; Other | Yes |  | `instructions` |
+| Q5 | 1 | Model, if you know it (e.g. the name shown in the model picker) | Short text | No |  | `model` |
+| Q6 | 1 | Mode | Single choice: Review only; Review + edited copy | Yes |  | `mode` |
+| Q7 | 2 | Which other AI tool did you use? | Short text | No | Q2 = Other | `tool_other` |
+| Q8 | 2 | How useful was the report? (1 = not useful, 5 = very useful) | Scale: 1; 2; 3; 4; 5 | Yes |  | `usefulness` |
+| Q9 | 2 | Did the report flag anything that was **not** a real problem? | Single choice: Yes; No | Yes |  | `false_findings` |
+| Q10 | 2 | Did it **miss** a problem you know about? | Single choice: Yes; No | Yes |  | `missed_issues` |
+| Q11 | 2 | Did the edited copy contain invented facts (versions, URLs, data sources, runtimes)? | Single choice: Yes; No; Did not check | Yes | Q6 = Review + edited copy | `invented_facts` |
+| Q12 | 2 | Was the report the right length? | Single choice: Too short; About right; Too long | No |  | `length` |
+| Q13 | 3 | Which finding was not a real problem, and why? | Long text | No | Q9 = Yes | `false_findings_text` |
+| Q14 | 3 | What was missed? | Long text | No | Q10 = Yes | `missed_issues_text` |
+| Q15 | 3 | Which facts were invented? | Long text | No | Q11 = Yes | `invented_facts_text` |
+| Q16 | 3 | Any other suggestion? | Long text | No |  | `suggestion` |
+| Q17 | 3 | Proposed changes to the skill. If you (or your AI assistant) analyzed why the review went wrong, paste the analysis and concrete changes here, e.g. "In references/style-guide.md, add: ...". Plain text; no code to run. | Long text | No |  | `proposal` |
+| Q18 | 4 | Who wrote the Q17 text? | Single choice: I did; AI assistant, I reviewed it; AI assistant, not reviewed | No | Q17 not empty | `proposal_author` |
+| Q19 | 4 | May we quote your answers, anonymized, in public (e.g. in a change to the skill)? | Single choice: Yes; No | Yes |  | `consent` |
+| Q20 | 4 | Email, if you want a reply (never published) | Short text, email validation | No |  | `email` (not exported) |
 
-- Each page is one Qualtrics block; "Shown if" always refers to an earlier page. Follow-up text questions (Q5a–Q7a) are separate questions, not text boxes on a choice, so they export under a predictable key (`QIDn_TEXT`).
-- Q2–Q2d separate the vendor (Q2, Q2a), the kind of interface (Q2b: chat vs. coding agent), how the instructions were loaded (Q2c: skill vs. prompt file), and the model (Q2d). The skill is not Claude-only: the prompt file works in any chatbot.
-- Q7 "Yes" is flagged as priority in the PR.
-- Q10 is untrusted input. The pull script vets it (and all other free text) before it reaches a maintainer; see "Security vetting" in [FEEDBACK_PLAN.md](FEEDBACK_PLAN.md). It is never applied to the skill directly: a maintainer rewrites any change they accept.
-- Q12 is recorded as `public_quote_ok`. "No" still yields a (private) PR; the response is then used only in aggregate or in the maintainer's own words.
-- Q13 has no `field`, so it is not in `qualtrics-map.json` and never leaves Qualtrics.
+- Each page is one Qualtrics block; "Shown if" always refers to an earlier page. Follow-up text questions (Q13, Q14, Q15, Q7) are separate questions, not text boxes on a choice, so they export under a predictable key (`QIDn_TEXT`).
+- Q2–Q5 separate the vendor (Q2, Q7), the kind of interface (Q3: chat vs. coding agent), how the instructions were loaded (Q4: skill vs. prompt file), and the model (Q5). The skill is not Claude-only: the prompt file works in any chatbot.
+- Q11 "Yes" is flagged as priority in the PR.
+- Q17 is untrusted input. The pull script vets it (and all other free text) before it reaches a maintainer; see "Security vetting" in [FEEDBACK_PLAN.md](FEEDBACK_PLAN.md). It is never applied to the skill directly: a maintainer rewrites any change they accept.
+- Q19 is recorded as `public_quote_ok`. "No" still yields a (private) PR; the response is then used only in aggregate or in the maintainer's own words.
+- Q20 has `export: false`, so it is not in `qualtrics-map.json` and never leaves Qualtrics.
