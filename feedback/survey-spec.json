@@ -1,24 +1,23 @@
 {
-  "_comment": "Source of truth for the feedback survey. scripts/create_survey.py builds the survey from this file via the Qualtrics API, writes qualtrics-map.json, and generates feedback/questions.md (do not edit that file). Each page is one Qualtrics block (= one survey page). 'field' is the name used in response files; null = never exported (email). 'show_if' must refer to a question on an earlier page.",
+  "_comment": "Source of truth for the feedback survey. scripts/create_survey.py builds the survey from this file via the Qualtrics API, writes qualtrics-map.json, and generates feedback/questions.md (do not edit that file). Each page is one Qualtrics block (= one survey page). Questions are numbered Q1..Qn automatically, in page order. 'field' names the question: it is the key in response files, the target of 'show_if', and '{field}' in intro, notes, or question text is replaced by the question's number. 'export': false keeps an answer out of the map (email). 'show_if' must refer to a question on an earlier page.",
   "name": "readme-bot: README review feedback",
-  "intro": "Thanks for testing the README review skill. Your answers (without your email) are shared with the skill's maintainers in a private repository, where a maintainer decides whether to use them. Please do not include confidential data, unpublished results, or names. Please answer yourself; do not let an AI assistant fill in the survey. An assistant may help you draft the text for Q10.",
+  "intro": "Thanks for testing the README review skill. Your answers (without your email) are shared with the skill's maintainers in a private repository, where a maintainer decides whether to use them. Please do not include confidential data, unpublished results, or names. Please answer yourself; do not let an AI assistant fill in the survey. An assistant may help you draft the text for {proposal}.",
   "embedded_data": [
     "skill_version"
   ],
   "consent_field": "consent",
   "consent_yes": "Yes",
   "notes": [
-    "Each page is one Qualtrics block; \"Shown if\" always refers to an earlier page. Follow-up text questions (Q5a–Q7a) are separate questions, not text boxes on a choice, so they export under a predictable key (`QIDn_TEXT`).",
-    "Q2–Q2d separate the vendor (Q2, Q2a), the kind of interface (Q2b: chat vs. coding agent), how the instructions were loaded (Q2c: skill vs. prompt file), and the model (Q2d). The skill is not Claude-only: the prompt file works in any chatbot.",
-    "Q7 \"Yes\" is flagged as priority in the PR.",
-    "Q10 is untrusted input. The pull script vets it (and all other free text) before it reaches a maintainer; see \"Security vetting\" in [FEEDBACK_PLAN.md](FEEDBACK_PLAN.md). It is never applied to the skill directly: a maintainer rewrites any change they accept.",
-    "Q12 is recorded as `public_quote_ok`. \"No\" still yields a (private) PR; the response is then used only in aggregate or in the maintainer's own words.",
-    "Q13 has no `field`, so it is not in `qualtrics-map.json` and never leaves Qualtrics."
+    "Each page is one Qualtrics block; \"Shown if\" always refers to an earlier page. Follow-up text questions ({false_findings_text}, {missed_issues_text}, {invented_facts_text}, {tool_other}) are separate questions, not text boxes on a choice, so they export under a predictable key (`QIDn_TEXT`).",
+    "{tool}–{model} separate the vendor ({tool}, {tool_other}), the kind of interface ({interface}: chat vs. coding agent), how the instructions were loaded ({instructions}: skill vs. prompt file), and the model ({model}). The skill is not Claude-only: the prompt file works in any chatbot.",
+    "{invented_facts} \"Yes\" is flagged as priority in the PR.",
+    "{proposal} is untrusted input. The pull script vets it (and all other free text) before it reaches a maintainer; see \"Security vetting\" in [FEEDBACK_PLAN.md](FEEDBACK_PLAN.md). It is never applied to the skill directly: a maintainer rewrites any change they accept.",
+    "{consent} is recorded as `public_quote_ok`. \"No\" still yields a (private) PR; the response is then used only in aggregate or in the maintainer's own words.",
+    "{email} has `export: false`, so it is not in `qualtrics-map.json` and never leaves Qualtrics."
   ],
   "pages": [
     [
       {
-        "id": "Q1",
         "field": "role",
         "type": "single",
         "required": true,
@@ -31,7 +30,6 @@
         ]
       },
       {
-        "id": "Q2",
         "field": "tool",
         "type": "single",
         "required": true,
@@ -45,7 +43,6 @@
         ]
       },
       {
-        "id": "Q2b",
         "field": "interface",
         "type": "single",
         "required": true,
@@ -58,7 +55,6 @@
         ]
       },
       {
-        "id": "Q2c",
         "field": "instructions",
         "type": "single",
         "required": true,
@@ -70,14 +66,12 @@
         ]
       },
       {
-        "id": "Q2d",
         "field": "model",
         "type": "text_short",
         "required": false,
         "text": "Model, if you know it (e.g. the name shown in the model picker)"
       },
       {
-        "id": "Q3",
         "field": "mode",
         "type": "single",
         "required": true,
@@ -90,18 +84,16 @@
     ],
     [
       {
-        "id": "Q2a",
         "field": "tool_other",
         "type": "text_short",
         "required": false,
         "text": "Which other AI tool did you use?",
         "show_if": {
-          "question": "Q2",
+          "question": "tool",
           "choice": "Other"
         }
       },
       {
-        "id": "Q4",
         "field": "usefulness",
         "type": "scale",
         "required": true,
@@ -115,7 +107,6 @@
         ]
       },
       {
-        "id": "Q5",
         "field": "false_findings",
         "type": "single",
         "required": true,
@@ -126,7 +117,6 @@
         ]
       },
       {
-        "id": "Q6",
         "field": "missed_issues",
         "type": "single",
         "required": true,
@@ -137,7 +127,6 @@
         ]
       },
       {
-        "id": "Q7",
         "field": "invented_facts",
         "type": "single",
         "required": true,
@@ -148,12 +137,11 @@
           "Did not check"
         ],
         "show_if": {
-          "question": "Q3",
+          "question": "mode",
           "choice": "Review + edited copy"
         }
       },
       {
-        "id": "Q8",
         "field": "length",
         "type": "single",
         "required": false,
@@ -167,47 +155,42 @@
     ],
     [
       {
-        "id": "Q5a",
         "field": "false_findings_text",
         "type": "text_long",
         "required": false,
         "text": "Which finding was not a real problem, and why?",
         "show_if": {
-          "question": "Q5",
+          "question": "false_findings",
           "choice": "Yes"
         }
       },
       {
-        "id": "Q6a",
         "field": "missed_issues_text",
         "type": "text_long",
         "required": false,
         "text": "What was missed?",
         "show_if": {
-          "question": "Q6",
+          "question": "missed_issues",
           "choice": "Yes"
         }
       },
       {
-        "id": "Q7a",
         "field": "invented_facts_text",
         "type": "text_long",
         "required": false,
         "text": "Which facts were invented?",
         "show_if": {
-          "question": "Q7",
+          "question": "invented_facts",
           "choice": "Yes"
         }
       },
       {
-        "id": "Q9",
         "field": "suggestion",
         "type": "text_long",
         "required": false,
         "text": "Any other suggestion?"
       },
       {
-        "id": "Q10",
         "field": "proposal",
         "type": "text_long",
         "required": false,
@@ -216,23 +199,21 @@
     ],
     [
       {
-        "id": "Q11",
         "field": "proposal_author",
         "type": "single",
         "required": false,
-        "text": "Who wrote the Q10 text?",
+        "text": "Who wrote the {proposal} text?",
         "choices": [
           "I did",
           "AI assistant, I reviewed it",
           "AI assistant, not reviewed"
         ],
         "show_if": {
-          "question": "Q10",
+          "question": "proposal",
           "not_empty": true
         }
       },
       {
-        "id": "Q12",
         "field": "consent",
         "type": "single",
         "required": true,
@@ -243,12 +224,12 @@
         ]
       },
       {
-        "id": "Q13",
-        "field": null,
+        "field": "email",
         "type": "text_short",
         "required": false,
         "validate": "email",
-        "text": "Email, if you want a reply (never published)"
+        "text": "Email, if you want a reply (never published)",
+        "export": false
       }
     ]
   ]
