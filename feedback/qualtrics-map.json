@@ -1,5 +1,5 @@
 {
-  "_comment": "Map record fields to Qualtrics export keys. Replace QIDs with those of the live survey (Survey > Tools > Auto-number questions, or inspect one JSON export). skill_version is the embedded-data field. consent (Q10) only sets public_quote_ok. The email question is deliberately not mapped.",
+  "_comment": "Map record fields to Qualtrics export keys. Replace QIDs with those of the live survey (Survey > Tools > Auto-number questions, or inspect one JSON export). skill_version is the embedded-data field. consent (Q12) only sets public_quote_ok. The email question is deliberately not mapped.",
   "consent_yes": "Yes",
   "fields": {
     "skill_version": "skill_version",
@@ -15,6 +15,8 @@
     "invented_facts_text": "QID7_TEXT",
     "length": "QID8",
     "suggestion": "QID9_TEXT",
-    "consent": "QID10"
+    "proposal": "QID10_TEXT",
+    "proposal_author": "QID11",
+    "consent": "QID12"
   }
 }

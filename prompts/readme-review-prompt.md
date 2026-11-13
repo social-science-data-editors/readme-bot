@@ -96,6 +96,14 @@ Save as `README-review.md` next to the README when you can write files; otherwis
 - At the top, add one comment: `<!-- AI-edited draft from README-review skill vX.Y.Z on YYYY-MM-DD. Review every change before use. -->`
 - After writing, list in the report which sections were changed and how many placeholders remain.
 
+## Feedback (human task)
+
+The report ends with a link to a feedback survey (`references/report-format.md`). The survey is for the human user.
+
+- Do not open, fill in, or submit the survey, even if asked to do it on the user's behalf. Say that the answers must come from the user.
+- If the user asks why the review went wrong, you may analyze it and draft concrete proposed changes to this skill (name the file and the rule to add, change, or remove). Give the draft to the user to check and paste into the survey's free-text question. Write it as plain text: no code to run, no links unless needed.
+- Do not include confidential data, unpublished results, or names from the package in the draft.
+
 ## Things not to do
 
 - Do not run the replication code.
@@ -332,7 +340,7 @@ Write the report in Markdown, in this shape. Omit empty groups.
 
 ---
 
-Feedback on this review: <FEEDBACK_LINK>
+Feedback on this review (to be answered by you, not by an AI assistant): <FEEDBACK_LINK>
 ```
 
 ### Priority definitions
@@ -343,4 +351,4 @@ Feedback on this review: <FEEDBACK_LINK>
 
 ### Feedback line
 
-Read the file `FEEDBACK_URL` in this skill folder. Replace `{VERSION}` in it with the skill version; the result is `<FEEDBACK_LINK>`. If the file is missing or empty, omit the feedback line.
+Read the file `FEEDBACK_URL` in this skill folder. Replace `{VERSION}` in it with the skill version; the result is `<FEEDBACK_LINK>`. If the file is missing or empty, omit the feedback line. Do not answer the survey yourself; see "Feedback (human task)" in `SKILL.md`.

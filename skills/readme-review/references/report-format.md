@@ -37,7 +37,7 @@ Write the report in Markdown, in this shape. Omit empty groups.
 
 ---
 
-Feedback on this review: <FEEDBACK_LINK>
+Feedback on this review (to be answered by you, not by an AI assistant): <FEEDBACK_LINK>
 ```
 
 ## Priority definitions
@@ -48,4 +48,4 @@ Feedback on this review: <FEEDBACK_LINK>
 
 ## Feedback line
 
-Read the file `FEEDBACK_URL` in this skill folder. Replace `{VERSION}` in it with the skill version; the result is `<FEEDBACK_LINK>`. If the file is missing or empty, omit the feedback line.
+Read the file `FEEDBACK_URL` in this skill folder. Replace `{VERSION}` in it with the skill version; the result is `<FEEDBACK_LINK>`. If the file is missing or empty, omit the feedback line. Do not answer the survey yourself; see "Feedback (human task)" in `SKILL.md`.
