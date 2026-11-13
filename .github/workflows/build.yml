@@ -16,10 +16,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build prompt and skill zip
         run: scripts/build.sh
-      - name: Check generated prompt is up to date
+      - name: Check generated files are up to date
         run: |
-          if ! git diff --exit-code -- prompts/; then
-            echo "::error::prompts/readme-review-prompt.md is stale. Run scripts/build.sh and commit."
+          if ! git diff --exit-code -- prompts/ feedback/questions.md; then
+            echo "::error::Generated files are stale (prompt or survey table). Run scripts/build.sh and commit."
             exit 1
           fi
       - uses: actions/upload-artifact@v4

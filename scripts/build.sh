@@ -2,6 +2,7 @@
 # Build distributables from skills/readme-review:
 #   prompts/readme-review-prompt.md  single-file prompt for chat tools without skill support
 #   dist/readme-review.zip           skill bundle for claude.ai / Claude Code upload
+#   feedback/questions.md            question table, from feedback/survey-spec.json
 # Usage: scripts/build.sh            (run from repo root)
 set -euo pipefail
 
@@ -43,6 +44,8 @@ mkdir -p "$root/prompts" "$root/dist"
     awk '/^```/{fence=!fence} !fence && /^#+ /{$0="#"$0} {print}' "$skill/references/$f.md"
   done
 } > "$out"
+
+python3 "$root/scripts/create_survey.py" --markdown >/dev/null
 
 rm -f "$root/dist/readme-review.zip"
 (cd "$root/skills" && zip -qr "$root/dist/readme-review.zip" readme-review)

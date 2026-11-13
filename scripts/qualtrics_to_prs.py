@@ -10,7 +10,7 @@ merges it); rejecting means closing it.
 Environment (from GitHub secrets/variables):
   QUALTRICS_BASE_URL   e.g. https://cornell.ca1.qualtrics.com
   QUALTRICS_API_TOKEN  Qualtrics API token
-  QUALTRICS_SURVEY_ID  SV_xxxxxxxxxxxx
+  QUALTRICS_SURVEY_ID  optional; overrides survey_id in the field map
   GH_TOKEN             token gh can use to push branches and open PRs
 
 Usage:
@@ -88,8 +88,7 @@ def api(method, path, body=None, raw=False):
     return data if raw else json.loads(data)
 
 
-def export_responses():
-    sid = os.environ["QUALTRICS_SURVEY_ID"]
+def export_responses(sid):
     start = api("POST", f"/surveys/{sid}/export-responses",
                 {"format": "json", "compress": True, "useLabels": True})
     pid = start["result"]["progressId"]
@@ -255,7 +254,11 @@ def main():
     ROOT = Path(a.repo_dir).resolve()
     out_dir = ROOT / a.out_subdir
     m = json.loads(Path(a.map).read_text())
-    data = json.loads(Path(a.from_file).read_text()) if a.from_file else export_responses()
+    sid = os.environ.get("QUALTRICS_SURVEY_ID") or m.get("survey_id")
+    if not a.from_file and not sid:
+        sys.exit("No survey ID: set survey_id in the field map (scripts/create_survey.py does) "
+                 "or QUALTRICS_SURVEY_ID")
+    data = json.loads(Path(a.from_file).read_text()) if a.from_file else export_responses(sid)
 
     if not a.dry_run:
         ensure_labels()

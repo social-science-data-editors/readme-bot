@@ -4,7 +4,7 @@ Users rate the README review skill in a Qualtrics survey. A scheduled GitHub Act
 
 ## Where things live
 
-- This repo (public): skill, survey questions ([questions.md](questions.md)), field map (`qualtrics-map.json`), script (`scripts/qualtrics_to_prs.py`).
+- This repo (public): skill, survey spec (`survey-spec.json`, rendered in [questions.md](questions.md)) and the script that creates the survey (`scripts/create_survey.py`), survey definition (`survey.qsf`, see [below](#survey-definition-qsf)), field map (`qualtrics-map.json`), script (`scripts/qualtrics_to_prs.py`).
 - `readme-bot-feedback` (private): the two workflows, the response PRs, and the included responses (`responses/`).
 
 The private repo's workflow checks out this repo to get the script and field map, so code is reviewed in public and data stays private.
@@ -47,24 +47,43 @@ Manual, by the maintainer:
 
 In `readme-bot-feedback`, `feedback-merge.yml` refuses to merge a PR labeled `feedback:security-flag`. After checking the text, the maintainer removes the label, then approves again (or re-runs the merge job).
 
+## Survey definition (QSF)
+
+`feedback/survey.qsf` is the definition of the live survey, exported by hand from Qualtrics. The survey is built from `survey-spec.json` through the API; the QSF is never written by hand or by a script, only downloaded after every change to the survey.
+
+- **What it is**: Qualtrics Survey Format, a JSON file with the questions, choices, display logic, survey flow (including the `skill_version` embedded-data field), and survey options. It holds no responses and no API token.
+- **Why it is kept**:
+  - record of what respondents saw, per skill version (diffs show survey changes);
+  - recreate the survey (Create project → Survey → From a file) if it is lost or moves to another account;
+  - source of truth for question IDs: `qualtrics-map.json` must use the `QuestionID`s (`QID…`) in it.
+- **How to download**: open the survey in Qualtrics → Tools → Import/Export → Export survey. Save as `feedback/survey.qsf` (replace the old file).
+- **Before committing**:
+  - pretty-print, so diffs are readable: `python3 -m json.tool --indent 1 <download>.qsf > feedback/survey.qsf`;
+  - it contains identifiers (`SurveyID`, `SurveyOwnerID`/`CreatorID` user IDs, `SurveyBrandID`). They are not credentials; the survey ID is already public in the survey link. Check that no question text or default answer contains anything private;
+  - check that `qualtrics-map.json` still matches: each `QIDn` in the map exists in the QSF (`SurveyElements` with `Element: "SQ"`, `Payload.QuestionID`). Text-entry fields are exported as `QIDn_TEXT`.
+- **When**: after creating the survey, and after every edit in Qualtrics. Commit it in the same PR that updates `survey-spec.json` (and so `questions.md`) and `qualtrics-map.json`, and note the change, with its date, in `CHANGELOG.md`, so responses can be matched to the survey version by date.
+- **Changing a live survey**: `create_survey.py` only creates new surveys. For small edits (wording, a choice), edit in Qualtrics, mirror the change in `survey-spec.json`, and re-export the QSF; for new questions, add them in Qualtrics and add their `QID`s to the map by hand (check against the QSF). For a redesign, create a new survey with the script: it gets a new survey ID and link, and responses to the old survey are no longer pulled.
+
 ## Deploy
 
-1. **Survey.** In the institutional Qualtrics account, create the survey from [questions.md](questions.md).
-   - Survey flow → Embedded Data at the top: field `skill_version` (filled from the URL parameter of the same name).
-   - Survey options → Security → Anonymize responses: on.
-   - Q7 display logic: show if Q3 = review + edited copy.
-   - Q10: long text, max 10,000 characters. Q11 display logic: show if Q10 is not empty.
-   - Share the project with co-maintainers (Collaborate).
-2. **Link.** Distributions → Anonymous link. Write `https://<org>.qualtrics.com/jfe/form/SV_<id>?skill_version={VERSION}` into `skills/readme-review/FEEDBACK_URL` (PR in this repo; bump patch version, run `scripts/build.sh`).
-3. **Field map.** Export one test response as JSON (or use Tools → Auto-number questions) and put the real question IDs into `feedback/qualtrics-map.json`. Set `consent_yes` to the exact label of the "Yes" choice of Q12. Check with:
-   `scripts/qualtrics_to_prs.py --from-file <export.json> --dry-run --repo-dir /tmp/x`
-   Do not commit the export.
-4. **API token.** Qualtrics → Account settings → Qualtrics IDs → generate token, from an account that owns or shares the survey. (If the button is missing, ask the Qualtrics brand admin to enable API access.)
-5. **Private repo settings** (`readme-bot-feedback` → Settings):
-   - Secrets and variables → Actions → **secret** `QUALTRICS_API_TOKEN`; **variables** `QUALTRICS_BASE_URL` (data-center URL shown under Qualtrics IDs, e.g. `https://cornell.ca1.qualtrics.com`) and `QUALTRICS_SURVEY_ID`. Optional variable `README_BOT_REF` (default `main`) to pin the script version.
+1. **API token.** Qualtrics → Account settings → Qualtrics IDs → generate token. (If the button is missing, ask the Qualtrics brand admin to enable API access.) Note the data-center URL shown there (e.g. `https://cornell.ca1.qualtrics.com`).
+2. **Create the survey** from `survey-spec.json`, on a branch of this repo:
+   - check first: `scripts/create_survey.py --dry-run` (prints every API call, contacts nothing);
+   - then: `QUALTRICS_BASE_URL=… QUALTRICS_API_TOKEN=… scripts/create_survey.py`.
+
+   It creates one block per page, the questions with required and display logic, and the `skill_version` embedded-data field; publishes and activates the survey; and writes `feedback/qualtrics-map.json` (survey ID, real question IDs) and `skills/readme-review/FEEDBACK_URL` (anonymous link).
+3. **By hand in Qualtrics**, then commit:
+   - Survey options → Security → Anonymize responses: on;
+   - Preview the survey; check display logic (Q7, Q5a–Q7a, Q11);
+   - share the project with co-maintainers (Collaborate);
+   - export the QSF to `feedback/survey.qsf` ([Survey definition](#survey-definition-qsf));
+   - submit one test response, export it as JSON, and check the map: `scripts/qualtrics_to_prs.py --from-file <export.json> --dry-run --repo-dir /tmp/x`. Do not commit the export;
+   - commit map, `FEEDBACK_URL`, and QSF; bump patch version; run `scripts/build.sh`; open a PR.
+4. **Private repo settings** (`readme-bot-feedback` → Settings):
+   - Secrets and variables → Actions → **secret** `QUALTRICS_API_TOKEN` (from an account that owns or shares the survey); **variable** `QUALTRICS_BASE_URL`. The survey ID comes from `qualtrics-map.json` in this repo. Optional variables: `QUALTRICS_SURVEY_ID` (overrides the map), `README_BOT_REF` (default `main`, pins the script version).
    - Actions → General → Workflow permissions: "Read and write"; tick "Allow GitHub Actions to create and approve pull requests".
    - Or from the command line with `gh` (interactively or from a `.env` file): see "Set them with `gh`" in the `readme-bot-feedback` README.
-6. **Test.** Submit a test response. In the private repo: Actions → "Pull feedback from Qualtrics" → Run workflow. Approve the resulting PR; check that it merged. Delete the test file.
+5. **Test.** Submit a test response. In the private repo: Actions → "Pull feedback from Qualtrics" → Run workflow. Approve the resulting PR; check that it merged. Delete the test file.
 
 The pull workflow does nothing until `QUALTRICS_BASE_URL` is set.
 
