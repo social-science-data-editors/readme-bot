@@ -1,26 +1,26 @@
 {
  "SurveyEntry": {
-  "SurveyID": "SV_3UW3jQbuNPpLtSC",
+  "SurveyID": "SV_blzbYfhetCOJ2GW",
   "SurveyName": "README Bot Feedback Form",
   "SurveyDescription": null,
   "SurveyOwnerID": "URH_efbfGc9kuVXJdRy",
   "SurveyBrandID": "cornell",
   "DivisionID": null,
   "SurveyLanguage": "EN",
-  "SurveyActiveResponseSet": "RS_0HeAD2siscND9BQ",
+  "SurveyActiveResponseSet": "RS_6zCSowfh7qGseI6",
   "SurveyStatus": "Active",
   "SurveyStartDate": "0000-00-00 00:00:00",
   "SurveyExpirationDate": "0000-00-00 00:00:00",
-  "SurveyCreationDate": "2026-11-13 12:40:40",
+  "SurveyCreationDate": "2026-11-13 13:05:16",
   "CreatorID": "URH_efbfGc9kuVXJdRy",
-  "LastModified": "2026-11-13 12:57:36",
+  "LastModified": "2026-11-13 13:08:54",
   "LastAccessed": "0000-00-00 00:00:00",
-  "LastActivated": "2026-11-13 12:43:40",
+  "LastActivated": "2026-11-13 13:08:54",
   "Deleted": null
  },
  "SurveyElements": [
   {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
    "Element": "BL",
    "PrimaryAttribute": "Survey Blocks",
    "SecondaryAttribute": null,
@@ -29,57 +29,72 @@
     {
      "Type": "Default",
      "Description": "Default Question Block",
-     "ID": "BL_8p5Ysr990Qrhtxc",
+     "ID": "BL_bORk1YTO6C5TqZw",
      "BlockElements": [
       {
        "Type": "Question",
-       "QuestionID": "QID18"
+       "QuestionID": "QID2"
       },
       {
        "Type": "Question",
-       "QuestionID": "QID19"
+       "QuestionID": "QID3"
       },
       {
        "Type": "Question",
-       "QuestionID": "QID20"
+       "QuestionID": "QID4"
       },
       {
        "Type": "Question",
-       "QuestionID": "QID21"
+       "QuestionID": "QID5"
+      },
+      {
+       "Type": "Question",
+       "QuestionID": "QID6"
+      },
+      {
+       "Type": "Question",
+       "QuestionID": "QID7"
+      },
+      {
+       "Type": "Question",
+       "QuestionID": "QID8"
       }
      ]
     },
     {
      "Type": "Trash",
      "Description": "Trash / Unused Questions",
-     "ID": "BL_0P6aZebKGb8mIx8",
-     "BlockElements": []
+     "ID": "BL_0OofCFFtt8cJNIy"
     },
     {
      "Type": "Standard",
      "SubType": "",
      "Description": "Page 2",
-     "ID": "BL_51IkChBu15loy3Q",
+     "ID": "BL_37sxKGqUzLlGdU2",
      "BlockElements": [
       {
        "Type": "Question",
-       "QuestionID": "QID22"
+       "QuestionID": "QID9"
       },
       {
        "Type": "Question",
-       "QuestionID": "QID23"
+       "QuestionID": "QID10"
       },
       {
        "Type": "Question",
-       "QuestionID": "QID24"
+       "QuestionID": "QID11"
       },
       {
        "Type": "Question",
-       "QuestionID": "QID25"
+       "QuestionID": "QID12"
       },
       {
        "Type": "Question",
-       "QuestionID": "QID26"
+       "QuestionID": "QID13"
+      },
+      {
+       "Type": "Question",
+       "QuestionID": "QID14"
       }
      ]
     },
@@ -87,27 +102,27 @@
      "Type": "Standard",
      "SubType": "",
      "Description": "Page 3",
-     "ID": "BL_cU7ePOBIfYStaQK",
+     "ID": "BL_2sevxTyC8RwGt4G",
      "BlockElements": [
       {
        "Type": "Question",
-       "QuestionID": "QID27"
+       "QuestionID": "QID15"
       },
       {
        "Type": "Question",
-       "QuestionID": "QID28"
+       "QuestionID": "QID16"
       },
       {
        "Type": "Question",
-       "QuestionID": "QID29"
+       "QuestionID": "QID17"
       },
       {
        "Type": "Question",
-       "QuestionID": "QID30"
+       "QuestionID": "QID18"
       },
       {
        "Type": "Question",
-       "QuestionID": "QID31"
+       "QuestionID": "QID19"
       }
      ]
     },
@@ -115,26 +130,26 @@
      "Type": "Standard",
      "SubType": "",
      "Description": "Page 4",
-     "ID": "BL_2fBn6oPFYCSghQG",
+     "ID": "BL_5nmnLHEx87FTXCe",
      "BlockElements": [
       {
        "Type": "Question",
-       "QuestionID": "QID32"
+       "QuestionID": "QID20"
       },
       {
        "Type": "Question",
-       "QuestionID": "QID33"
+       "QuestionID": "QID21"
       },
       {
        "Type": "Question",
-       "QuestionID": "QID34"
+       "QuestionID": "QID22"
       }
      ]
     }
    ]
   },
   {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
    "Element": "FL",
    "PrimaryAttribute": "Survey Flow",
    "SecondaryAttribute": null,
@@ -143,7 +158,7 @@
     "Flow": [
      {
       "Type": "EmbeddedData",
-      "FlowID": "FL_2",
+      "FlowID": "FL_6",
       "EmbeddedData": [
        {
         "Description": "skill_version",
@@ -156,24 +171,24 @@
       ]
      },
      {
-      "ID": "BL_8p5Ysr990Qrhtxc",
+      "ID": "BL_bORk1YTO6C5TqZw",
       "Type": "Block",
+      "FlowID": "FL_2"
+     },
+     {
+      "ID": "BL_37sxKGqUzLlGdU2",
+      "Type": "Standard",
       "FlowID": "FL_3"
      },
      {
-      "ID": "BL_51IkChBu15loy3Q",
+      "ID": "BL_2sevxTyC8RwGt4G",
       "Type": "Standard",
       "FlowID": "FL_4"
      },
      {
-      "ID": "BL_cU7ePOBIfYStaQK",
+      "ID": "BL_5nmnLHEx87FTXCe",
       "Type": "Standard",
       "FlowID": "FL_5"
-     },
-     {
-      "ID": "BL_2fBn6oPFYCSghQG",
-      "Type": "Standard",
-      "FlowID": "FL_6"
      }
     ],
     "Properties": {
@@ -184,18 +199,18 @@
    }
   },
   {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
    "Element": "PL",
    "PrimaryAttribute": "Preview Link",
    "SecondaryAttribute": null,
    "TertiaryAttribute": null,
    "Payload": {
     "PreviewType": "Brand",
-    "PreviewID": "ad2243fb-0ae1-4773-9634-56c7221b35c5"
+    "PreviewID": "72543a57-8add-416c-8044-e339024f9039"
    }
   },
   {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
    "Element": "PROJ",
    "PrimaryAttribute": "CORE",
    "SecondaryAttribute": null,
@@ -206,23 +221,23 @@
    }
   },
   {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
    "Element": "QC",
    "PrimaryAttribute": "Survey Question Count",
-   "SecondaryAttribute": "34",
+   "SecondaryAttribute": "22",
    "TertiaryAttribute": null,
    "Payload": null
   },
   {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
    "Element": "RS",
-   "PrimaryAttribute": "RS_0HeAD2siscND9BQ",
+   "PrimaryAttribute": "RS_6zCSowfh7qGseI6",
    "SecondaryAttribute": "Default Response Set",
    "TertiaryAttribute": null,
    "Payload": null
   },
   {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
    "Element": "SCO",
    "PrimaryAttribute": "Scoring",
    "SecondaryAttribute": null,
@@ -238,7 +253,7 @@
    }
   },
   {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
    "Element": "SO",
    "PrimaryAttribute": "Survey Options",
    "SecondaryAttribute": null,
@@ -275,6 +290,7 @@
     "PasswordProtection": "No",
     "AnonymizeResponse": "Yes",
     "RefererCheck": "No",
+    "IncludeSecurityFields": true,
     "BallotBoxStuffingPreventionBehavior": null,
     "BallotBoxStuffingPreventionMessage": null,
     "BallotBoxStuffingPreventionMessageLibrary": null,
@@ -302,18 +318,424 @@
     "InactiveMessage": null,
     "AvailableLanguages": {
      "EN": []
-    },
-    "IncludeSecurityFields": true
+    }
    }
   },
   {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID10",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "How useful was the report? (1 = not useful, 5 = very useful)",
+    "DataExportTag": "Q8",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "ON",
+      "ForceResponseType": "ON",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "MC",
+    "Selector": "SAHR",
+    "SubSelector": "TX",
+    "Choices": {
+     "1": {
+      "Display": "1"
+     },
+     "2": {
+      "Display": "2"
+     },
+     "3": {
+      "Display": "3"
+     },
+     "4": {
+      "Display": "4"
+     },
+     "5": {
+      "Display": "5"
+     }
+    },
+    "ChoiceOrder": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "QuestionID": "QID10"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID11",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "Did the report flag anything that was <b>not</b> a real problem?",
+    "DataExportTag": "Q9",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "ON",
+      "ForceResponseType": "ON",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "MC",
+    "Selector": "SAVR",
+    "SubSelector": "TX",
+    "Choices": {
+     "1": {
+      "Display": "Yes"
+     },
+     "2": {
+      "Display": "No"
+     }
+    },
+    "ChoiceOrder": [
+     1,
+     2
+    ],
+    "QuestionID": "QID11"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID12",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "Did it <b>miss</b> a problem you know about?",
+    "DataExportTag": "Q10",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "ON",
+      "ForceResponseType": "ON",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "MC",
+    "Selector": "SAVR",
+    "SubSelector": "TX",
+    "Choices": {
+     "1": {
+      "Display": "Yes"
+     },
+     "2": {
+      "Display": "No"
+     }
+    },
+    "ChoiceOrder": [
+     1,
+     2
+    ],
+    "QuestionID": "QID12"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID13",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "Did the edited copy contain invented facts (versions, URLs, data sources, runtimes)?",
+    "DataExportTag": "Q11",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "ON",
+      "ForceResponseType": "ON",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "MC",
+    "Selector": "SAVR",
+    "SubSelector": "TX",
+    "Choices": {
+     "1": {
+      "Display": "Yes"
+     },
+     "2": {
+      "Display": "No"
+     },
+     "3": {
+      "Display": "Did not check"
+     }
+    },
+    "ChoiceOrder": [
+     1,
+     2,
+     3
+    ],
+    "DisplayLogic": {
+     "0": {
+      "0": {
+       "LogicType": "Question",
+       "QuestionID": "QID8",
+       "QuestionIsInLoop": "no",
+       "ChoiceLocator": "q://QID8/SelectableChoice/2",
+       "Operator": "Selected",
+       "QuestionIDFromLocator": "QID8",
+       "LeftOperand": "q://QID8/SelectableChoice/2",
+       "Type": "Expression",
+       "Description": "If Q6 = Review + edited copy"
+      },
+      "Type": "If"
+     },
+     "Type": "BooleanExpression",
+     "inPage": false
+    },
+    "QuestionID": "QID13"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID14",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "Was the report the right length?",
+    "DataExportTag": "Q12",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "OFF",
+      "ForceResponseType": "OFF",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "MC",
+    "Selector": "SAVR",
+    "SubSelector": "TX",
+    "Choices": {
+     "1": {
+      "Display": "Too short"
+     },
+     "2": {
+      "Display": "About right"
+     },
+     "3": {
+      "Display": "Too long"
+     }
+    },
+    "ChoiceOrder": [
+     1,
+     2,
+     3
+    ],
+    "QuestionID": "QID14"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID15",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "Which finding was not a real problem, and why?",
+    "DataExportTag": "Q13",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "OFF",
+      "ForceResponseType": "OFF",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "TE",
+    "Selector": "ESTB",
+    "DisplayLogic": {
+     "0": {
+      "0": {
+       "LogicType": "Question",
+       "QuestionID": "QID11",
+       "QuestionIsInLoop": "no",
+       "ChoiceLocator": "q://QID11/SelectableChoice/1",
+       "Operator": "Selected",
+       "QuestionIDFromLocator": "QID11",
+       "LeftOperand": "q://QID11/SelectableChoice/1",
+       "Type": "Expression",
+       "Description": "If Q9 = Yes"
+      },
+      "Type": "If"
+     },
+     "Type": "BooleanExpression",
+     "inPage": false
+    },
+    "QuestionID": "QID15"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID16",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "What was missed?",
+    "DataExportTag": "Q14",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "OFF",
+      "ForceResponseType": "OFF",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "TE",
+    "Selector": "ESTB",
+    "DisplayLogic": {
+     "0": {
+      "0": {
+       "LogicType": "Question",
+       "QuestionID": "QID12",
+       "QuestionIsInLoop": "no",
+       "ChoiceLocator": "q://QID12/SelectableChoice/1",
+       "Operator": "Selected",
+       "QuestionIDFromLocator": "QID12",
+       "LeftOperand": "q://QID12/SelectableChoice/1",
+       "Type": "Expression",
+       "Description": "If Q10 = Yes"
+      },
+      "Type": "If"
+     },
+     "Type": "BooleanExpression",
+     "inPage": false
+    },
+    "QuestionID": "QID16"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID17",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "Which facts were invented?",
+    "DataExportTag": "Q15",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "OFF",
+      "ForceResponseType": "OFF",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "TE",
+    "Selector": "ESTB",
+    "DisplayLogic": {
+     "0": {
+      "0": {
+       "LogicType": "Question",
+       "QuestionID": "QID13",
+       "QuestionIsInLoop": "no",
+       "ChoiceLocator": "q://QID13/SelectableChoice/1",
+       "Operator": "Selected",
+       "QuestionIDFromLocator": "QID13",
+       "LeftOperand": "q://QID13/SelectableChoice/1",
+       "Type": "Expression",
+       "Description": "If Q11 = Yes"
+      },
+      "Type": "If"
+     },
+     "Type": "BooleanExpression",
+     "inPage": false
+    },
+    "QuestionID": "QID17"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
    "Element": "SQ",
    "PrimaryAttribute": "QID18",
    "SecondaryAttribute": null,
    "TertiaryAttribute": null,
    "Payload": {
-    "QuestionText": "Thanks for testing the README review skill. Your answers (without your email) are shared with the skill's maintainers in a private repository, where a maintainer decides whether to use them. Please do not include confidential data, unpublished results, or names. Please answer yourself; do not let an AI assistant fill in the survey. An assistant may help you draft the text for Q10.",
+    "QuestionText": "Any other suggestion?",
+    "DataExportTag": "Q16",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "OFF",
+      "ForceResponseType": "OFF",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "TE",
+    "Selector": "ESTB",
+    "QuestionID": "QID18"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID19",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "Proposed changes to the skill. If you (or your AI assistant) analyzed why the review went wrong, paste the analysis and concrete changes here, e.g. \"In references/style-guide.md, add: ...\". Plain text; no code to run.",
+    "DataExportTag": "Q17",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "OFF",
+      "ForceResponseType": "OFF",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "TE",
+    "Selector": "ESTB",
+    "QuestionID": "QID19"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID2",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "Thanks for testing the README review skill. Your answers (without your email) are shared with the skill's maintainers in a private repository, where a maintainer decides whether to use them. Please do not include confidential data, unpublished results, or names. Please answer yourself; do not let an AI assistant fill in the survey. An assistant may help you draft the text for Q17.",
     "DataExportTag": "intro",
     "Configuration": {
      "QuestionDescriptionOption": "UseText"
@@ -321,13 +743,137 @@
     "Language": [],
     "QuestionType": "DB",
     "Selector": "TB",
-    "QuestionID": "QID18"
+    "QuestionID": "QID2"
    }
   },
   {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
    "Element": "SQ",
-   "PrimaryAttribute": "QID19",
+   "PrimaryAttribute": "QID20",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "Who wrote the Q17 text?",
+    "DataExportTag": "Q18",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "OFF",
+      "ForceResponseType": "OFF",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "MC",
+    "Selector": "SAVR",
+    "SubSelector": "TX",
+    "Choices": {
+     "1": {
+      "Display": "I did"
+     },
+     "2": {
+      "Display": "AI assistant, I reviewed it"
+     },
+     "3": {
+      "Display": "AI assistant, not reviewed"
+     }
+    },
+    "ChoiceOrder": [
+     1,
+     2,
+     3
+    ],
+    "DisplayLogic": {
+     "0": {
+      "0": {
+       "LogicType": "Question",
+       "QuestionID": "QID19",
+       "QuestionIsInLoop": "no",
+       "ChoiceLocator": "q://QID19/ChoiceTextEntryValue",
+       "Operator": "NotEmpty",
+       "QuestionIDFromLocator": "QID19",
+       "LeftOperand": "q://QID19/ChoiceTextEntryValue",
+       "Type": "Expression",
+       "Description": "If Q17 is not empty"
+      },
+      "Type": "If"
+     },
+     "Type": "BooleanExpression",
+     "inPage": false
+    },
+    "QuestionID": "QID20"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID21",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "May we quote your answers, anonymized, in public (e.g. in a change to the skill)?",
+    "DataExportTag": "Q19",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "ON",
+      "ForceResponseType": "ON",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "MC",
+    "Selector": "SAVR",
+    "SubSelector": "TX",
+    "Choices": {
+     "1": {
+      "Display": "Yes"
+     },
+     "2": {
+      "Display": "No"
+     }
+    },
+    "ChoiceOrder": [
+     1,
+     2
+    ],
+    "QuestionID": "QID21"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID22",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "Email, if you want a reply (never published)",
+    "DataExportTag": "Q20",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "OFF",
+      "ForceResponseType": "OFF",
+      "Type": "ContentType",
+      "ContentType": "ValidEmail"
+     }
+    },
+    "Language": [],
+    "QuestionType": "TE",
+    "Selector": "SL",
+    "QuestionID": "QID22"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID3",
    "SecondaryAttribute": null,
    "TertiaryAttribute": null,
    "Payload": {
@@ -367,17 +913,17 @@
      3,
      4
     ],
-    "QuestionID": "QID19"
+    "QuestionID": "QID3"
    }
   },
   {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
    "Element": "SQ",
-   "PrimaryAttribute": "QID20",
+   "PrimaryAttribute": "QID4",
    "SecondaryAttribute": null,
    "TertiaryAttribute": null,
    "Payload": {
-    "QuestionText": "How did you run it?",
+    "QuestionText": "Which AI tool did you use?",
     "DataExportTag": "Q2",
     "Configuration": {
      "QuestionDescriptionOption": "UseText"
@@ -395,13 +941,63 @@
     "SubSelector": "TX",
     "Choices": {
      "1": {
-      "Display": "Claude Code"
+      "Display": "Claude (Anthropic)"
      },
      "2": {
-      "Display": "claude.ai (skill upload)"
+      "Display": "ChatGPT / Codex (OpenAI)"
      },
      "3": {
-      "Display": "Other chatbot with the prompt file"
+      "Display": "Gemini (Google)"
+     },
+     "4": {
+      "Display": "Microsoft Copilot / GitHub Copilot"
+     },
+     "5": {
+      "Display": "Other"
+     }
+    },
+    "ChoiceOrder": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "QuestionID": "QID4"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID5",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "How did you use it?",
+    "DataExportTag": "Q3",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "ON",
+      "ForceResponseType": "ON",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "MC",
+    "Selector": "SAVR",
+    "SubSelector": "TX",
+    "Choices": {
+     "1": {
+      "Display": "Chat interface (web, desktop, or mobile app)"
+     },
+     "2": {
+      "Display": "Coding agent or IDE assistant (e.g. Claude Code, Codex CLI, Cursor, Copilot in VS Code)"
+     },
+     "3": {
+      "Display": "API or own script"
      },
      "4": {
       "Display": "Other"
@@ -413,18 +1009,85 @@
      3,
      4
     ],
-    "QuestionID": "QID20"
+    "QuestionID": "QID5"
    }
   },
   {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
    "Element": "SQ",
-   "PrimaryAttribute": "QID21",
+   "PrimaryAttribute": "QID6",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "How did you give it the review instructions?",
+    "DataExportTag": "Q4",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "ON",
+      "ForceResponseType": "ON",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "MC",
+    "Selector": "SAVR",
+    "SubSelector": "TX",
+    "Choices": {
+     "1": {
+      "Display": "Installed the skill (readme-review.zip or skill folder)"
+     },
+     "2": {
+      "Display": "Pasted or attached the prompt file"
+     },
+     "3": {
+      "Display": "Other"
+     }
+    },
+    "ChoiceOrder": [
+     1,
+     2,
+     3
+    ],
+    "QuestionID": "QID6"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID7",
+   "SecondaryAttribute": null,
+   "TertiaryAttribute": null,
+   "Payload": {
+    "QuestionText": "Model, if you know it (e.g. the name shown in the model picker)",
+    "DataExportTag": "Q5",
+    "Configuration": {
+     "QuestionDescriptionOption": "UseText"
+    },
+    "Validation": {
+     "Settings": {
+      "ForceResponse": "OFF",
+      "ForceResponseType": "OFF",
+      "Type": "None"
+     }
+    },
+    "Language": [],
+    "QuestionType": "TE",
+    "Selector": "SL",
+    "QuestionID": "QID7"
+   }
+  },
+  {
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
+   "Element": "SQ",
+   "PrimaryAttribute": "QID8",
    "SecondaryAttribute": null,
    "TertiaryAttribute": null,
    "Payload": {
     "QuestionText": "Mode",
-    "DataExportTag": "Q3",
+    "DataExportTag": "Q6",
     "Configuration": {
      "QuestionDescriptionOption": "UseText"
     },
@@ -451,542 +1114,54 @@
      1,
      2
     ],
-    "QuestionID": "QID21"
+    "QuestionID": "QID8"
    }
   },
   {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
    "Element": "SQ",
-   "PrimaryAttribute": "QID22",
+   "PrimaryAttribute": "QID9",
    "SecondaryAttribute": null,
    "TertiaryAttribute": null,
    "Payload": {
-    "QuestionText": "How useful was the report? (1 = not useful, 5 = very useful)",
-    "DataExportTag": "Q4",
-    "Configuration": {
-     "QuestionDescriptionOption": "UseText"
-    },
-    "Validation": {
-     "Settings": {
-      "ForceResponse": "ON",
-      "ForceResponseType": "ON",
-      "Type": "None"
-     }
-    },
-    "Language": [],
-    "QuestionType": "MC",
-    "Selector": "SAHR",
-    "SubSelector": "TX",
-    "Choices": {
-     "1": {
-      "Display": "1"
-     },
-     "2": {
-      "Display": "2"
-     },
-     "3": {
-      "Display": "3"
-     },
-     "4": {
-      "Display": "4"
-     },
-     "5": {
-      "Display": "5"
-     }
-    },
-    "ChoiceOrder": [
-     1,
-     2,
-     3,
-     4,
-     5
-    ],
-    "QuestionID": "QID22"
-   }
-  },
-  {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
-   "Element": "SQ",
-   "PrimaryAttribute": "QID23",
-   "SecondaryAttribute": null,
-   "TertiaryAttribute": null,
-   "Payload": {
-    "QuestionText": "Did the report flag anything that was <b>not</b> a real problem?",
-    "DataExportTag": "Q5",
-    "Configuration": {
-     "QuestionDescriptionOption": "UseText"
-    },
-    "Validation": {
-     "Settings": {
-      "ForceResponse": "ON",
-      "ForceResponseType": "ON",
-      "Type": "None"
-     }
-    },
-    "Language": [],
-    "QuestionType": "MC",
-    "Selector": "SAVR",
-    "SubSelector": "TX",
-    "Choices": {
-     "1": {
-      "Display": "Yes"
-     },
-     "2": {
-      "Display": "No"
-     }
-    },
-    "ChoiceOrder": [
-     1,
-     2
-    ],
-    "QuestionID": "QID23"
-   }
-  },
-  {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
-   "Element": "SQ",
-   "PrimaryAttribute": "QID24",
-   "SecondaryAttribute": null,
-   "TertiaryAttribute": null,
-   "Payload": {
-    "QuestionText": "Did it <b>miss</b> a problem you know about?",
-    "DataExportTag": "Q6",
-    "Configuration": {
-     "QuestionDescriptionOption": "UseText"
-    },
-    "Validation": {
-     "Settings": {
-      "ForceResponse": "ON",
-      "ForceResponseType": "ON",
-      "Type": "None"
-     }
-    },
-    "Language": [],
-    "QuestionType": "MC",
-    "Selector": "SAVR",
-    "SubSelector": "TX",
-    "Choices": {
-     "1": {
-      "Display": "Yes"
-     },
-     "2": {
-      "Display": "No"
-     }
-    },
-    "ChoiceOrder": [
-     1,
-     2
-    ],
-    "QuestionID": "QID24"
-   }
-  },
-  {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
-   "Element": "SQ",
-   "PrimaryAttribute": "QID25",
-   "SecondaryAttribute": null,
-   "TertiaryAttribute": null,
-   "Payload": {
-    "QuestionText": "Did the edited copy contain invented facts (versions, URLs, data sources, runtimes)?",
+    "QuestionText": "Which other AI tool did you use?",
     "DataExportTag": "Q7",
     "Configuration": {
      "QuestionDescriptionOption": "UseText"
     },
     "Validation": {
      "Settings": {
-      "ForceResponse": "ON",
-      "ForceResponseType": "ON",
-      "Type": "None"
-     }
-    },
-    "Language": [],
-    "QuestionType": "MC",
-    "Selector": "SAVR",
-    "SubSelector": "TX",
-    "Choices": {
-     "1": {
-      "Display": "Yes"
-     },
-     "2": {
-      "Display": "No"
-     },
-     "3": {
-      "Display": "Did not check"
-     }
-    },
-    "ChoiceOrder": [
-     1,
-     2,
-     3
-    ],
-    "DisplayLogic": {
-     "0": {
-      "0": {
-       "LogicType": "Question",
-       "QuestionID": "QID21",
-       "QuestionIsInLoop": "no",
-       "ChoiceLocator": "q://QID21/SelectableChoice/2",
-       "Operator": "Selected",
-       "QuestionIDFromLocator": "QID21",
-       "LeftOperand": "q://QID21/SelectableChoice/2",
-       "Type": "Expression",
-       "Description": "If Q3 = Review + edited copy"
-      },
-      "Type": "If"
-     },
-     "Type": "BooleanExpression",
-     "inPage": false
-    },
-    "QuestionID": "QID25"
-   }
-  },
-  {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
-   "Element": "SQ",
-   "PrimaryAttribute": "QID26",
-   "SecondaryAttribute": null,
-   "TertiaryAttribute": null,
-   "Payload": {
-    "QuestionText": "Was the report the right length?",
-    "DataExportTag": "Q8",
-    "Configuration": {
-     "QuestionDescriptionOption": "UseText"
-    },
-    "Validation": {
-     "Settings": {
       "ForceResponse": "OFF",
       "ForceResponseType": "OFF",
       "Type": "None"
-     }
-    },
-    "Language": [],
-    "QuestionType": "MC",
-    "Selector": "SAVR",
-    "SubSelector": "TX",
-    "Choices": {
-     "1": {
-      "Display": "Too short"
-     },
-     "2": {
-      "Display": "About right"
-     },
-     "3": {
-      "Display": "Too long"
-     }
-    },
-    "ChoiceOrder": [
-     1,
-     2,
-     3
-    ],
-    "QuestionID": "QID26"
-   }
-  },
-  {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
-   "Element": "SQ",
-   "PrimaryAttribute": "QID27",
-   "SecondaryAttribute": null,
-   "TertiaryAttribute": null,
-   "Payload": {
-    "QuestionText": "Which finding was not a real problem, and why?",
-    "DataExportTag": "Q5a",
-    "Configuration": {
-     "QuestionDescriptionOption": "UseText"
-    },
-    "Validation": {
-     "Settings": {
-      "ForceResponse": "OFF",
-      "ForceResponseType": "OFF",
-      "Type": "None"
-     }
-    },
-    "Language": [],
-    "QuestionType": "TE",
-    "Selector": "ESTB",
-    "DisplayLogic": {
-     "0": {
-      "0": {
-       "LogicType": "Question",
-       "QuestionID": "QID23",
-       "QuestionIsInLoop": "no",
-       "ChoiceLocator": "q://QID23/SelectableChoice/1",
-       "Operator": "Selected",
-       "QuestionIDFromLocator": "QID23",
-       "LeftOperand": "q://QID23/SelectableChoice/1",
-       "Type": "Expression",
-       "Description": "If Q5 = Yes"
-      },
-      "Type": "If"
-     },
-     "Type": "BooleanExpression",
-     "inPage": false
-    },
-    "QuestionID": "QID27"
-   }
-  },
-  {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
-   "Element": "SQ",
-   "PrimaryAttribute": "QID28",
-   "SecondaryAttribute": null,
-   "TertiaryAttribute": null,
-   "Payload": {
-    "QuestionText": "What was missed?",
-    "DataExportTag": "Q6a",
-    "Configuration": {
-     "QuestionDescriptionOption": "UseText"
-    },
-    "Validation": {
-     "Settings": {
-      "ForceResponse": "OFF",
-      "ForceResponseType": "OFF",
-      "Type": "None"
-     }
-    },
-    "Language": [],
-    "QuestionType": "TE",
-    "Selector": "ESTB",
-    "DisplayLogic": {
-     "0": {
-      "0": {
-       "LogicType": "Question",
-       "QuestionID": "QID24",
-       "QuestionIsInLoop": "no",
-       "ChoiceLocator": "q://QID24/SelectableChoice/1",
-       "Operator": "Selected",
-       "QuestionIDFromLocator": "QID24",
-       "LeftOperand": "q://QID24/SelectableChoice/1",
-       "Type": "Expression",
-       "Description": "If Q6 = Yes"
-      },
-      "Type": "If"
-     },
-     "Type": "BooleanExpression",
-     "inPage": false
-    },
-    "QuestionID": "QID28"
-   }
-  },
-  {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
-   "Element": "SQ",
-   "PrimaryAttribute": "QID29",
-   "SecondaryAttribute": null,
-   "TertiaryAttribute": null,
-   "Payload": {
-    "QuestionText": "Which facts were invented?",
-    "DataExportTag": "Q7a",
-    "Configuration": {
-     "QuestionDescriptionOption": "UseText"
-    },
-    "Validation": {
-     "Settings": {
-      "ForceResponse": "OFF",
-      "ForceResponseType": "OFF",
-      "Type": "None"
-     }
-    },
-    "Language": [],
-    "QuestionType": "TE",
-    "Selector": "ESTB",
-    "DisplayLogic": {
-     "0": {
-      "0": {
-       "LogicType": "Question",
-       "QuestionID": "QID25",
-       "QuestionIsInLoop": "no",
-       "ChoiceLocator": "q://QID25/SelectableChoice/1",
-       "Operator": "Selected",
-       "QuestionIDFromLocator": "QID25",
-       "LeftOperand": "q://QID25/SelectableChoice/1",
-       "Type": "Expression",
-       "Description": "If Q7 = Yes"
-      },
-      "Type": "If"
-     },
-     "Type": "BooleanExpression",
-     "inPage": false
-    },
-    "QuestionID": "QID29"
-   }
-  },
-  {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
-   "Element": "SQ",
-   "PrimaryAttribute": "QID30",
-   "SecondaryAttribute": null,
-   "TertiaryAttribute": null,
-   "Payload": {
-    "QuestionText": "Any other suggestion?",
-    "DataExportTag": "Q9",
-    "Configuration": {
-     "QuestionDescriptionOption": "UseText"
-    },
-    "Validation": {
-     "Settings": {
-      "ForceResponse": "OFF",
-      "ForceResponseType": "OFF",
-      "Type": "None"
-     }
-    },
-    "Language": [],
-    "QuestionType": "TE",
-    "Selector": "ESTB",
-    "QuestionID": "QID30"
-   }
-  },
-  {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
-   "Element": "SQ",
-   "PrimaryAttribute": "QID31",
-   "SecondaryAttribute": null,
-   "TertiaryAttribute": null,
-   "Payload": {
-    "QuestionText": "Proposed changes to the skill. If you (or your AI assistant) analyzed why the review went wrong, paste the analysis and concrete changes here, e.g. \"In references/style-guide.md, add: ...\". Plain text; no code to run.",
-    "DataExportTag": "Q10",
-    "Configuration": {
-     "QuestionDescriptionOption": "UseText"
-    },
-    "Validation": {
-     "Settings": {
-      "ForceResponse": "OFF",
-      "ForceResponseType": "OFF",
-      "Type": "None"
-     }
-    },
-    "Language": [],
-    "QuestionType": "TE",
-    "Selector": "ESTB",
-    "QuestionID": "QID31"
-   }
-  },
-  {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
-   "Element": "SQ",
-   "PrimaryAttribute": "QID32",
-   "SecondaryAttribute": null,
-   "TertiaryAttribute": null,
-   "Payload": {
-    "QuestionText": "Who wrote the Q10 text?",
-    "DataExportTag": "Q11",
-    "Configuration": {
-     "QuestionDescriptionOption": "UseText"
-    },
-    "Validation": {
-     "Settings": {
-      "ForceResponse": "OFF",
-      "ForceResponseType": "OFF",
-      "Type": "None"
-     }
-    },
-    "Language": [],
-    "QuestionType": "MC",
-    "Selector": "SAVR",
-    "SubSelector": "TX",
-    "Choices": {
-     "1": {
-      "Display": "I did"
-     },
-     "2": {
-      "Display": "AI assistant, I reviewed it"
-     },
-     "3": {
-      "Display": "AI assistant, not reviewed"
-     }
-    },
-    "ChoiceOrder": [
-     1,
-     2,
-     3
-    ],
-    "DisplayLogic": {
-     "0": {
-      "0": {
-       "LogicType": "Question",
-       "QuestionID": "QID31",
-       "QuestionIsInLoop": "no",
-       "ChoiceLocator": "q://QID31/ChoiceTextEntryValue",
-       "Operator": "NotEmpty",
-       "QuestionIDFromLocator": "QID31",
-       "LeftOperand": "q://QID31/ChoiceTextEntryValue",
-       "Type": "Expression",
-       "Description": "If Q10 is not empty"
-      },
-      "Type": "If"
-     },
-     "Type": "BooleanExpression",
-     "inPage": false
-    },
-    "QuestionID": "QID32"
-   }
-  },
-  {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
-   "Element": "SQ",
-   "PrimaryAttribute": "QID33",
-   "SecondaryAttribute": null,
-   "TertiaryAttribute": null,
-   "Payload": {
-    "QuestionText": "May we quote your answers, anonymized, in public (e.g. in a change to the skill)?",
-    "DataExportTag": "Q12",
-    "Configuration": {
-     "QuestionDescriptionOption": "UseText"
-    },
-    "Validation": {
-     "Settings": {
-      "ForceResponse": "ON",
-      "ForceResponseType": "ON",
-      "Type": "None"
-     }
-    },
-    "Language": [],
-    "QuestionType": "MC",
-    "Selector": "SAVR",
-    "SubSelector": "TX",
-    "Choices": {
-     "1": {
-      "Display": "Yes"
-     },
-     "2": {
-      "Display": "No"
-     }
-    },
-    "ChoiceOrder": [
-     1,
-     2
-    ],
-    "QuestionID": "QID33"
-   }
-  },
-  {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
-   "Element": "SQ",
-   "PrimaryAttribute": "QID34",
-   "SecondaryAttribute": null,
-   "TertiaryAttribute": null,
-   "Payload": {
-    "QuestionText": "Email, if you want a reply (never published)",
-    "DataExportTag": "Q13",
-    "Configuration": {
-     "QuestionDescriptionOption": "UseText"
-    },
-    "Validation": {
-     "Settings": {
-      "ForceResponse": "OFF",
-      "ForceResponseType": "OFF",
-      "Type": "ContentType",
-      "ContentType": "ValidEmail"
      }
     },
     "Language": [],
     "QuestionType": "TE",
     "Selector": "SL",
-    "QuestionID": "QID34"
+    "DisplayLogic": {
+     "0": {
+      "0": {
+       "LogicType": "Question",
+       "QuestionID": "QID4",
+       "QuestionIsInLoop": "no",
+       "ChoiceLocator": "q://QID4/SelectableChoice/5",
+       "Operator": "Selected",
+       "QuestionIDFromLocator": "QID4",
+       "LeftOperand": "q://QID4/SelectableChoice/5",
+       "Type": "Expression",
+       "Description": "If Q2 = Other"
+      },
+      "Type": "If"
+     },
+     "Type": "BooleanExpression",
+     "inPage": false
+    },
+    "QuestionID": "QID9"
    }
   },
   {
-   "SurveyID": "SV_3UW3jQbuNPpLtSC",
+   "SurveyID": "SV_blzbYfhetCOJ2GW",
    "Element": "STAT",
    "PrimaryAttribute": "Survey Statistics",
    "SecondaryAttribute": null,
