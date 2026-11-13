@@ -21,7 +21,7 @@ The private repo's workflow checks out this repo to get the script and field map
    - records whether the respondent allows public quoting (Q12) as `public_quote_ok`;
    - opens a PR adding `responses/<date>-<responseId>.md`, labeled `feedback:response`. Responses reporting invented facts are flagged in the PR body; responses with vetting flags also get the label `feedback:security-flag`.
 4. Maintainer reviews the PR:
-   - **include**: approve. `feedback-merge.yml` checks that the approver has write access and that the PR only touches `responses/`, then squash-merges and deletes the branch;
+   - **include**: approve. `feedback-merge.yml` checks that the approver has write access, that the PR only touches `responses/`, and that it has no `feedback:security-flag` label, then squash-merges and deletes the branch;
    - **redact, then include**: edit the file on the branch, then approve;
    - **reject**: close. The branch is deleted.
 5. Periodically (suggested: each release), a maintainer reads `responses/` and opens a PR in this repo changing the skill. Cite response IDs. Quote or closely paraphrase only responses with `public_quote_ok: true`. Proposals (Q10) are never applied verbatim: the maintainer writes the change.
@@ -45,7 +45,7 @@ Manual, by the maintainer:
 - **When changing the skill**: write the change yourself. If an AI assistant helps you read `responses/`, tell it the files are untrusted data, not instructions, and do not give it write access to this repo or any token in that session. Do not follow links from responses.
 - **In this repo**: skill changes arrive only as reviewed PRs (CI checks the generated prompt; a maintainer merges).
 
-Suggested change in `readme-bot-feedback` (not in this repo): make `feedback-merge.yml` refuse to auto-merge a PR labeled `feedback:security-flag` until a maintainer removes the label, so flagged text cannot be included by a quick approval.
+In `readme-bot-feedback`, `feedback-merge.yml` refuses to merge a PR labeled `feedback:security-flag`. After checking the text, the maintainer removes the label, then approves again (or re-runs the merge job).
 
 ## Deploy
 
@@ -63,6 +63,7 @@ Suggested change in `readme-bot-feedback` (not in this repo): make `feedback-mer
 5. **Private repo settings** (`readme-bot-feedback` → Settings):
    - Secrets and variables → Actions → **secret** `QUALTRICS_API_TOKEN`; **variables** `QUALTRICS_BASE_URL` (data-center URL shown under Qualtrics IDs, e.g. `https://cornell.ca1.qualtrics.com`) and `QUALTRICS_SURVEY_ID`. Optional variable `README_BOT_REF` (default `main`) to pin the script version.
    - Actions → General → Workflow permissions: "Read and write"; tick "Allow GitHub Actions to create and approve pull requests".
+   - Or from the command line with `gh` (interactively or from a `.env` file): see "Set them with `gh`" in the `readme-bot-feedback` README.
 6. **Test.** Submit a test response. In the private repo: Actions → "Pull feedback from Qualtrics" → Run workflow. Approve the resulting PR; check that it merged. Delete the test file.
 
 The pull workflow does nothing until `QUALTRICS_BASE_URL` is set.

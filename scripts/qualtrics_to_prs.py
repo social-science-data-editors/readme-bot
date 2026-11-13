@@ -234,9 +234,9 @@ def open_pr(rec, path, content, base):
 
 def ensure_labels():
     run("gh", "label", "create", LABEL, "--force", "--color", "0e8a16",
-        "--description", "Survey response")
+        "--description", "Survey response awaiting maintainer decision")
     run("gh", "label", "create", FLAG_LABEL, "--force", "--color", "d93f0b",
-        "--description", "Free text flagged by automated vetting; review before approving")
+        "--description", "Free text flagged by automated vetting; check, then remove label to allow merge")
 
 
 # ---------- Main ----------
