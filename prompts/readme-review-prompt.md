@@ -6,7 +6,7 @@ Paste everything below into a chat tool, then attach or paste the README (and, i
 
 Where the text refers to files in `references/`, use the matching appendix below.
 Skill version: 0.1.0.
-Feedback link (`FEEDBACK_URL`, version already filled in): https://cornell.yul1.qualtrics.com/jfe/form/SV_3UW3jQbuNPpLtSC?skill_version=0.1.0
+Feedback link (`FEEDBACK_URL`, version already filled in): https://cornell.yul1.qualtrics.com/jfe/form/SV_blzbYfhetCOJ2GW?skill_version=0.1.0
 
 ---
 

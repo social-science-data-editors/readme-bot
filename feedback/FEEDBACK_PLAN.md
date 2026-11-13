@@ -12,27 +12,27 @@ The private repo's workflow checks out this repo to get the script and field map
 ## Flow
 
 1. User runs the skill. The report ends with the survey link, carrying the skill version. The skill tells the agent that the survey is for the human and not to fill it in.
-2. User answers the survey. Optionally, they ask their AI assistant to analyze why the review went wrong and paste its concrete proposals into Q10 (free text), saying in Q11 who wrote it.
+2. User answers the survey. Optionally, they ask their AI assistant to analyze why the review went wrong and paste its concrete proposals into the free-text proposal question (`proposal`), saying who wrote it (`proposal_author`).
 3. Daily, `feedback-pull.yml` in the private repo runs the script:
    - exports all responses through the Qualtrics API;
    - skips unfinished responses and responses that already have a PR (open, merged, or closed);
    - drops the email question, replaces any email address in free text with `[email removed]`, truncates long text;
    - vets all free text (see [Security vetting](#security-vetting));
-   - records whether the respondent allows public quoting (Q12) as `public_quote_ok`;
+   - records whether the respondent allows public quoting (`consent`) as `public_quote_ok`;
    - opens a PR adding `responses/<date>-<responseId>.md`, labeled `feedback:response`. Responses reporting invented facts are flagged in the PR body; responses with vetting flags also get the label `feedback:security-flag`.
 4. Maintainer reviews the PR:
    - **include**: approve. `feedback-merge.yml` checks that the approver has write access, that the PR only touches `responses/`, and that it has no `feedback:security-flag` label, then squash-merges and deletes the branch;
    - **redact, then include**: edit the file on the branch, then approve;
    - **reject**: close. The branch is deleted.
-5. Periodically (suggested: each release), a maintainer reads `responses/` and opens a PR in this repo changing the skill. Cite response IDs. Quote or closely paraphrase only responses with `public_quote_ok: true`. Proposals (Q10) are never applied verbatim: the maintainer writes the change.
+5. Periodically (suggested: each release), a maintainer reads `responses/` and opens a PR in this repo changing the skill. Cite response IDs. Quote or closely paraphrase only responses with `public_quote_ok: true`. Proposals (`proposal`) are never applied verbatim: the maintainer writes the change.
 
 ## Security vetting
 
-All free text is untrusted. Q10 in particular invites text pasted from an AI assistant, which may carry prompt injection aimed at whoever (or whatever) later reads `responses/` to change the skill.
+All free text is untrusted. The `proposal` question in particular invites text pasted from an AI assistant, which may carry prompt injection aimed at whoever (or whatever) later reads `responses/` to change the skill.
 
 Automated, in `scripts/qualtrics_to_prs.py` (runs in the private repo's pull workflow):
 
-- removes invisible characters (zero-width, bidi controls, Unicode tags) and email addresses; truncates (2,000 characters; 10,000 for Q10);
+- removes invisible characters (zero-width, bidi controls, Unicode tags) and email addresses; truncates (2,000 characters; 10,000 for `proposal`);
 - flags text that contains: instructions aimed at an AI ("ignore previous instructions", role tags), commands or code (fences, `curl`, `| sh`, …), links, HTML, long encoded blobs, mentions of credentials or data transfer, or references to repo automation (`.github`, workflows, tokens);
 - stores every free-text answer inside a code fence, so nothing renders as Markdown or HTML;
 - flags likely bots: reCAPTCHA score (`Q_RecaptchaScore`, from Qualtrics bot detection) below 0.5; records `bot_status` (`Q_RecaptchaStatus`); skips survey-preview responses;
@@ -67,7 +67,7 @@ In `readme-bot-feedback`, `feedback-merge.yml` refuses to merge a PR labeled `fe
 
 ## One-time setup
 
-Done on 2026-11-13 for survey `SV_3UW3jQbuNPpLtSC` ("README Bot Feedback Form", Cornell brand, data center `cornell.yul1.qualtrics.com`), except where marked open. Repeat these steps only to set up a new survey.
+Done on 2026-11-13 for survey `SV_blzbYfhetCOJ2GW` ("README Bot Feedback Form", Cornell brand, data center `cornell.yul1.qualtrics.com`), except where marked open. (A first survey, `SV_3UW3jQbuNPpLtSC`, was used for testing and deleted.) Repeat these steps only to set up a new survey.
 
 1. **API token.** Qualtrics → Account settings → Qualtrics IDs → generate token. (If the button is missing, ask the Qualtrics brand admin to enable API access.) Note the data-center URL shown there (e.g. `cornell.yul1.qualtrics.com`; with or without `https://`).
 2. **Blank survey, by hand.** Qualtrics → Create project → Survey → start from scratch. Note its ID (`SV_…`, in the URL). (The script can also create the survey itself; leave out `--survey-id`.)
@@ -81,16 +81,16 @@ Done on 2026-11-13 for survey `SV_3UW3jQbuNPpLtSC` ("README Bot Feedback Form", 
    - Survey options → Security → **Anonymize responses**: on;
    - Survey options → Security → **Bot detection**: on;
    - Survey options → Security → **Include security fields in responses**: on (exports `Q_RecaptchaScore`; the pull script flags scores below 0.5 as likely bots);
-   - Preview the survey; check display logic (Q7, Q5a–Q7a, Q11);
+   - Preview the survey; check the "Shown if" logic listed in [questions.md](questions.md);
    - share the project with co-maintainers (Collaborate) — *open*;
    - export the QSF to `feedback/survey.qsf` ([Survey definition](#survey-definition-qsf)). Check that its Survey Options show `AnonymizeResponse: Yes`, `RecaptchaV3: true`, `IncludeSecurityFields: true`.
 5. **Check the map**: submit a test response (a Qualtrics preview is enough), then run `scripts/qualtrics_to_prs.py --dry-run --include-previews --repo-dir /tmp/x` with the Qualtrics variables set (or `--from-file <export.json>`). Confirm the answers appear. Do not commit an export.
-   - Done 2026-11-13 with a preview response: answers and labels map correctly.
+   - Done 2026-11-13 with a preview response on the test survey: answers and labels map correctly. Repeat for `SV_blzbYfhetCOJ2GW` — *open*.
    - Previews are skipped by default (`distributionChannel: preview`); `--include-previews` is for testing only.
    - Previews do not run bot detection: they export `Q_RecaptchaStatus: error` and no `Q_RecaptchaScore`. Confirm `bot_score` with the first response through the real link — *open*.
 6. **Commit** map, `FEEDBACK_URL`, and QSF; run `scripts/build.sh`; open a PR.
 7. **Private repo settings** (`readme-bot-feedback` → Settings):
-   - Secrets and variables → Actions → **secret** `QUALTRICS_API_TOKEN` (from an account that owns or shares the survey); **variable** `QUALTRICS_BASE_URL`. The survey ID comes from `qualtrics-map.json` in this repo. Optional variables: `QUALTRICS_SURVEY_ID` (overrides the map), `README_BOT_REF` (default `main`, pins the script version).
+   - Secrets and variables → Actions → `QUALTRICS_API_TOKEN` (secret; `QUALTRICS_API_KEY` also works; from an account that owns or shares the survey) and `QUALTRICS_BASE_URL` (secret or variable). Done: both set as secrets. The survey ID comes from `qualtrics-map.json` in this repo. Optional variables: `QUALTRICS_SURVEY_ID` (overrides the map), `README_BOT_REF` (default `main`, pins the script version).
    - Actions → General → Workflow permissions: "Read and write"; tick "Allow GitHub Actions to create and approve pull requests".
    - Or from the command line with `gh` (interactively or from a `.env` file): see "Set them with `gh`" in the `readme-bot-feedback` README.
 8. **Test** — *open*. Submit a test response. In the private repo: Actions → "Pull feedback from Qualtrics" → Run workflow. Approve the resulting PR; check that it merged. Delete the test file.
@@ -119,6 +119,6 @@ Template disagreements (as opposed to skill problems) go to `social-science-data
 
 Per skill version, from `responses/` (included) and Qualtrics (all):
 
-- number of responses; mean usefulness (Q4);
-- share reporting false findings (Q5), missed issues (Q6), invented facts (Q7). Target for Q7: zero.
-- share with proposals (Q10), by author (Q11), and share flagged by vetting.
+- number of responses; mean `usefulness`;
+- share reporting false findings (`false_findings`), missed issues (`missed_issues`), invented facts (`invented_facts`). Target for invented facts: zero.
+- share with proposals (`proposal`), by author (`proposal_author`), by tool and interface (`tool`, `interface`), and share flagged by vetting.
