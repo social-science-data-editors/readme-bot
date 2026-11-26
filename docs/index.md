@@ -15,11 +15,6 @@ Social Science Data Editors · Skill v0.1.0 · test version
 
 An AI skill that reviews the README of a replication package against the [Template README](https://social-science-data-editors.github.io/template_README/template-README.html), and tells you what a replicator would miss. Works with Claude, ChatGPT, Gemini, Copilot, and others.
 
-{button}`2 · Security and privacy <security.md>`
-{button}`3 · How to use it <use.md>`
-{button}`4 · What to expect <expect.md>`
-{button}`5 · Give feedback <feedback.md>`
-
 +++ {"kind": "justified"}
 
 ## What it is
@@ -29,25 +24,67 @@ readme-bot is a set of instructions for an AI assistant. You give the assistant 
 ::::{grid} 1 1 3 3
 
 :::{card} A · Structure
-Are the Template's sections there, in a sensible order, with the Template's instructions and example text removed?
+Are the Template's sections present, in a sensible order? Any redundant or example text present?
 :::
 
 :::{card} B · Content
-Does each section say what a replicator needs: data access, file list, software versions, seed, runtime, run order, table and figure map, references?
+Does each section have meaningful content, i.e., what a replicator needs: data access, file list, software versions, seed, runtime, run order, table and figure map, references?
 :::
 
 :::{card} C · Style
-Is it short and plain? Lists over prose, steps in the order you run them, no filler, no AI-speak.
+Is the README short and plain? A good README has lists, not long prose; has steps in the order you run them. No unnecessary filler, no AI-speak.
 :::
 
 ::::
 
-```{figure} images/workflow.svg
-:alt: How readme-bot works, and how your feedback changes it. Top row, your side - 1 your README and optional package go to 2 an AI assistant with the readme-review skill, which writes 3 a report and an optional edited copy, which 4 you check. Bottom row, maintainers' side - 5 you answer a short feedback survey, 6 each response becomes a pull request in a private repository after automated vetting, 7 maintainers approve or reject it and write skill changes, which loop back into the skill at step 2.
-:class: rb-infographic
+**How a review works, and how your feedback changes the skill.** Each box links to the page that covers it. _Claude-generated._
 
-**How a review works (top) and how your feedback changes the skill (bottom).** _Claude-generated._
-```
+**Your side**
+
+::::{grid} 1 2 4 4
+
+:::{card} 1 · Your README
+:link: use.md
+Plus the package or a file listing (optional).
+:::
+
+:::{card} 2 · Your AI assistant
+:link: use.md
+Runs the readme-review skill or prompt file.
+:::
+
+:::{card} 3 · Report
+:link: expect.md
+`README-review.md` and, if it saw the package, `README-ai-edited.md`.
+:::
+
+:::{card} 4 · You check it
+:link: expect.md
+Fix your README; verify every AI edit yourself.
+:::
+
+::::
+
+**Maintainers' side** — step 7 feeds a new skill version back into step 2.
+
+::::{grid} 1 2 3 3
+
+:::{card} 5 · Feedback survey
+:link: feedback.md
+About 2 minutes, anonymized; answered by you, not AI.
+:::
+
+:::{card} 6 · Private repository
+:link: security.md
+One pull request per response; free text is vetted.
+:::
+
+:::{card} 7 · Maintainers
+:link: feedback.md
+Approve or reject, and write the next skill version.
+:::
+
+::::
 
 ### Who it is for
 
@@ -66,7 +103,7 @@ Is it short and plain? Lists over prose, steps in the order you run them, no fil
 :::{div}
 :class: rb-footer
 
-readme-bot · [GitHub](https://github.com/social-science-data-editors/readme-bot) · MIT license · Based on the [Template README](https://social-science-data-editors.github.io/template_README/) v1.2. Page and infographic are Claude-generated.
+readme-bot · [GitHub](https://github.com/social-science-data-editors/readme-bot) · MIT license · Based on the [Template README](https://social-science-data-editors.github.io/template_README/) v1.2.
 
 Approved by Lars Vilhuber.
 :::

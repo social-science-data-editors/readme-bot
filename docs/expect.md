@@ -2,7 +2,7 @@
 title: What to expect
 ---
 
-One report, always. An edited copy only when the assistant can see the package. A good README gets a short report.
+You always get a report. You also get an edited copy of your README  when the assistant can see the actual package. A good README gets a short report, one that has issues a longer report.
 
 ::::{grid} 1 1 2 2
 
@@ -11,8 +11,7 @@ One report, always. An edited copy only when the assistant can see the package. 
 
 - One-line verdict and counts by priority.
 - Findings by section: what is wrong, where, and the fix.
-- No praise, no padding.
-- Ends with the feedback link.
+- A feedback link: We would like to hear from you.
 :::
 
 :::{card} `README-ai-edited.md`
@@ -28,8 +27,8 @@ One report, always. An edited copy only when the assistant can see the package. 
 
 ## Priorities
 
-- **High**: a replicator cannot proceed or cannot reproduce a result (no data access, no entry point, unmapped tables, missing software).
-- **Medium**: a replicator can proceed but will lose time or guess (no versions, no runtime, unclear order).
+- **High**: a replicator probably could not proceed or could not reproduce a result (no data access, no entry point, unmapped tables, missing software).
+- **Medium**: a replicator might be able to run the package, but would lose time or guess (no versions, no runtime, unclear order).
 - **Low**: style or polish.
 
 ## A report looks like this

@@ -56,11 +56,13 @@ python3 "$root/scripts/create_survey.py" --markdown >/dev/null
 approvers="$(git -C "$root" log --format='%an|%ae%n%cn|%ce' 2>/dev/null \
   | grep -viE '\[bot\]|^(GitHub|Claude)\||noreply@(github\.com|anthropic\.com)$' \
   | cut -d'|' -f1 | sort -u | paste -sd, - | sed 's/,/, /g' || true)"
+template="$(tr -d '[:space:]' < "$root/TEMPLATE_VERSION")"
 survey="${feedback:-https://github.com/social-science-data-editors/readme-bot/issues}"
 sed -i.bak -E \
   -e "s|(Skill v)[0-9A-Za-z.+-]+|\1$version|" \
+  -e "s|(template_README/\) v)[0-9]+(\.[0-9]+)*|\1$template|" \
   -e "s|^(Approved by ).*|\1${approvers:-the maintainers}.|" "$root/docs/index.md"
-sed -i.bak -E "s|(readme-review v)[0-9A-Za-z.+-]+|\1$version|" "$root/docs/expect.md"
+sed -i.bak -E "s|(readme-review v)[0-9A-Za-z.+-]+( · Template v)[0-9]+(\.[0-9]+)*|\1$version\2$template|" "$root/docs/expect.md"
 sed -i.bak -E "s|(\{button\}\`Open the feedback survey → <)[^>]*|\1$survey|" "$root/docs/feedback.md"
 rm -f "$root"/docs/*.md.bak
 

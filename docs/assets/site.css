@@ -33,18 +33,6 @@
   letter-spacing: 0.08em;
 }
 
-/* The infographic is a light image; frame it so it also sits well in dark mode. */
-.rb-infographic img {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 10px;
-  background: #fff;
-}
-/* Caption: bold description, then a small italic "Claude-generated" note. */
-.rb-infographic figcaption em {
-  font-size: 0.85em;
-  opacity: 0.8;
-}
-
 .rb-footer {
   margin-top: 1rem;
   padding-top: 1rem;
