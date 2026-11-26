@@ -323,6 +323,12 @@ html.dark .rb-ok .rb-icons { background: rgba(111, 207, 151, 0.85); }
   background: #fff;
 }
 .rb-here-img a:hover img { border-color: var(--rb-border-hover); }
+/* The image links to the front page; the theme would show a pop-up preview of
+   that page on hover. Hide the pop-up while this link is the one hovered
+   (it is rendered elsewhere in the page, hence :has on body). */
+body:has(.rb-here-img [data-state$="open"]) [data-radix-popper-content-wrapper] {
+  display: none !important;
+}
 
 /* Header: logo (assets/logo.svg: SSDE mark + robot) AND the site title.
    Keep the title visible next to the logo, whatever the theme version does. */
