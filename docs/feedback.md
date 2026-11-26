@@ -8,6 +8,12 @@ kernelspec:
 
 ---
 
+:::{div}
+:class: rb-here-img
+
+[![Workflow diagram with step 5 (Feedback survey) marked: you are here.](images/here/step-5.png)](index.md#workflow)
+:::
+
 ```{code-cell} python
 :tags: [remove-cell]
 import json

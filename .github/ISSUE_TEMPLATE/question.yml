@@ -1,0 +1,45 @@
+name: Question
+description: Ask a question about installing or using readme-bot.
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before asking, please check the [installation instructions](https://github.com/social-science-data-editors/readme-bot/blob/main/docs/install.md) and the [FAQ](https://github.com/social-science-data-editors/readme-bot/blob/main/docs/faq.md).
+
+        **Issues are public.** Do not paste confidential or restricted data, unpublished material, or your full README if it is not public. Feedback on a review you received goes in the survey linked at the end of your report, not here.
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      description: What do you want to know?
+    validations:
+      required: true
+  - type: dropdown
+    id: tool
+    attributes:
+      label: Which AI tool are you using?
+      options:
+        - Claude Code or another coding agent (skill folder)
+        - claude.ai (skill zip)
+        - ChatGPT, Gemini, Copilot, or another chatbot (prompt file)
+        - Not using it yet
+        - Other
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: Skill version
+      description: Found in `VERSION` in the skill folder, or at the bottom of your report.
+      placeholder: "0.1.0"
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Anything else?
+      description: What you tried, what happened, error messages. No confidential content.
+    validations:
+      required: false

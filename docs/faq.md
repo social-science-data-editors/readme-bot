@@ -1,13 +1,15 @@
 ---
-title: Security and privacy
+title: FAQ
 ---
 
-readme-bot is text: instructions an AI assistant follows. It does not communicate with any (other) servers. All changes are local - they are not sent to us! 
+## Security and privacy
+
+readme-bot is **text**: instructions an AI assistant follows. It does not communicate with any (other) servers. All changes are local - they are not sent to us! 
 
 :::{dropdown} Where do my files go? — To the AI provider you choose. Nowhere else: not to us, not to your journal.
 :open:
 
-The skill has no code and makes no network calls. Whatever you give your AI assistant goes to that assistant's provider (Anthropic, OpenAI, Google, Microsoft, …) under your account's terms. 
+The skill has **no code** and makes **no network calls**. Whatever you give your AI assistant goes to that assistant's provider (Anthropic, OpenAI, Google, Microsoft, …) under your account's terms. 
 
 - **Review only:** the AI reads only the README.
 - **Review + edited copy:** the AI also accesses your replication package, including any data that may be there. Alternatively, you share only a file listing. A listing (for example the output of `find . -type f`) is enough for most checks and contains no data.
@@ -56,3 +58,7 @@ The single-file prompt ([`readme-review-prompt.md`](https://github.com/social-sc
 
 Details: [feedback plan](https://github.com/social-science-data-editors/readme-bot/blob/main/feedback/FEEDBACK_PLAN.md).
 :::
+
+## Your question is not here?
+
+[Ask it on GitHub](https://github.com/social-science-data-editors/readme-bot/issues/new?template=question.yml). Issues are public: do not include confidential data or unpublished material.

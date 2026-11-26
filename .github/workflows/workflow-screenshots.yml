@@ -1,0 +1,64 @@
+name: Workflow screenshots
+
+# The pages install, use, expect and feedback lead with a screenshot of the
+# workflow diagram on the front page (docs/index.md), with their step marked
+# "You are here" (docs/images/here/*.png). When docs/index.md changes, rebuild
+# the site, retake the screenshots, and commit them to the same branch.
+# Run it by hand (Actions → Workflow screenshots → Run workflow) after changing
+# only the styles in docs/assets/site.css.
+on:
+  push:
+    branches: ['**']
+    paths:
+      - docs/index.md
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write     # to re-run the Website workflow after committing on main
+
+concurrency:
+  group: workflow-screenshots-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Jupyter Book and Playwright
+        run: |
+          pip install -r docs/requirements.txt
+          playwright install --with-deps chromium
+      - name: Build site
+        working-directory: docs
+        run: jupyter-book build --html --execute
+      - name: Take screenshots
+        run: python scripts/workflow_screenshots.py
+      - name: Commit if changed
+        id: commit
+        run: |
+          if [ -z "$(git status --porcelain -- docs/images/here)" ]; then
+            echo "Screenshots are up to date."
+            exit 0
+          fi
+          git status --short -- docs/images/here
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/images/here
+          git commit -m "Regenerate workflow screenshots from docs/index.md"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+      # A push made with GITHUB_TOKEN does not start other workflows, so the
+      # site on main would keep the old images until the next push.
+      - name: Redeploy the site
+        if: steps.commit.outputs.pushed == 'true' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run site.yml --ref main

@@ -1,2 +1,4 @@
 jupyter-book>=2.0.0
 ipykernel>=6.29
+# Only for scripts/workflow_screenshots.py (images in docs/images/here/).
+playwright>=1.45

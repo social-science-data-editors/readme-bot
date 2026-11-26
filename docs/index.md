@@ -48,31 +48,157 @@ Is the README short and plain? A good README has lists, not long prose; has step
 
 ::::
 
-```{figure} images/workflow.svg
-:alt: How readme-bot works, and how your feedback changes it. Top row, your side - 1 your README and optional package go to 2 an AI assistant with the readme-review skill, which writes 3 a report and an optional edited copy, which 4 you check. Bottom row, maintainers' side - 5 you answer a short feedback survey, 6 each response becomes a pull request in a private repository after automated vetting, 7 maintainers approve or reject it and write skill changes, which loop back into the skill at step 2.
-:class: rb-infographic
+## Workflow
 
-**How a review works (top) and how your feedback changes the skill (bottom).** _Claude-generated._
-```
+:::::{div}
+:class: rb-flow
 
-### Who it is for
+::::{div}
+:class: rb-step rb-you rb-s1
+
+:::{div}
+:class: rb-icons
+
+![](images/icons/user.svg) ![](images/icons/file-lines.svg) ![](images/icons/file-code.svg)
+:::
+
+**1 · Your README**
+
+plus the package or a file listing (optional)
+::::
+
+::::{div}
+:class: rb-step rb-you rb-s2
+
+:::{div}
+:class: rb-icons
+
+![](images/icons/robot.svg)
+:::
+
+**2 · Your AI assistant**
+
+(or you) [installs it](install.md), you then tell it to run the [readme-review skill](use.md) or prompt file
+::::
+
+::::{div}
+:class: rb-step rb-you rb-s3
+
+:::{div}
+:class: rb-icons
+
+![](images/icons/robot.svg) ![](images/icons/file-lines.svg) 
+:::
+
+**3 · Report**
+
+`README-review.md` + `README-ai-edited.md` ([what to expect](expect.md))
+::::
+
+::::{div}
+:class: rb-step rb-you rb-s4
+
+:::{div}
+:class: rb-icons
+
+![](images/icons/book-open-reader.svg)
+:::
+
+**4 · You check it**
+
+fix your README; verify every AI edit yourself
+::::
+
+::::{div}
+:class: rb-step rb-them rb-s5
+
+:::{div}
+:class: rb-icons
+
+![](images/icons/user.svg) ![](images/icons/square-poll-vertical.svg)
+:::
+
+**5 · Feedback survey**
+
+~2 minutes, anonymized; answered by you, not AI ([how](feedback.md))
+::::
+
+::::{div}
+:class: rb-step rb-them rb-s6
+
+:::{div}
+:class: rb-icons
+
+![](images/icons/people-group.svg)
+:::
+
+**6 · Maintainers**
+
+approve or reject; write the next skill version, which feeds back into step 2
+::::
+
+::::{div}
+:class: rb-step rb-ok rb-journal
+
+:::{div}
+:class: rb-icons
+
+![](images/icons/user.svg) ![](images/icons/book.svg)
+:::
+
+**Submit to journal ✓**
+
+your README now tells a replicator what they need
+::::
+
+::::{div}
+:class: rb-loop
+
+next skill version
+::::
+
+::::{div}
+:class: rb-lane rb-lane-you
+
+Your side
+::::
+
+::::{div}
+:class: rb-lane rb-lane-them
+
+Maintainers' side
+::::
+
+:::::
+
+:::{div}
+:class: rb-flow-caption
+
+**How a review works (top) and how your feedback changes the skill (bottom).**
+:::
+
+## Who should use it
 
 - **Authors**, before submitting a replication package.
 - **Data editors and journal staff**, as a first pass before a human review.
 - **Replicators**, to see quickly what a README leaves out.
 
-### What it is not
+## What it is not
 
-- Not a gate. The Template is a suggestion; the review says what differs and why it matters. It never says a README "fails".
-- Not a journal decision. Passing or failing a data editor's check is still up to the data editor.
-- Not a review of your research. It does not judge the paper, the methods, or the results, and it does not run your code.
+- It does not prevent you from submitting. The [Template README](https://social-science-data-editors.github.io/template_README/) is a suggestion at most journals (though some require it). The review says what differs and why it matters. You decide whether to incorporate it.
+- The review is not connected to any journal, and does not imply any journal decision. Passing or failing a data editor's check is still up to the data editor.
+- This is not a review of your research, or the connection between your code and your research. It does not evaluate the paper at all, and it does not run your code.
+
+## Questions?
+
+Start by looking at the [installation instructions](install.md). Consult our [FAQ](faq.md). Questions can also be sent through the [Github repository](https://github.com/social-science-data-editors/readme-bot/issues/new?template=question.yml).
 
 +++ {"class": "rb-footer-block"}
 
 :::{div}
 :class: rb-footer
 
-readme-bot · [GitHub](https://github.com/social-science-data-editors/readme-bot) · MIT license · Based on the [Template README](https://social-science-data-editors.github.io/template_README/) v{eval}`site["template_version"]`.
+readme-bot · [GitHub](https://github.com/social-science-data-editors/readme-bot) · [MIT license](https://github.com/social-science-data-editors/readme-bot/blob/main/LICENSE) · Based on the [Template README](https://social-science-data-editors.github.io/template_README/) v{eval}`site["template_version"]`.
 
 Approved by {eval}`site["approvers"]`.
 :::

@@ -33,18 +33,6 @@
   letter-spacing: 0.08em;
 }
 
-/* The infographic is a light image; frame it so it also sits well in dark mode. */
-.rb-infographic img {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 10px;
-  background: #fff;
-}
-/* Caption: bold description, then a small italic "Claude-generated" note. */
-.rb-infographic figcaption em {
-  font-size: 0.85em;
-  opacity: 0.8;
-}
-
 .rb-footer {
   margin-top: 1rem;
   padding-top: 1rem;
@@ -72,3 +60,286 @@ a.rb-button {
   text-decoration: none !important;
 }
 a.rb-button:hover { filter: brightness(1.1); }
+
+/* ---------------------------------------------------------------------------
+   Cards and panels: rounded, soft border, more air between them, lift on hover.
+   Applies to every {card} on the site (index.md, use.md, expect.md).
+   --------------------------------------------------------------------------- */
+:root {
+  --rb-teal: #1f6f78;
+  --rb-border: rgba(31, 111, 120, 0.25);
+  --rb-border-hover: rgba(31, 111, 120, 0.6);
+  --rb-tint-you: rgba(31, 111, 120, 0.07);
+  --rb-tint-them: rgba(140, 120, 70, 0.08);
+  --rb-ok: #2e7d4f;
+  --rb-tint-ok: rgba(46, 125, 79, 0.10);
+  --rb-border-ok: rgba(46, 125, 79, 0.45);
+  --rb-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --rb-shadow-hover: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+html.dark {
+  --rb-teal: #5ec4c4;
+  --rb-border: rgba(94, 196, 196, 0.25);
+  --rb-border-hover: rgba(94, 196, 196, 0.6);
+  --rb-tint-you: rgba(94, 196, 196, 0.08);
+  --rb-tint-them: rgba(220, 200, 150, 0.07);
+  --rb-ok: #6fcf97;
+  --rb-tint-ok: rgba(111, 207, 151, 0.10);
+  --rb-border-ok: rgba(111, 207, 151, 0.45);
+}
+
+.myst-grid {
+  gap: 1.75rem !important;
+}
+.myst-card {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border-radius: 1.25rem !important;
+  border: 1px solid var(--rb-border) !important;
+  box-shadow: var(--rb-shadow) !important;
+  height: 100%;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.myst-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--rb-shadow-hover) !important;
+  border-color: var(--rb-border-hover) !important;
+}
+.myst-card-title {
+  color: var(--rb-teal);
+}
+.myst-card-header {
+  background: var(--rb-tint-you) !important;
+  border-bottom-color: var(--rb-border) !important;
+}
+.myst-card-body { padding: 0.75rem 1.25rem !important; }
+
+/* ---------------------------------------------------------------------------
+   Workflow (index.md): drawn with CSS grid, four columns.
+     row 1: lane label "Your side"
+     row 2: 1 -> 2 -> 3
+     row 3:      loop   4 -> Submit to journal     (4 sits under 3)
+     row 4: lane, 6  <- 5                          (5 under 4, 6 under 2)
+   3 points down to 4, 4 points right (journal) and down (5), 5 points left,
+   and a dashed line with a triangle runs from 6 up to 2 (next skill version).
+   Arrows are small CSS triangles placed in the grid gap. On narrow screens the
+   boxes stack in order and every arrow points down.
+   --------------------------------------------------------------------------- */
+.rb-flow {
+  --gap: 2.25rem;
+  --tri: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: var(--gap);
+  margin: 1.5rem 0 0.5rem;
+}
+.rb-lane {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  align-self: end;
+  margin-bottom: calc(-1 * var(--gap) + 0.4rem);
+}
+.rb-lane p { margin: 0; }
+.rb-lane-you  { grid-column: 1 / 5; grid-row: 1; }
+.rb-lane-them { grid-column: 1; grid-row: 4; align-self: center; margin: 0; text-align: right; }
+
+.rb-step {
+  position: relative;
+  padding: 0.85rem 1rem;
+  border-radius: 1.25rem;
+  border: 1px solid var(--rb-border);
+  box-shadow: var(--rb-shadow);
+  font-size: 0.92rem;
+  line-height: 1.4;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.rb-step:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--rb-shadow-hover);
+  border-color: var(--rb-border-hover);
+}
+.rb-step p { margin: 0.2rem 0; }
+.rb-step strong { display: block; font-size: 1.02rem; color: var(--rb-teal); }
+.rb-step code { font-size: 0.85em; }
+/* Icon badge at the top of each box (Font Awesome Free SVGs in docs/images/icons,
+   coloured by their own fill attribute), in a {div} with class rb-icons. */
+.rb-step { text-align: center; padding: 1.1rem 1.1rem 1.2rem; }
+.rb-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.55rem;
+  width: fit-content;
+  margin: 0 auto 0.6rem;
+  padding: 0.7rem 0.95rem;
+  border-radius: 9999px;
+  background: rgba(31, 111, 120, 0.1);
+}
+.rb-icons p { display: contents; }
+.rb-icons img {
+  height: 2rem !important;
+  width: 2.4rem !important;
+  object-fit: contain;
+  max-width: none !important;
+  max-height: none !important;   /* the theme caps inline images at 1.2em */
+  flex: none;
+  margin: 0 !important;
+}
+.rb-ok .rb-icons { background: rgba(46, 125, 79, 0.12); }
+html.dark .rb-icons { background: rgba(94, 196, 196, 0.85); }
+html.dark .rb-ok .rb-icons { background: rgba(111, 207, 151, 0.85); }
+.rb-you  { background: var(--rb-tint-you); }
+.rb-them { background: var(--rb-tint-them); border-style: dashed; }
+.rb-ok   { background: var(--rb-tint-ok); border-color: var(--rb-border-ok); }
+.rb-ok:hover { border-color: var(--rb-ok); }
+.rb-ok strong { color: var(--rb-ok); }
+
+.rb-s1      { grid-column: 1; grid-row: 2; }
+.rb-s2      { grid-column: 2; grid-row: 2; }
+.rb-s3      { grid-column: 3; grid-row: 2; }
+.rb-loop    { grid-column: 2; grid-row: 3; }
+.rb-s4      { grid-column: 3; grid-row: 3; }
+.rb-journal { grid-column: 4; grid-row: 3; }
+.rb-s5      { grid-column: 3; grid-row: 4; }
+.rb-s6      { grid-column: 2; grid-row: 4; }
+
+/* The triangles. Each step draws the arrow(s) that leave it. */
+.rb-step::after, .rb-s4::before, .rb-loop::after {
+  content: "";
+  position: absolute;
+  width: var(--tri);
+  height: var(--tri);
+  background: var(--rb-teal);
+  opacity: 0.85;
+}
+.rb-journal::after, .rb-s6::after { display: none; }
+.rb-s1::after, .rb-s2::after, .rb-s4::after {            /* right */
+  right: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
+  top: calc(50% - 0.5 * var(--tri));
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.rb-s4::after { background: var(--rb-ok); }              /* towards the journal */
+.rb-s5::after {                                          /* left */
+  left: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
+  top: calc(50% - 0.5 * var(--tri));
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+.rb-s3::after, .rb-s4::before {                          /* down */
+  bottom: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
+  left: calc(50% - 0.5 * var(--tri));
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+/* Loop from 6 back up to 2: a dashed line through the empty cell, triangle on top. */
+.rb-loop {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: calc(50% + 0.6rem);
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--rb-teal);
+}
+.rb-loop p { margin: 0; }
+.rb-loop::before {
+  content: "";
+  position: absolute;
+  left: calc(50% - 1px);
+  top: calc(-0.5 * var(--gap));
+  bottom: calc(-1 * var(--gap));
+  border-left: 2px dashed var(--rb-teal);
+  opacity: 0.7;
+}
+.rb-loop::after {
+  top: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
+  left: calc(50% - 0.5 * var(--tri));
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.rb-flow-caption {
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.85;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 767px) {
+  .rb-flow { grid-template-columns: 1fr; --gap: 1.75rem; }
+  .rb-flow > * { grid-column: 1 !important; grid-row: auto !important; }
+  .rb-lane-you  { order: 0; margin-bottom: calc(-1 * var(--gap) + 0.4rem); }
+  .rb-s1 { order: 1; } .rb-s2 { order: 2; } .rb-s3 { order: 3; } .rb-s4 { order: 4; }
+  .rb-journal { order: 5; }
+  .rb-lane-them { order: 6; text-align: left; margin-bottom: calc(-1 * var(--gap) + 0.4rem); }
+  .rb-s5 { order: 7; } .rb-s6 { order: 8; }
+  .rb-loop, .rb-s4::before { display: none; }
+  .rb-step::after {
+    top: auto; right: auto;
+    bottom: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
+    left: calc(50% - 0.5 * var(--tri));
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+}
+
+/* "You are here": scripts/workflow_screenshots.py adds these classes to the
+   workflow before taking one screenshot per step (docs/images/here/*.png). */
+.rb-focus > .rb-step:not(.rb-here),
+.rb-focus > .rb-loop,
+.rb-focus > .rb-lane { opacity: 0.4; }
+.rb-here {
+  outline: 3px solid var(--rb-teal);
+  outline-offset: 3px;
+  box-shadow: 0 8px 22px rgba(31, 111, 120, 0.25);
+}
+.rb-ok.rb-here { outline-color: var(--rb-ok); }
+.rb-here-tag {
+  position: absolute;
+  top: -0.85rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.1rem 0.7rem;
+  border-radius: 9999px;
+  background: var(--rb-teal);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* The screenshot at the top of each page; links back to the front page. */
+.rb-here-img { margin: 0 0 1.5rem; }
+.rb-here-img img {
+  display: block;
+  max-width: min(100%, 36rem) !important;
+  max-height: none !important;
+  margin: 0 auto;
+  border: 1px solid var(--rb-border);
+  border-radius: 1rem;
+  background: #fff;
+}
+.rb-here-img a:hover img { border-color: var(--rb-border-hover); }
+/* The image links to the front page; the theme would show a pop-up preview of
+   that page on hover. Hide the pop-up while this link is the one hovered
+   (it is rendered elsewhere in the page, hence :has on body). */
+body:has(.rb-here-img [data-state$="open"]) [data-radix-popper-content-wrapper] {
+  display: none !important;
+}
+
+/* Header: logo (assets/logo.svg: SSDE mark + robot) AND the site title.
+   Keep the title visible next to the logo, whatever the theme version does. */
+.myst-home-link > span {
+  display: inline !important;
+  visibility: visible !important;
+}
+/* The SSDE mark has an opaque white background: in dark mode, put the whole
+   logo on one white chip instead of a white square behind half of it. */
+html.dark .myst-home-link-logo {
+  background: #fff;
+  border-radius: 0.5rem;
+  padding: 0.15rem 0.4rem;
+}
