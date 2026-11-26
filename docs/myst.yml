@@ -1,5 +1,5 @@
 # Website for readme-bot, built with Jupyter Book 2 (mystmd).
-# Build locally:   ./_setup.sh && .venv/bin/jupyter-book start   (run in docs/)
+# Build locally:   docs/_setup.sh, then in docs/ (venv active): jupyter-book start --execute
 # Built and deployed by .github/workflows/site.yml; see README-DEPLOYMENT.md.
 version: 1
 project:

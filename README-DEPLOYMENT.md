@@ -3,9 +3,14 @@
 The site is written in Markdown in `docs/` and built with
 [Jupyter Book 2](https://jupyterbook.org/) (mystmd); see `docs/myst.yml`.
 `index.md` is the menu-less front page; the other pages get the sidebar.
-`scripts/build.sh` stamps the skill version, approvers and feedback link into
-`docs/index.md`, `expect.md` and `feedback.md`; edit `skills/readme-review/VERSION` and
-`FEEDBACK_URL` (and `TEMPLATE_VERSION` for the Template version), not those lines.
+Pages that show a generated value (`index.md`, `expect.md`, `feedback.md`) are
+MyST notebooks: a hidden code cell reads `docs/site.json` and the text uses
+`{eval}` roles, so the values are filled in when the site is built, not edited
+into the Markdown. `scripts/site_data.py` (run by `scripts/build.sh`) writes
+`site.json` from `skills/readme-review/VERSION`, `FEEDBACK_URL`,
+`TEMPLATE_VERSION` and the git history (approvers). Change those, not the pages.
+Building needs `--execute` (and a Python kernel: `ipykernel` is in
+`docs/requirements.txt`).
 
 Two workflows:
 
@@ -13,7 +18,7 @@ Two workflows:
   Builds the prompt and skill zip and fails if the committed `prompts/` or the
   stamps in `docs/` are stale.
 - [site.yml](.github/workflows/site.yml) — builds the site (`jupyter-book build
-  --html --strict`).
+  --html --execute --strict`).
   - On `main`: deploys to GitHub Pages (Settings → Pages → Source: **GitHub
     Actions**; switched from "Deploy from branch" on 2026-11-26).
   - On pull requests opened from a branch of this repository (not a fork):
@@ -27,7 +32,7 @@ Forked PRs skip the preview, since forks can't read repository secrets.
 
 ```bash
 docs/_setup.sh                                   # creates docs/.venv (idempotent)
-cd docs && .venv/bin/jupyter-book start          # live preview at http://localhost:3000
+cd docs && source .venv/bin/activate && jupyter-book start --execute   # live preview at http://localhost:3000
 ```
 
 ## One-time setup

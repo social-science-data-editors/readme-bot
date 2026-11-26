@@ -1,6 +1,18 @@
 ---
 title: What to expect
+kernelspec:
+  name: python3
+  display_name: Python 3
+  language: python
+
 ---
+
+```{code-cell} python
+:tags: [remove-cell]
+import json
+from IPython.display import display
+site = json.load(open("site.json"))
+```
 
 You always get a report. You also get an edited copy of your README  when the assistant can see the actual package. A good README gets a short report, one that has issues a longer report.
 
@@ -33,12 +45,14 @@ You always get a report. You also get an edited copy of your README  when the as
 
 ## A report looks like this
 
-```{code-block} markdown
-:caption: Illustrative excerpt, not a real review.
+_Illustrative excerpt, not a real review._
 
+```{code-cell} python
+:tags: [remove-input]
+report = f'''
 # README review: README.pdf
 
-- Skill: readme-review v0.1.0 · Template v1.2 · 2026-11-13
+- Skill: readme-review v{site["skill_version"]} · Template v{site["template_version"]} · 2026-11-13
 - Mode: edit (package available)
 - Verdict: Close to Template; data access details and table map incomplete.
 - Findings: 2 High · 3 Medium · 4 Low
@@ -57,6 +71,8 @@ You always get a report. You also get an edited copy of your README  when the as
 - **Low** — Overview: "In this comprehensive replication package, we are
   delighted to provide…" → "This package contains the data and Stata
   code to produce all tables and figures."
+'''
+print(report.strip())
 ```
 
 :::{warning} This is a test version

@@ -44,7 +44,8 @@ jobs:
         run: pip install -r docs/requirements.txt
       - name: Build site
         working-directory: docs
-        run: jupyter-book build --html --strict
+        # Pages are executable notebooks: python must be on PATH for the kernel.
+        run: jupyter-book build --html --execute --strict
       - name: Upload Pages artifact
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3

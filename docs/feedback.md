@@ -1,14 +1,29 @@
 ---
 title: Give feedback. Please.
 short_title: Give feedback
+kernelspec:
+  name: python3
+  display_name: Python 3
+  language: python
+
 ---
+
+```{code-cell} python
+:tags: [remove-cell]
+import json
+from IPython.display import HTML, display
+site = json.load(open("site.json"))
+```
 
 Please provide feedback. The skill must evolve over time and take into account what users report as both good and bad.  Two minutes of your time should suffice.
 
 :::{tip} Use the link at the end of your report
 It records which skill version you ran. Lost it? Use this one:
 
-{button}`Open the feedback survey → <https://cornell.yul1.qualtrics.com/jfe/form/SV_blzbYfhetCOJ2GW?skill_version=0.1.0>`
+```{code-cell} python
+:tags: [remove-input]
+display(HTML(f'<a class="rb-button" href="{site["survey_url"]}"><strong>Open the feedback survey →</strong></a>'))
+```
 :::
 
 ## What we most want to know

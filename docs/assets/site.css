@@ -41,3 +41,22 @@
   font-size: 0.85rem;
   opacity: 0.85;
 }
+
+/* Values filled in by {eval} (version numbers etc.) should read as plain text,
+   not as dotted-underlined tooltips. */
+span.border-dotted.cursor-help {
+  border-bottom: none !important;
+  cursor: inherit !important;
+}
+
+/* The survey link in feedback.md is an HTML output from a code cell (MyST roles
+   such as {button} cannot be emitted from code), so it carries its own button style. */
+a.rb-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  background: #1f6f78;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+a.rb-button:hover { filter: brightness(1.1); }

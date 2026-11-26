@@ -5,11 +5,23 @@ site:
   hide_outline: true
   hide_title_block: true
   hide_footer_links: true
+kernelspec:
+  name: python3
+  display_name: Python 3
+  language: python
+
 ---
 
 +++ {"kind": "centered", "class": "rb-hero"}
 
-Social Science Data Editors · Skill v0.1.0 · test version
+```{code-cell} python
+:tags: [remove-cell]
+import json
+from IPython.display import display
+site = json.load(open("site.json"))
+```
+
+Social Science Data Editors · Skill v{eval}`site["skill_version"]` · test version
 
 ## readme-bot
 
@@ -103,7 +115,7 @@ Approve or reject, and write the next skill version.
 :::{div}
 :class: rb-footer
 
-readme-bot · [GitHub](https://github.com/social-science-data-editors/readme-bot) · MIT license · Based on the [Template README](https://social-science-data-editors.github.io/template_README/) v1.2.
+readme-bot · [GitHub](https://github.com/social-science-data-editors/readme-bot) · MIT license · Based on the [Template README](https://social-science-data-editors.github.io/template_README/) v{eval}`site["template_version"]`.
 
-Approved by Lars Vilhuber.
+Approved by {eval}`site["approvers"]`.
 :::
