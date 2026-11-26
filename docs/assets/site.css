@@ -71,6 +71,9 @@ a.rb-button:hover { filter: brightness(1.1); }
   --rb-border-hover: rgba(31, 111, 120, 0.6);
   --rb-tint-you: rgba(31, 111, 120, 0.07);
   --rb-tint-them: rgba(140, 120, 70, 0.08);
+  --rb-ok: #2e7d4f;
+  --rb-tint-ok: rgba(46, 125, 79, 0.10);
+  --rb-border-ok: rgba(46, 125, 79, 0.45);
   --rb-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
   --rb-shadow-hover: 0 10px 24px rgba(15, 23, 42, 0.12);
 }
@@ -80,6 +83,9 @@ html.dark {
   --rb-border-hover: rgba(94, 196, 196, 0.6);
   --rb-tint-you: rgba(94, 196, 196, 0.08);
   --rb-tint-them: rgba(220, 200, 150, 0.07);
+  --rb-ok: #6fcf97;
+  --rb-tint-ok: rgba(111, 207, 151, 0.10);
+  --rb-border-ok: rgba(111, 207, 151, 0.45);
 }
 
 .myst-grid {
@@ -109,12 +115,15 @@ html.dark {
 .myst-card-body { padding: 0.75rem 1.25rem !important; }
 
 /* ---------------------------------------------------------------------------
-   Workflow (index.md): seven steps in a U-shaped flow, drawn with CSS grid.
+   Workflow (index.md): drawn with CSS grid, four columns.
      row 1: lane label "Your side"
-     row 2: 1 -> 2 -> 3 -> 4
-     row 3: lane label, 7 <- 6 <- 5   (5 sits under 4, 7 under 2; 7 points back up to 2)
+     row 2: 1 -> 2 -> 3
+     row 3:      loop   4 -> Submit to journal     (4 sits under 3)
+     row 4: lane, 6  <- 5                          (5 under 4, 6 under 2)
+   3 points down to 4, 4 points right (journal) and down (5), 5 points left,
+   and a dashed line with a triangle runs from 6 up to 2 (next skill version).
    Arrows are small CSS triangles placed in the grid gap. On narrow screens the
-   steps stack in order 1..7 and every arrow points down.
+   boxes stack in order and every arrow points down.
    --------------------------------------------------------------------------- */
 .rb-flow {
   --gap: 2.25rem;
@@ -136,7 +145,7 @@ html.dark {
 }
 .rb-lane p { margin: 0; }
 .rb-lane-you  { grid-column: 1 / 5; grid-row: 1; }
-.rb-lane-them { grid-column: 1; grid-row: 3; align-self: center; margin: 0; text-align: right; }
+.rb-lane-them { grid-column: 1; grid-row: 4; align-self: center; margin: 0; text-align: right; }
 
 .rb-step {
   position: relative;
@@ -158,17 +167,21 @@ html.dark {
 .rb-step code { font-size: 0.85em; }
 .rb-you  { background: var(--rb-tint-you); }
 .rb-them { background: var(--rb-tint-them); border-style: dashed; }
+.rb-ok   { background: var(--rb-tint-ok); border-color: var(--rb-border-ok); }
+.rb-ok:hover { border-color: var(--rb-ok); }
+.rb-ok strong { color: var(--rb-ok); }
 
-.rb-s1 { grid-column: 1; grid-row: 2; }
-.rb-s2 { grid-column: 2; grid-row: 2; }
-.rb-s3 { grid-column: 3; grid-row: 2; }
-.rb-s4 { grid-column: 4; grid-row: 2; }
-.rb-s5 { grid-column: 4; grid-row: 3; }
-.rb-s6 { grid-column: 3; grid-row: 3; }
-.rb-s7 { grid-column: 2; grid-row: 3; }
+.rb-s1      { grid-column: 1; grid-row: 2; }
+.rb-s2      { grid-column: 2; grid-row: 2; }
+.rb-s3      { grid-column: 3; grid-row: 2; }
+.rb-loop    { grid-column: 2; grid-row: 3; }
+.rb-s4      { grid-column: 3; grid-row: 3; }
+.rb-journal { grid-column: 4; grid-row: 3; }
+.rb-s5      { grid-column: 3; grid-row: 4; }
+.rb-s6      { grid-column: 2; grid-row: 4; }
 
-/* The triangle. Each step draws the arrow that leaves it. */
-.rb-step::after {
+/* The triangles. Each step draws the arrow(s) that leave it. */
+.rb-step::after, .rb-s4::before, .rb-loop::after {
   content: "";
   position: absolute;
   width: var(--tri);
@@ -176,22 +189,45 @@ html.dark {
   background: var(--rb-teal);
   opacity: 0.85;
 }
-.rb-s1::after, .rb-s2::after, .rb-s3::after {            /* right */
+.rb-journal::after, .rb-s6::after { display: none; }
+.rb-s1::after, .rb-s2::after, .rb-s4::after {            /* right */
   right: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
   top: calc(50% - 0.5 * var(--tri));
   clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
-.rb-s5::after, .rb-s6::after {                           /* left */
+.rb-s4::after { background: var(--rb-ok); }              /* towards the journal */
+.rb-s5::after {                                          /* left */
   left: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
   top: calc(50% - 0.5 * var(--tri));
   clip-path: polygon(100% 0, 0 50%, 100% 100%);
 }
-.rb-s4::after {                                          /* down */
+.rb-s3::after, .rb-s4::before {                          /* down */
   bottom: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
   left: calc(50% - 0.5 * var(--tri));
   clip-path: polygon(0 0, 100% 0, 50% 100%);
 }
-.rb-s7::after {                                          /* up, back into the skill */
+
+/* Loop from 6 back up to 2: a dashed line through the empty cell, triangle on top. */
+.rb-loop {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: calc(50% + 0.6rem);
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--rb-teal);
+}
+.rb-loop p { margin: 0; }
+.rb-loop::before {
+  content: "";
+  position: absolute;
+  left: calc(50% - 1px);
+  top: calc(-0.5 * var(--gap));
+  bottom: calc(-1 * var(--gap));
+  border-left: 2px dashed var(--rb-teal);
+  opacity: 0.7;
+}
+.rb-loop::after {
   top: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
   left: calc(50% - 0.5 * var(--tri));
   clip-path: polygon(50% 0, 100% 100%, 0 100%);
@@ -209,14 +245,14 @@ html.dark {
   .rb-flow > * { grid-column: 1 !important; grid-row: auto !important; }
   .rb-lane-you  { order: 0; margin-bottom: calc(-1 * var(--gap) + 0.4rem); }
   .rb-s1 { order: 1; } .rb-s2 { order: 2; } .rb-s3 { order: 3; } .rb-s4 { order: 4; }
-  .rb-lane-them { order: 5; text-align: left; margin-bottom: calc(-1 * var(--gap) + 0.4rem); }
-  .rb-s5 { order: 6; } .rb-s6 { order: 7; } .rb-s7 { order: 8; }
-  .rb-step:not(.rb-s7)::after {
+  .rb-journal { order: 5; }
+  .rb-lane-them { order: 6; text-align: left; margin-bottom: calc(-1 * var(--gap) + 0.4rem); }
+  .rb-s5 { order: 7; } .rb-s6 { order: 8; }
+  .rb-loop, .rb-s4::before { display: none; }
+  .rb-step::after {
     top: auto; right: auto;
     bottom: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
     left: calc(50% - 0.5 * var(--tri));
     clip-path: polygon(0 0, 100% 0, 50% 100%);
   }
-  .rb-s4::after { display: none; }   /* lane label sits between 4 and 5 */
-  .rb-s7::after { display: none; }
 }

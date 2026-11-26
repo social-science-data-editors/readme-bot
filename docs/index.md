@@ -96,17 +96,23 @@ fix your README; verify every AI edit yourself
 ::::{div}
 :class: rb-step rb-them rb-s6
 
-**6 · Private repository**
+**6 · Maintainers**
 
-one pull request per response; free text vetted
+approve or reject; write the next skill version, which feeds back into step 2
 ::::
 
 ::::{div}
-:class: rb-step rb-them rb-s7
+:class: rb-step rb-ok rb-journal
 
-**7 · Maintainers**
+**Submit to journal ✓**
 
-approve or reject; write the next skill version, which feeds back into step 2
+your README now tells a replicator what they need
+::::
+
+::::{div}
+:class: rb-loop
+
+next skill version
 ::::
 
 ::::{div}
