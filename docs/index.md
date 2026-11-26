@@ -9,10 +9,7 @@ kernelspec:
   name: python3
   display_name: Python 3
   language: python
-
 ---
-
-+++ {"kind": "centered", "class": "rb-hero"}
 
 ```{code-cell} python
 :tags: [remove-cell]
@@ -20,6 +17,8 @@ import json
 from IPython.display import display
 site = json.load(open("site.json"))
 ```
+
++++ {"kind": "centered", "class": "rb-hero"}
 
 Social Science Data Editors · Skill v{eval}`site["skill_version"]` · test version
 
@@ -49,54 +48,12 @@ Is the README short and plain? A good README has lists, not long prose; has step
 
 ::::
 
-**How a review works, and how your feedback changes the skill.** Each box links to the page that covers it. _Claude-generated._
+```{figure} images/workflow.svg
+:alt: How readme-bot works, and how your feedback changes it. Top row, your side - 1 your README and optional package go to 2 an AI assistant with the readme-review skill, which writes 3 a report and an optional edited copy, which 4 you check. Bottom row, maintainers' side - 5 you answer a short feedback survey, 6 each response becomes a pull request in a private repository after automated vetting, 7 maintainers approve or reject it and write skill changes, which loop back into the skill at step 2.
+:class: rb-infographic
 
-**Your side**
-
-::::{grid} 1 2 4 4
-
-:::{card} 1 · Your README
-:link: use.md
-Plus the package or a file listing (optional).
-:::
-
-:::{card} 2 · Your AI assistant
-:link: use.md
-Runs the readme-review skill or prompt file.
-:::
-
-:::{card} 3 · Report
-:link: expect.md
-`README-review.md` and, if it saw the package, `README-ai-edited.md`.
-:::
-
-:::{card} 4 · You check it
-:link: expect.md
-Fix your README; verify every AI edit yourself.
-:::
-
-::::
-
-**Maintainers' side** — step 7 feeds a new skill version back into step 2.
-
-::::{grid} 1 2 3 3
-
-:::{card} 5 · Feedback survey
-:link: feedback.md
-About 2 minutes, anonymized; answered by you, not AI.
-:::
-
-:::{card} 6 · Private repository
-:link: security.md
-One pull request per response; free text is vetted.
-:::
-
-:::{card} 7 · Maintainers
-:link: feedback.md
-Approve or reject, and write the next skill version.
-:::
-
-::::
+**How a review works (top) and how your feedback changes the skill (bottom).** _Claude-generated._
+```
 
 ### Who it is for
 
