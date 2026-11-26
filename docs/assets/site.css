@@ -165,6 +165,33 @@ html.dark {
 .rb-step p { margin: 0.2rem 0; }
 .rb-step strong { display: block; font-size: 1.02rem; color: var(--rb-teal); }
 .rb-step code { font-size: 0.85em; }
+/* Icon badge at the top of each box (Font Awesome Free SVGs in docs/images/icons,
+   coloured by their own fill attribute), in a {div} with class rb-icons. */
+.rb-step { text-align: center; padding: 1.1rem 1.1rem 1.2rem; }
+.rb-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.55rem;
+  width: fit-content;
+  margin: 0 auto 0.6rem;
+  padding: 0.7rem 0.95rem;
+  border-radius: 9999px;
+  background: rgba(31, 111, 120, 0.1);
+}
+.rb-icons p { display: contents; }
+.rb-icons img {
+  height: 2rem !important;
+  width: 2.4rem !important;
+  object-fit: contain;
+  max-width: none !important;
+  max-height: none !important;   /* the theme caps inline images at 1.2em */
+  flex: none;
+  margin: 0 !important;
+}
+.rb-ok .rb-icons { background: rgba(46, 125, 79, 0.12); }
+html.dark .rb-icons { background: rgba(94, 196, 196, 0.85); }
+html.dark .rb-ok .rb-icons { background: rgba(111, 207, 151, 0.85); }
 .rb-you  { background: var(--rb-tint-you); }
 .rb-them { background: var(--rb-tint-them); border-style: dashed; }
 .rb-ok   { background: var(--rb-tint-ok); border-color: var(--rb-border-ok); }

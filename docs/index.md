@@ -56,6 +56,12 @@ Is the README short and plain? A good README has lists, not long prose; has step
 ::::{div}
 :class: rb-step rb-you rb-s1
 
+:::{div}
+:class: rb-icons
+
+![](images/icons/user.svg) ![](images/icons/file-lines.svg) ![](images/icons/file-code.svg)
+:::
+
 **1 · Your README**
 
 plus the package or a file listing (optional)
@@ -63,6 +69,12 @@ plus the package or a file listing (optional)
 
 ::::{div}
 :class: rb-step rb-you rb-s2
+
+:::{div}
+:class: rb-icons
+
+![](images/icons/robot.svg)
+:::
 
 **2 · Your AI assistant**
 
@@ -72,6 +84,12 @@ plus the package or a file listing (optional)
 ::::{div}
 :class: rb-step rb-you rb-s3
 
+:::{div}
+:class: rb-icons
+
+![](images/icons/file-lines.svg) ![](images/icons/robot.svg)
+:::
+
 **3 · Report**
 
 `README-review.md` + `README-ai-edited.md` ([what to expect](expect.md))
@@ -79,6 +97,12 @@ plus the package or a file listing (optional)
 
 ::::{div}
 :class: rb-step rb-you rb-s4
+
+:::{div}
+:class: rb-icons
+
+![](images/icons/book-open-reader.svg)
+:::
 
 **4 · You check it**
 
@@ -88,6 +112,12 @@ fix your README; verify every AI edit yourself
 ::::{div}
 :class: rb-step rb-them rb-s5
 
+:::{div}
+:class: rb-icons
+
+![](images/icons/user.svg) ![](images/icons/square-poll-vertical.svg)
+:::
+
 **5 · Feedback survey**
 
 ~2 minutes, anonymized; answered by you, not AI ([how](feedback.md))
@@ -96,6 +126,12 @@ fix your README; verify every AI edit yourself
 ::::{div}
 :class: rb-step rb-them rb-s6
 
+:::{div}
+:class: rb-icons
+
+![](images/icons/people-group.svg)
+:::
+
 **6 · Maintainers**
 
 approve or reject; write the next skill version, which feeds back into step 2
@@ -103,6 +139,12 @@ approve or reject; write the next skill version, which feeds back into step 2
 
 ::::{div}
 :class: rb-step rb-ok rb-journal
+
+:::{div}
+:class: rb-icons
+
+![](images/icons/book.svg)
+:::
 
 **Submit to journal ✓**
 
