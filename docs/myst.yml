@@ -24,6 +24,7 @@ site:
   template: book-theme
   title: readme-bot
   options:
+    logo: assets/logo.svg         # SSDE mark + robot (assets/logo.svg)
     logo_text: readme-bot
     hide_myst_branding: true
     style: assets/site.css

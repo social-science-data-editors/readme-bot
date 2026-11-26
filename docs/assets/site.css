@@ -323,3 +323,17 @@ html.dark .rb-ok .rb-icons { background: rgba(111, 207, 151, 0.85); }
   background: #fff;
 }
 .rb-here-img a:hover img { border-color: var(--rb-border-hover); }
+
+/* Header: logo (assets/logo.svg: SSDE mark + robot) AND the site title.
+   Keep the title visible next to the logo, whatever the theme version does. */
+.myst-home-link > span {
+  display: inline !important;
+  visibility: visible !important;
+}
+/* The SSDE mark has an opaque white background: in dark mode, put the whole
+   logo on one white chip instead of a white square behind half of it. */
+html.dark .myst-home-link-logo {
+  background: #fff;
+  border-radius: 0.5rem;
+  padding: 0.15rem 0.4rem;
+}
