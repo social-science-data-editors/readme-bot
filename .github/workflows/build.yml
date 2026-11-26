@@ -17,7 +17,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0   # full history: build.sh lists approvers from git log
       - name: Build prompt and skill zip
@@ -45,13 +45,13 @@ jobs:
           git add docs/index.html
           git commit -m "Update approvers in site footer"
           git push origin "HEAD:main"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: readme-review
           path: dist/readme-review.zip
       - name: Attach zip to release
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: dist/readme-review.zip
 
