@@ -15,10 +15,11 @@ project:
     - README.md
   toc:
     - file: index.md
-    - file: security.md
+    - file: install.md
     - file: use.md
     - file: expect.md
     - file: feedback.md
+    - file: faq.md
 site:
   template: book-theme
   title: readme-bot

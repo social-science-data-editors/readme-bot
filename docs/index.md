@@ -48,6 +48,8 @@ Is the README short and plain? A good README has lists, not long prose; has step
 
 ::::
 
+## Workflow
+
 :::::{div}
 :class: rb-flow
 
@@ -64,7 +66,7 @@ plus the package or a file listing (optional)
 
 **2 · Your AI assistant**
 
-runs the [readme-review skill](use.md) or prompt file
+(or you) [installs it](install.md), you then tell it to run the [readme-review skill](use.md) or prompt file
 ::::
 
 ::::{div}
@@ -127,24 +129,28 @@ Maintainers' side
 **How a review works (top) and how your feedback changes the skill (bottom).**
 :::
 
-### Who it is for
+## Who should use it
 
 - **Authors**, before submitting a replication package.
 - **Data editors and journal staff**, as a first pass before a human review.
 - **Replicators**, to see quickly what a README leaves out.
 
-### What it is not
+## What it is not
 
-- Not a gate. The Template is a suggestion; the review says what differs and why it matters. It never says a README "fails".
-- Not a journal decision. Passing or failing a data editor's check is still up to the data editor.
-- Not a review of your research. It does not judge the paper, the methods, or the results, and it does not run your code.
+- It does not prevent you from submitting. The [Template README](https://social-science-data-editors.github.io/template_README/) is a suggestion at most journals (though some require it). The review says what differs and why it matters. You decide whether to incorporate it.
+- The review is not connected to any journal, and does not imply any journal decision. Passing or failing a data editor's check is still up to the data editor.
+- This is not a review of your research, or the connection between your code and your research. It does not evaluate the paper at all, and it does not run your code.
+
+## Questions?
+
+Start by looking at the [installation instructions](install.md). Consult our [FAQ](faq.md). Questions can also be sent through the [Github repository](https://github.com/social-science-data-editors/readme-bot/issues/new?template=question.yml).
 
 +++ {"class": "rb-footer-block"}
 
 :::{div}
 :class: rb-footer
 
-readme-bot · [GitHub](https://github.com/social-science-data-editors/readme-bot) · MIT license · Based on the [Template README](https://social-science-data-editors.github.io/template_README/) v{eval}`site["template_version"]`.
+readme-bot · [GitHub](https://github.com/social-science-data-editors/readme-bot) · [MIT license](https://github.com/social-science-data-editors/readme-bot/blob/main/LICENSE) · Based on the [Template README](https://social-science-data-editors.github.io/template_README/) v{eval}`site["template_version"]`.
 
 Approved by {eval}`site["approvers"]`.
 :::
