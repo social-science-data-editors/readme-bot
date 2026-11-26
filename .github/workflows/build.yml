@@ -1,3 +1,10 @@
+# Builds the prompt and skill zip on every push and pull request. Pull requests
+# from branches of this repository (not forks) additionally get a live preview
+# of the site (docs/) deployed to Cloudflare Pages, with the link posted as a
+# PR comment. One-time setup: a Cloudflare Pages project named like this
+# repository, and the repository secrets CLOUDFLARE_API_TOKEN and
+# CLOUDFLARE_ACCOUNT_ID. See README-DEPLOYMENT.md.
+
 name: Build skill
 
 on:
@@ -32,3 +39,41 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: dist/readme-review.zip
+
+  preview:
+    # Runs after build, which verifies that the committed docs/ is current.
+    needs: build
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write     # only for the PR comment
+    env:
+      # Pages project name = GitHub repository name
+      CF_PAGES_PROJECT: ${{ github.event.repository.name }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy PR preview
+        id: preview
+        # Forked PRs cannot read secrets, and handing a deploy token to
+        # unreviewed code is a bad trade for a preview.
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: >-
+            pages deploy ./docs
+            --project-name=${{ env.CF_PAGES_PROJECT }}
+            --branch=pr-${{ github.event.pull_request.number }}
+      - name: Publish preview link
+        if: steps.preview.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          URL: ${{ steps.preview.outputs.pages-deployment-alias-url }}
+        run: |
+          echo "📖 Preview: $URL" >> "$GITHUB_STEP_SUMMARY"
+          gh pr comment "$PR" --repo "$REPO" --edit-last --create-if-none \
+            --body "📖 **Preview:** $URL — commit \`${GITHUB_SHA:0:7}\`"
