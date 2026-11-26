@@ -26,3 +26,4 @@ site:
     logo_text: readme-bot
     hide_myst_branding: true
     style: assets/site.css
+    favicon: assets/favicon.ico   # SSDE icon, from social-science-data-editors.github.io/assets/favicons
