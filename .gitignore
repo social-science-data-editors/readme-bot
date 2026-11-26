@@ -1,2 +1,5 @@
 dist/
 __pycache__/
+# Website build (docs/)
+docs/_build/
+docs/.venv/
