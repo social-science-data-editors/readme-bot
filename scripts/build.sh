@@ -3,7 +3,7 @@
 #   prompts/readme-review-prompt.md  single-file prompt for chat tools without skill support
 #   dist/readme-review.zip           skill bundle for claude.ai / Claude Code upload
 #   feedback/questions.md            from feedback/survey-spec.json (also done by survey-questions.yml)
-#   docs/index.html                  version and feedback link stamped into the website
+#   docs/index.html                  version, feedback link and approvers stamped into the website
 # Usage: scripts/build.sh            (run from repo root)
 set -euo pipefail
 
@@ -48,10 +48,16 @@ mkdir -p "$root/prompts" "$root/dist"
 
 python3 "$root/scripts/create_survey.py" --markdown >/dev/null
 
-# Website (GitHub Pages, docs/index.html): stamp version and feedback link
+# Website (GitHub Pages, docs/index.html): stamp version, feedback link, approvers.
+# Approvers = everyone who authored or committed in this repository, minus bots
+# (GitHub web merges, Claude, *[bot] accounts, other noreply addresses).
+approvers="$(git -C "$root" log --format='%an|%ae%n%cn|%ce' 2>/dev/null \
+  | grep -viE '\[bot\]|^(GitHub|Claude)\||noreply@(github\.com|anthropic\.com)$' \
+  | cut -d'|' -f1 | sort -u | paste -sd, - | sed 's/,/, /g' || true)"
 site="$root/docs/index.html"
 if [ -f "$site" ]; then
   sed -i.bak -E \
+    -e "s|(data-stamp=\"approvers\">)[^<]*|\1${approvers:-the maintainers}|" \
     -e "s|(data-stamp=\"version\">Skill v)[^<]*|\1$version|" \
     -e "s|(data-stamp=\"feedback\" href=\")[^\"]*|\1${feedback:-https://github.com/social-science-data-editors/readme-bot/issues}|" \
     "$site"
