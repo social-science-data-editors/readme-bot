@@ -1,0 +1,28 @@
+# Website for readme-bot, built with Jupyter Book 2 (mystmd).
+# Build locally:   docs/_setup.sh, then in docs/ (venv active): jupyter-book start --execute
+# Built and deployed by .github/workflows/site.yml; see README-DEPLOYMENT.md.
+version: 1
+project:
+  title: readme-bot
+  description: >-
+    An AI skill that reviews replication package READMEs against the Social
+    Science Data Editors Template README. How it works, security, how to use
+    it, and how to give feedback.
+  license: MIT
+  github: social-science-data-editors/readme-bot
+  exclude:
+    - _build/**
+    - README.md
+  toc:
+    - file: index.md
+    - file: security.md
+    - file: use.md
+    - file: expect.md
+    - file: feedback.md
+site:
+  template: book-theme
+  title: readme-bot
+  options:
+    logo_text: readme-bot
+    hide_myst_branding: true
+    style: assets/site.css
