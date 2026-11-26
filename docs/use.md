@@ -2,6 +2,12 @@
 title: How to use it
 ---
 
+:::{div}
+:class: rb-here-img
+
+[![Workflow diagram with step 2 (Your AI assistant) marked: you are here.](images/here/step-2.png)](index.md#workflow)
+:::
+
 [Install it](install.md) first. Then pick the card that matches your tool. All three give the same review.
 
 ::::{grid} 1 1 3 3

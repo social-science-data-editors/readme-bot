@@ -87,7 +87,7 @@ plus the package or a file listing (optional)
 :::{div}
 :class: rb-icons
 
-![](images/icons/file-lines.svg) ![](images/icons/robot.svg)
+![](images/icons/robot.svg) ![](images/icons/file-lines.svg) 
 :::
 
 **3 · Report**
@@ -143,7 +143,7 @@ approve or reject; write the next skill version, which feeds back into step 2
 :::{div}
 :class: rb-icons
 
-![](images/icons/book.svg)
+![](images/icons/user.svg) ![](images/icons/book.svg)
 :::
 
 **Submit to journal ✓**

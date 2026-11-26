@@ -2,6 +2,12 @@
 title: How to install it
 ---
 
+:::{div}
+:class: rb-here-img
+
+[![Workflow diagram with step 2 (Your AI assistant) marked: you are here.](images/here/step-2.png)](index.md#workflow)
+:::
+
 ## Before you install it: Security and privacy
 
 readme-bot is **text**: instructions an AI assistant follows. It does not communicate with any (other) servers. All changes are local - they are not sent to us! Where your files go, what you are installing, and what happens to your survey answers: see the [FAQ](faq.md).
