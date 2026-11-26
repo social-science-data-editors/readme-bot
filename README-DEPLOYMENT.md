@@ -4,7 +4,7 @@ The site is written in Markdown in `docs/` and built with
 [Jupyter Book 2](https://jupyterbook.org/) (mystmd); see `docs/myst.yml`.
 `index.md` is the menu-less front page; the other pages get the sidebar.
 `scripts/build.sh` stamps the skill version, approvers and feedback link into
-`docs/index.md` and `docs/feedback.md`; edit `skills/readme-review/VERSION` and
+`docs/index.md`, `expect.md` and `feedback.md`; edit `skills/readme-review/VERSION` and
 `FEEDBACK_URL`, not those lines.
 
 Two workflows:

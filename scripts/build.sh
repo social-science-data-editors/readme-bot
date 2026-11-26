@@ -3,7 +3,7 @@
 #   prompts/readme-review-prompt.md  single-file prompt for chat tools without skill support
 #   dist/readme-review.zip           skill bundle for claude.ai / Claude Code upload
 #   feedback/questions.md            from feedback/survey-spec.json (also done by survey-questions.yml)
-#   docs/index.md, docs/feedback.md  version, feedback link and approvers stamped into the website sources
+#   docs/*.md                        version, feedback link and approvers stamped into the website
 # Usage: scripts/build.sh            (run from repo root)
 set -euo pipefail
 
@@ -48,21 +48,21 @@ mkdir -p "$root/prompts" "$root/dist"
 
 python3 "$root/scripts/create_survey.py" --markdown >/dev/null
 
-# Website sources (docs/*.md, built by .github/workflows/site.yml): stamp the
-# version and approvers on the front page, the feedback link on the feedback page.
-# Approvers = everyone who authored or committed in this repository, minus bots
+# Website (docs/, built by .github/workflows/site.yml). VERSION and FEEDBACK_URL
+# are the single source; stamp them into the pages that show them (this Jupyter
+# Book version has no variable substitution). Approvers go into the footer of
+# index.md: everyone who authored or committed in this repository, minus bots
 # (GitHub web merges, Claude, *[bot] accounts, other noreply addresses).
 approvers="$(git -C "$root" log --format='%an|%ae%n%cn|%ce' 2>/dev/null \
   | grep -viE '\[bot\]|^(GitHub|Claude)\||noreply@(github\.com|anthropic\.com)$' \
   | cut -d'|' -f1 | sort -u | paste -sd, - | sed 's/,/, /g' || true)"
+survey="${feedback:-https://github.com/social-science-data-editors/readme-bot/issues}"
 sed -i.bak -E \
   -e "s|(Skill v)[0-9A-Za-z.+-]+|\1$version|" \
-  -e "s|^(Approved by ).*|\1${approvers:-the maintainers}.|" \
-  "$root/docs/index.md"
-sed -i.bak -E \
-  "s|(\{button\}\`Open the feedback survey → <)[^>]*|\1${feedback:-https://github.com/social-science-data-editors/readme-bot/issues}|" \
-  "$root/docs/feedback.md"
-rm -f "$root/docs/index.md.bak" "$root/docs/feedback.md.bak"
+  -e "s|^(Approved by ).*|\1${approvers:-the maintainers}.|" "$root/docs/index.md"
+sed -i.bak -E "s|(readme-review v)[0-9A-Za-z.+-]+|\1$version|" "$root/docs/expect.md"
+sed -i.bak -E "s|(\{button\}\`Open the feedback survey → <)[^>]*|\1$survey|" "$root/docs/feedback.md"
+rm -f "$root"/docs/*.md.bak
 
 rm -f "$root/dist/readme-review.zip"
 (cd "$root/skills" && zip -qr "$root/dist/readme-review.zip" readme-review)
