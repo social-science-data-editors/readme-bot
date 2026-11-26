@@ -15,8 +15,10 @@ Social Science Data Editors · Skill v0.1.0 · test version
 
 An AI skill that reviews the README of a replication package against the [Template README](https://social-science-data-editors.github.io/template_README/template-README.html), and tells you what a replicator would miss. Works with Claude, ChatGPT, Gemini, Copilot, and others.
 
-{button}`How to use it <use.md>`
-{button}`Give feedback <feedback.md>`
+{button}`2 · Security and privacy <security.md>`
+{button}`3 · How to use it <use.md>`
+{button}`4 · What to expect <expect.md>`
+{button}`5 · Give feedback <feedback.md>`
 
 +++ {"kind": "justified"}
 
@@ -44,7 +46,7 @@ Is it short and plain? Lists over prose, steps in the order you run them, no fil
 :alt: How readme-bot works, and how your feedback changes it. Top row, your side - 1 your README and optional package go to 2 an AI assistant with the readme-review skill, which writes 3 a report and an optional edited copy, which 4 you check. Bottom row, maintainers' side - 5 you answer a short feedback survey, 6 each response becomes a pull request in a private repository after automated vetting, 7 maintainers approve or reject it and write skill changes, which loop back into the skill at step 2.
 :class: rb-infographic
 
-**Claude-generated.** How a review works (top) and how your feedback changes the skill (bottom).
+**How a review works (top) and how your feedback changes the skill (bottom).** _Claude-generated._
 ```
 
 ### Who it is for
@@ -58,34 +60,6 @@ Is it short and plain? Lists over prose, steps in the order you run them, no fil
 - Not a gate. The Template is a suggestion; the review says what differs and why it matters. It never says a README "fails".
 - Not a journal decision. Passing or failing a data editor's check is still up to the data editor.
 - Not a review of your research. It does not judge the paper, the methods, or the results, and it does not run your code.
-
-+++ {"kind": "centered"}
-
-## Four more steps
-
-::::{grid} 1 2 4 4
-
-:::{card} 2 · Security and privacy
-:link: security.md
-Where your files go, and what you are installing.
-:::
-
-:::{card} 3 · How to use it
-:link: use.md
-Coding agent, claude\.ai, or any chatbot.
-:::
-
-:::{card} 4 · What to expect
-:link: expect.md
-The report, the edited copy, and the priorities.
-:::
-
-:::{card} 5 · Give feedback
-:link: feedback.md
-Two minutes that decide what gets fixed next.
-:::
-
-::::
 
 +++ {"class": "rb-footer-block"}
 

@@ -39,6 +39,11 @@
   border-radius: 10px;
   background: #fff;
 }
+/* Caption: bold description, then a small italic "Claude-generated" note. */
+.rb-infographic figcaption em {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
 
 .rb-footer {
   margin-top: 1rem;
