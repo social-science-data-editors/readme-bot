@@ -48,12 +48,84 @@ Is the README short and plain? A good README has lists, not long prose; has step
 
 ::::
 
-```{figure} images/workflow.svg
-:alt: How readme-bot works, and how your feedback changes it. Top row, your side - 1 your README and optional package go to 2 an AI assistant with the readme-review skill, which writes 3 a report and an optional edited copy, which 4 you check. Bottom row, maintainers' side - 5 you answer a short feedback survey, 6 each response becomes a pull request in a private repository after automated vetting, 7 maintainers approve or reject it and write skill changes, which loop back into the skill at step 2.
-:class: rb-infographic
+:::::{div}
+:class: rb-flow
 
-**How a review works (top) and how your feedback changes the skill (bottom).** _Claude-generated._
-```
+::::{div}
+:class: rb-step rb-you rb-s1
+
+**1 · Your README**
+
+plus the package or a file listing (optional)
+::::
+
+::::{div}
+:class: rb-step rb-you rb-s2
+
+**2 · Your AI assistant**
+
+runs the [readme-review skill](use.md) or prompt file
+::::
+
+::::{div}
+:class: rb-step rb-you rb-s3
+
+**3 · Report**
+
+`README-review.md` + `README-ai-edited.md` ([what to expect](expect.md))
+::::
+
+::::{div}
+:class: rb-step rb-you rb-s4
+
+**4 · You check it**
+
+fix your README; verify every AI edit yourself
+::::
+
+::::{div}
+:class: rb-step rb-them rb-s5
+
+**5 · Feedback survey**
+
+~2 minutes, anonymized; answered by you, not AI ([how](feedback.md))
+::::
+
+::::{div}
+:class: rb-step rb-them rb-s6
+
+**6 · Private repository**
+
+one pull request per response; free text vetted
+::::
+
+::::{div}
+:class: rb-step rb-them rb-s7
+
+**7 · Maintainers**
+
+approve or reject; write the next skill version, which feeds back into step 2
+::::
+
+::::{div}
+:class: rb-lane rb-lane-you
+
+Your side
+::::
+
+::::{div}
+:class: rb-lane rb-lane-them
+
+Maintainers' side
+::::
+
+:::::
+
+:::{div}
+:class: rb-flow-caption
+
+**How a review works (top) and how your feedback changes the skill (bottom).**
+:::
 
 ### Who it is for
 

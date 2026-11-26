@@ -33,18 +33,6 @@
   letter-spacing: 0.08em;
 }
 
-/* The infographic is a light image; frame it so it also sits well in dark mode. */
-.rb-infographic img {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 10px;
-  background: #fff;
-}
-/* Caption: bold description, then a small italic "Claude-generated" note. */
-.rb-infographic figcaption em {
-  font-size: 0.85em;
-  opacity: 0.8;
-}
-
 .rb-footer {
   margin-top: 1rem;
   padding-top: 1rem;
@@ -72,3 +60,163 @@ a.rb-button {
   text-decoration: none !important;
 }
 a.rb-button:hover { filter: brightness(1.1); }
+
+/* ---------------------------------------------------------------------------
+   Cards and panels: rounded, soft border, more air between them, lift on hover.
+   Applies to every {card} on the site (index.md, use.md, expect.md).
+   --------------------------------------------------------------------------- */
+:root {
+  --rb-teal: #1f6f78;
+  --rb-border: rgba(31, 111, 120, 0.25);
+  --rb-border-hover: rgba(31, 111, 120, 0.6);
+  --rb-tint-you: rgba(31, 111, 120, 0.07);
+  --rb-tint-them: rgba(140, 120, 70, 0.08);
+  --rb-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --rb-shadow-hover: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+html.dark {
+  --rb-teal: #5ec4c4;
+  --rb-border: rgba(94, 196, 196, 0.25);
+  --rb-border-hover: rgba(94, 196, 196, 0.6);
+  --rb-tint-you: rgba(94, 196, 196, 0.08);
+  --rb-tint-them: rgba(220, 200, 150, 0.07);
+}
+
+.myst-grid {
+  gap: 1.75rem !important;
+}
+.myst-card {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border-radius: 1.25rem !important;
+  border: 1px solid var(--rb-border) !important;
+  box-shadow: var(--rb-shadow) !important;
+  height: 100%;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.myst-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--rb-shadow-hover) !important;
+  border-color: var(--rb-border-hover) !important;
+}
+.myst-card-title {
+  color: var(--rb-teal);
+}
+.myst-card-header {
+  background: var(--rb-tint-you) !important;
+  border-bottom-color: var(--rb-border) !important;
+}
+.myst-card-body { padding: 0.75rem 1.25rem !important; }
+
+/* ---------------------------------------------------------------------------
+   Workflow (index.md): seven steps in a U-shaped flow, drawn with CSS grid.
+     row 1: lane label "Your side"
+     row 2: 1 -> 2 -> 3 -> 4
+     row 3: lane label, 7 <- 6 <- 5   (5 sits under 4, 7 under 2; 7 points back up to 2)
+   Arrows are small CSS triangles placed in the grid gap. On narrow screens the
+   steps stack in order 1..7 and every arrow points down.
+   --------------------------------------------------------------------------- */
+.rb-flow {
+  --gap: 2.25rem;
+  --tri: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: var(--gap);
+  margin: 1.5rem 0 0.5rem;
+}
+.rb-lane {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  align-self: end;
+  margin-bottom: calc(-1 * var(--gap) + 0.4rem);
+}
+.rb-lane p { margin: 0; }
+.rb-lane-you  { grid-column: 1 / 5; grid-row: 1; }
+.rb-lane-them { grid-column: 1; grid-row: 3; align-self: center; margin: 0; text-align: right; }
+
+.rb-step {
+  position: relative;
+  padding: 0.85rem 1rem;
+  border-radius: 1.25rem;
+  border: 1px solid var(--rb-border);
+  box-shadow: var(--rb-shadow);
+  font-size: 0.92rem;
+  line-height: 1.4;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.rb-step:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--rb-shadow-hover);
+  border-color: var(--rb-border-hover);
+}
+.rb-step p { margin: 0.2rem 0; }
+.rb-step strong { display: block; font-size: 1.02rem; color: var(--rb-teal); }
+.rb-step code { font-size: 0.85em; }
+.rb-you  { background: var(--rb-tint-you); }
+.rb-them { background: var(--rb-tint-them); border-style: dashed; }
+
+.rb-s1 { grid-column: 1; grid-row: 2; }
+.rb-s2 { grid-column: 2; grid-row: 2; }
+.rb-s3 { grid-column: 3; grid-row: 2; }
+.rb-s4 { grid-column: 4; grid-row: 2; }
+.rb-s5 { grid-column: 4; grid-row: 3; }
+.rb-s6 { grid-column: 3; grid-row: 3; }
+.rb-s7 { grid-column: 2; grid-row: 3; }
+
+/* The triangle. Each step draws the arrow that leaves it. */
+.rb-step::after {
+  content: "";
+  position: absolute;
+  width: var(--tri);
+  height: var(--tri);
+  background: var(--rb-teal);
+  opacity: 0.85;
+}
+.rb-s1::after, .rb-s2::after, .rb-s3::after {            /* right */
+  right: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
+  top: calc(50% - 0.5 * var(--tri));
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.rb-s5::after, .rb-s6::after {                           /* left */
+  left: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
+  top: calc(50% - 0.5 * var(--tri));
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+.rb-s4::after {                                          /* down */
+  bottom: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
+  left: calc(50% - 0.5 * var(--tri));
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+.rb-s7::after {                                          /* up, back into the skill */
+  top: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
+  left: calc(50% - 0.5 * var(--tri));
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.rb-flow-caption {
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.85;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 767px) {
+  .rb-flow { grid-template-columns: 1fr; --gap: 1.75rem; }
+  .rb-flow > * { grid-column: 1 !important; grid-row: auto !important; }
+  .rb-lane-you  { order: 0; margin-bottom: calc(-1 * var(--gap) + 0.4rem); }
+  .rb-s1 { order: 1; } .rb-s2 { order: 2; } .rb-s3 { order: 3; } .rb-s4 { order: 4; }
+  .rb-lane-them { order: 5; text-align: left; margin-bottom: calc(-1 * var(--gap) + 0.4rem); }
+  .rb-s5 { order: 6; } .rb-s6 { order: 7; } .rb-s7 { order: 8; }
+  .rb-step:not(.rb-s7)::after {
+    top: auto; right: auto;
+    bottom: calc(-0.5 * var(--gap) - 0.5 * var(--tri));
+    left: calc(50% - 0.5 * var(--tri));
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+  .rb-s4::after { display: none; }   /* lane label sits between 4 and 5 */
+  .rb-s7::after { display: none; }
+}
