@@ -10,7 +10,7 @@ title: How to install it
 
 ## Before you install it: Security and privacy
 
-readme-bot is **text**: instructions an AI assistant follows. It does not communicate with any (other) servers. All changes are local - they are not sent to us! Where your files go, what you are installing, and what happens to your survey answers: see the [FAQ](faq.md).
+readme-bot is **text**: instructions an AI assistant follows. All changes are local and are not sent to any Data Editor - however bear in mind that your AI agent could send parts of your package via internet to their hosting services (e.g. Anthropic, OpenAI etc.) ! Where your files go, what you are installing, and what happens to your survey answers: see the [FAQ](faq.md).
 
 ## Install
 
