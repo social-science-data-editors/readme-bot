@@ -23,14 +23,14 @@ title: How to use it
 :::{card} claude\.ai
 :header: Chat with skills
 
-1. In a new chat, attach the README (and the package zip or a file listing). Ask for a review.
+1. In a new chat, attach your README (and the package zip or a file listing). Ask for a review.
 :::
 
 :::{card} ChatGPT, Gemini, Copilot, others
 :header: Any chatbot
 
-1. Paste `readme-review-prompt.md` into a new chat, or attach it.
-2. Attach the README, and if you can, the package or its file listing.
+1. Download [`readme-review-prompt.md`](https://raw.githubusercontent.com/social-science-data-editors/readme-bot/main/prompts/readme-review-prompt.md), then paste it into a new chat or attach it.
+2. Attach your README, and if you can, the package or its file listing.
 :::
 
 ::::
